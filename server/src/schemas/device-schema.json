@@ -1,0 +1,124 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "dev_alias": {
+            "type": "string"
+        },
+        "dev_label": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "did": {
+            "type": "string"
+        },
+        "gw_did": {
+            "type": "number"
+        },
+        "host": {
+            "type": "string"
+        },
+        "is_disabled": {
+            "type": "boolean"
+        },
+        "is_low_power": {
+            "type": "boolean"
+        },
+        "is_online": {
+            "type": "boolean"
+        },
+        "is_sandbox": {
+            "type": "boolean"
+        },
+        "mac": {
+            "type": "string"
+        },
+        "mcu_hard_version": {
+            "type": "string"
+        },
+        "mcu_soft_version": {
+            "type": "string"
+        },
+        "mesh_id": {
+            "type": "number"
+        },
+        "passcode": {
+            "type": "string"
+        },
+        "port": {
+            "type": "number"
+        },
+        "port_s": {
+            "type": "number"
+        },
+        "product_key": {
+            "type": "string"
+        },
+        "product_name": {
+            "type": "string"
+        },
+        "protoc": {
+            "type": "number"
+        },
+        "remark": {
+            "type": "string"
+        },
+        "role": {
+            "type": "string"
+        },
+        "sleep_duration": {
+            "type": "number"
+        },
+        "state_last_timestamp": {
+            "type": "number"
+        },
+        "type": {
+            "type": "string"
+        },
+        "wifi_hard_version": {
+            "type": "string"
+        },
+        "wifi_soft_version": {
+            "type": "string"
+        },
+        "ws_port": {
+            "type": "number"
+        },
+        "wss_port": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "dev_alias",
+        "dev_label",
+        "did",
+        "gw_did",
+        "host",
+        "is_disabled",
+        "is_low_power",
+        "is_online",
+        "is_sandbox",
+        "mac",
+        "mcu_hard_version",
+        "mcu_soft_version",
+        "mesh_id",
+        "passcode",
+        "port",
+        "port_s",
+        "product_key",
+        "product_name",
+        "protoc",
+        "remark",
+        "role",
+        "sleep_duration",
+        "state_last_timestamp",
+        "type",
+        "wifi_hard_version",
+        "wifi_soft_version",
+        "ws_port",
+        "wss_port"
+    ],
+    "type": "object"
+}
+

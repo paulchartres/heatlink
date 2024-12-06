@@ -1,0 +1,38 @@
+<div class="boost-modal-wrapper">
+
+  <div class="boost-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="boost-modal-title">Boost mode</span>
+
+    <div class="boost-gauge-wrapper">
+      <ngx-gauge [thick]="8" [min]="30" [max]="120" [value]="boostDuration" [duration]="100" backgroundColor="#3f3f3f" foregroundColor="orange">
+        <ngx-gauge-value>
+          {{Duration.fromObject({ minutes: boostDuration }).toFormat('hh:mm')}}
+        </ngx-gauge-value>
+      </ngx-gauge>
+
+      <div class="boost-control-buttons-wrapper">
+        <div class="boost-button" (click)="onDecreaseBoost()">
+          <ng-icon class="boost-button-icon" name="matMinusOutline"></ng-icon>
+        </div>
+        <div class="boost-button" (click)="onIncreaseBoost()">
+          <ng-icon class="boost-button-icon" name="matPlusOutline"></ng-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="boost-modal-actions">
+
+      <div class="boost-modal-cancel">
+        <span class="boost-modal-cancel-label" (click)="onCancel()">Cancel</span>
+      </div>
+
+      <div class="boost-modal-button">
+        <span class="boost-modal-button-label" (click)="onConfirm()">Confirm</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,34 @@
+<div class="temperature-modal-wrapper">
+
+  <div class="temperature-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="temperature-modal-title">{{label}}</span>
+
+    <div class="temperature-gauge-wrapper">
+      <ngx-gauge [thick]="8" [min]="min" [max]="max" [value]="temperature" append="°C" [duration]="100" backgroundColor="#3f3f3f" foregroundColor="orange"></ngx-gauge>
+
+      <div class="temperature-control-buttons-wrapper">
+        <div class="temperature-button" (click)="onDecreaseTemperature()">
+          <ng-icon class="temperature-button-icon" name="matMinusOutline"></ng-icon>
+        </div>
+        <div class="temperature-button" (click)="onIncreaseTemperature()">
+          <ng-icon class="temperature-button-icon" name="matPlusOutline"></ng-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="temperature-modal-actions">
+
+      <div class="temperature-modal-cancel">
+        <span class="temperature-modal-cancel-label" (click)="onCancel()">Cancel</span>
+      </div>
+
+      <div class="temperature-modal-button">
+        <span class="temperature-modal-button-label" (click)="onConfirm()">Confirm</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

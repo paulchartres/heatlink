@@ -1,0 +1,114 @@
+<div class="history-graphs-wrapper">
+
+  <div class="history-graphs-title-row">
+
+    <span class="history-graphs-title">
+      History for
+      <span class="history-graphs-title-highlight">Bureau</span>
+    </span>
+
+    <div class="history-graph-filter-bar">
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ALL }" (click)="onSetInterval(HistoryInterval.ALL)">
+        <span class="history-interval-label">All</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_YEAR }" (click)="onSetInterval(HistoryInterval.ONE_YEAR)">
+        <span class="history-interval-label">1Y</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.SIX_MONTHS }" (click)="onSetInterval(HistoryInterval.SIX_MONTHS)">
+        <span class="history-interval-label">6M</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.THREE_MONTHS }" (click)="onSetInterval(HistoryInterval.THREE_MONTHS)">
+        <span class="history-interval-label">3M</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_MONTH }" (click)="onSetInterval(HistoryInterval.ONE_MONTH)">
+        <span class="history-interval-label">1M</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_WEEK }" (click)="onSetInterval(HistoryInterval.ONE_WEEK)">
+        <span class="history-interval-label">1W</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.THREE_DAYS }" (click)="onSetInterval(HistoryInterval.THREE_DAYS)">
+        <span class="history-interval-label">3D</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_DAY }" (click)="onSetInterval(HistoryInterval.ONE_DAY)">
+        <span class="history-interval-label">1D</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.TWELVE_HOURS }" (click)="onSetInterval(HistoryInterval.TWELVE_HOURS)">
+        <span class="history-interval-label">12H</span>
+      </div>
+      <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.SIX_HOURS }" (click)="onSetInterval(HistoryInterval.SIX_HOURS)">
+        <span class="history-interval-label">6H</span>
+      </div>
+      <div class="history-graph-filter-button last" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_HOUR }" (click)="onSetInterval(HistoryInterval.ONE_HOUR)">
+        <span class="history-interval-label">1H</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="history-graph-wrapper">
+    <span class="history-graph-title">Temperature</span>
+
+    @if (temperatureData.length > 0) {
+      <div class="ngx-chart-wrapper">
+        <ngx-charts-line-chart
+          [xAxis]="true"
+          [yAxis]="true"
+          [yScaleMin]="0"
+          [yScaleMax]="40"
+          [scheme]="colorScheme"
+          [yAxisTickFormatting]="formatTemperature"
+          [results]="temperatureChartData">
+
+          <ng-template #tooltipTemplate let-model="model">
+            <div class="series-tooltip-wrapper">
+              <div class="series-tooltip-top-row">
+                <span class="series-tooltip-value">{{model.value}}°C</span>
+              </div>
+              <div class="series-tooltip-bottom-row">
+                <span class="series-tooltip-date">{{DateTime.fromJSDate(model.name).toFormat('yyyy-MM-dd HH:mm')}}</span>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template #seriesTooltipTemplate let-model="model">
+            <div class="series-tooltip-wrapper">
+              <div class="series-tooltip-top-row">
+                <span class="series-tooltip-value">{{model[0].value}}°C</span>
+              </div>
+              <div class="series-tooltip-bottom-row">
+                <span class="series-tooltip-date">{{DateTime.fromJSDate(model[0].name).toFormat('yyyy-MM-dd HH:mm')}}</span>
+              </div>
+            </div>
+          </ng-template>
+
+        </ngx-charts-line-chart>
+      </div>
+    }
+  </div>
+
+  <div class="history-graph-wrapper">
+    <span class="history-graph-title">Humidity</span>
+
+    @if (humidityData.length > 0) {
+      <div class="ngx-chart-wrapper">
+        <ngx-charts-line-chart
+          [xAxis]="true"
+          [yAxis]="true"
+          [yScaleMin]="0"
+          [yScaleMax]="100"
+          [scheme]="colorScheme"
+          [yAxisTickFormatting]="formatHumidity"
+          [results]="humidityChartData"></ngx-charts-line-chart>
+      </div>
+    }
+  </div>
+
+  <div class="history-graphs-actions">
+
+    <div class="history-graphs-cancel">
+      <span class="history-graphs-cancel-label" (click)="onCloseHistory()">Close history</span>
+    </div>
+
+  </div>
+
+</div>

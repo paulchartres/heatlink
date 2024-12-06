@@ -1,0 +1,288 @@
+@import "@fontsource/fira-mono/400.css";
+
+.device-wrapper {
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: 0.5rem;
+  height: 10rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+}
+
+.device-picture {
+  height: 100%;
+  transform: translateX(-30%);
+  clip-path: inset(0 0 0 17.5%);
+}
+
+.device-info-column {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  row-gap: 1.5rem;
+}
+
+.device-title-row {
+  display: flex;
+  column-gap: 0.75rem;
+  align-items: center;
+}
+
+.device-readable-name {
+  font-size: 1.4rem;
+  font-weight: 200;
+}
+
+.device-type {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-weight: 200;
+  margin-top: 0.2rem;
+}
+
+.device-current-metrics {
+  display: flex;
+  flex-grow: 1;
+  column-gap: 1.5rem;
+}
+
+.device-current-temperature {
+  display: flex;
+  flex-direction: column;
+}
+
+.device-current-temperature-row {
+  display: flex;
+  column-gap: 0.25rem;
+}
+
+.device-current-temperature-title {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-weight: 200;
+}
+
+.device-current-temperature-value {
+  font-size: 2.2rem;
+  font-weight: 100;
+  opacity: 0.9;
+}
+
+.device-current-temperature-unit {
+  font-size: 1.2rem;
+  opacity: 0.6;
+  font-weight: 100;
+  margin-top: 0.5rem;
+}
+
+.device-current-humidity {
+  display: flex;
+  flex-direction: column;
+}
+
+.device-current-humidity-row {
+  display: flex;
+  column-gap: 0.25rem;
+}
+
+.device-current-humidity-title {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-weight: 200;
+}
+
+.device-current-humidity-value {
+  font-size: 2.2rem;
+  font-weight: 100;
+  opacity: 0.9;
+}
+
+.device-current-humidity-unit {
+  font-size: 1.2rem;
+  opacity: 0.6;
+  font-weight: 100;
+  margin-top: 0.5rem;
+}
+
+.device-controls-column {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  align-items: end;
+  row-gap: 1.75rem;
+}
+
+.heating-mode-controls-bar {
+  display: flex;
+  position: relative;
+}
+
+.heating-mode-controls-button {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1px solid #3b3b3b;
+  border-bottom: 1px solid #3b3b3b;
+  border-left: 1px solid #3b3b3b;
+  cursor: pointer;
+  position: relative;
+}
+
+.heating-mode-controls-button.last {
+  border-right: 1px solid #3b3b3b;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.heating-mode-controls-button.first {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.heating-mode-controls-icon {
+  font-size: 1.1rem;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+.heating-mode-controls-button.enabled .heating-mode-controls-icon {
+  opacity: 1;
+  color: orange;
+}
+
+.heating-mode-controls-button:hover .heating-mode-controls-icon {
+  color: orange;
+}
+
+.target-temperatures-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  row-gap: 0.25rem;
+}
+
+.target-temperature-row {
+  display: flex;
+  column-gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.target-temperature-label {
+  font-weight: 200;
+  opacity: 0.6;
+}
+
+.target-temperature-value {
+  font-family: 'Fira Mono', monospace;
+  cursor: pointer;
+}
+
+.heating-mode-controls-extras {
+  position: absolute;
+  background-color: #232323;
+  top: 100%;
+  width: 100%;
+  margin-top: 0.25rem;
+  z-index: 1;
+  border-radius: 0.25rem;
+  box-shadow: 2px 2px 15px rgba(black, 0.5);
+  border: 1px solid #333333;
+}
+
+.heating-mode-extra-item {
+  width: 100%;
+  display: flex;
+  padding: 0.5Rem;
+  column-gap: 0.5rem;
+  cursor: pointer;
+}
+
+.heating-mode-extra-item-label {
+  opacity: 0.6;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.heating-mode-extra-item-icon {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.heating-mode-extra-item:hover .heating-mode-extra-item-icon,
+.heating-mode-extra-item:hover .heating-mode-extra-item-label {
+  color: orange;
+}
+
+.device-disconnected-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(black, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.device-disconnected-icon {
+  color: #fd7979;
+  font-size: 1.1rem;
+}
+
+.device-disconnected-text {
+  color: #fd7979;
+  font-weight: 200;
+  font-size: 1.1rem;
+}
+
+.heating-mode-controls-extra-modes-overlay {
+  position: absolute;
+  background-color: #232323;
+  top: 100%;
+  left: 0;
+  margin-top: 0.25rem;
+  z-index: 1;
+  border-radius: 0.25rem;
+  box-shadow: 2px 2px 15px rgba(black, 0.5);
+  border: 1px solid #333333;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin-left: 2rem;
+}
+
+.heating-mode-controls-extra-mode {
+  width: 100%;
+  display: flex;
+  padding: 0.5rem;
+  column-gap: 0.5rem;
+  cursor: pointer;
+}
+
+.heating-mode-controls-extra-mode-label {
+  opacity: 0.6;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.heating-mode-controls-extra-mode-icon {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.heating-mode-controls-extra-mode:hover .heating-mode-controls-extra-mode-icon,
+.heating-mode-controls-extra-mode:hover .heating-mode-controls-extra-mode-label {
+  color: orange;
+}

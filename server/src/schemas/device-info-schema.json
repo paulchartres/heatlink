@@ -1,0 +1,449 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "attr": {
+            "properties": {
+                "Heating_state": {
+                    "type": "number"
+                },
+                "boost_switch": {
+                    "type": "number"
+                },
+                "boost_time": {
+                    "type": "number"
+                },
+                "cft_temp": {
+                    "type": "number"
+                },
+                "com_temp": {
+                    "type": "number"
+                },
+                "cur_humi": {
+                    "type": "number"
+                },
+                "cur_mode": {
+                    "type": "string"
+                },
+                "cur_signal": {
+                    "type": "string"
+                },
+                "cur_temp": {
+                    "type": "number"
+                },
+                "data1": {
+                    "type": "number"
+                },
+                "data2": {
+                    "type": "number"
+                },
+                "derog_mode": {
+                    "type": "number"
+                },
+                "derog_time": {
+                    "type": "number"
+                },
+                "eco_temp": {
+                    "type": "number"
+                },
+                "lock_switch": {
+                    "type": "number"
+                },
+                "mode": {
+                    "type": "string"
+                },
+                "p1_data1": {
+                    "type": "number"
+                },
+                "p1_data10": {
+                    "type": "number"
+                },
+                "p1_data11": {
+                    "type": "number"
+                },
+                "p1_data12": {
+                    "type": "number"
+                },
+                "p1_data2": {
+                    "type": "number"
+                },
+                "p1_data3": {
+                    "type": "number"
+                },
+                "p1_data4": {
+                    "type": "number"
+                },
+                "p1_data5": {
+                    "type": "number"
+                },
+                "p1_data6": {
+                    "type": "number"
+                },
+                "p1_data7": {
+                    "type": "number"
+                },
+                "p1_data8": {
+                    "type": "number"
+                },
+                "p1_data9": {
+                    "type": "number"
+                },
+                "p2_data1": {
+                    "type": "number"
+                },
+                "p2_data10": {
+                    "type": "number"
+                },
+                "p2_data11": {
+                    "type": "number"
+                },
+                "p2_data12": {
+                    "type": "number"
+                },
+                "p2_data2": {
+                    "type": "number"
+                },
+                "p2_data3": {
+                    "type": "number"
+                },
+                "p2_data4": {
+                    "type": "number"
+                },
+                "p2_data5": {
+                    "type": "number"
+                },
+                "p2_data6": {
+                    "type": "number"
+                },
+                "p2_data7": {
+                    "type": "number"
+                },
+                "p2_data8": {
+                    "type": "number"
+                },
+                "p2_data9": {
+                    "type": "number"
+                },
+                "p3_data1": {
+                    "type": "number"
+                },
+                "p3_data10": {
+                    "type": "number"
+                },
+                "p3_data11": {
+                    "type": "number"
+                },
+                "p3_data12": {
+                    "type": "number"
+                },
+                "p3_data2": {
+                    "type": "number"
+                },
+                "p3_data3": {
+                    "type": "number"
+                },
+                "p3_data4": {
+                    "type": "number"
+                },
+                "p3_data5": {
+                    "type": "number"
+                },
+                "p3_data6": {
+                    "type": "number"
+                },
+                "p3_data7": {
+                    "type": "number"
+                },
+                "p3_data8": {
+                    "type": "number"
+                },
+                "p3_data9": {
+                    "type": "number"
+                },
+                "p4_data1": {
+                    "type": "number"
+                },
+                "p4_data10": {
+                    "type": "number"
+                },
+                "p4_data11": {
+                    "type": "number"
+                },
+                "p4_data12": {
+                    "type": "number"
+                },
+                "p4_data2": {
+                    "type": "number"
+                },
+                "p4_data3": {
+                    "type": "number"
+                },
+                "p4_data4": {
+                    "type": "number"
+                },
+                "p4_data5": {
+                    "type": "number"
+                },
+                "p4_data6": {
+                    "type": "number"
+                },
+                "p4_data7": {
+                    "type": "number"
+                },
+                "p4_data8": {
+                    "type": "number"
+                },
+                "p4_data9": {
+                    "type": "number"
+                },
+                "p5_data1": {
+                    "type": "number"
+                },
+                "p5_data10": {
+                    "type": "number"
+                },
+                "p5_data11": {
+                    "type": "number"
+                },
+                "p5_data12": {
+                    "type": "number"
+                },
+                "p5_data2": {
+                    "type": "number"
+                },
+                "p5_data3": {
+                    "type": "number"
+                },
+                "p5_data4": {
+                    "type": "number"
+                },
+                "p5_data5": {
+                    "type": "number"
+                },
+                "p5_data6": {
+                    "type": "number"
+                },
+                "p5_data7": {
+                    "type": "number"
+                },
+                "p5_data8": {
+                    "type": "number"
+                },
+                "p5_data9": {
+                    "type": "number"
+                },
+                "p6_data1": {
+                    "type": "number"
+                },
+                "p6_data10": {
+                    "type": "number"
+                },
+                "p6_data11": {
+                    "type": "number"
+                },
+                "p6_data12": {
+                    "type": "number"
+                },
+                "p6_data2": {
+                    "type": "number"
+                },
+                "p6_data3": {
+                    "type": "number"
+                },
+                "p6_data4": {
+                    "type": "number"
+                },
+                "p6_data5": {
+                    "type": "number"
+                },
+                "p6_data6": {
+                    "type": "number"
+                },
+                "p6_data7": {
+                    "type": "number"
+                },
+                "p6_data8": {
+                    "type": "number"
+                },
+                "p6_data9": {
+                    "type": "number"
+                },
+                "p7_data1": {
+                    "type": "number"
+                },
+                "p7_data10": {
+                    "type": "number"
+                },
+                "p7_data11": {
+                    "type": "number"
+                },
+                "p7_data12": {
+                    "type": "number"
+                },
+                "p7_data2": {
+                    "type": "number"
+                },
+                "p7_data3": {
+                    "type": "number"
+                },
+                "p7_data4": {
+                    "type": "number"
+                },
+                "p7_data5": {
+                    "type": "number"
+                },
+                "p7_data6": {
+                    "type": "number"
+                },
+                "p7_data7": {
+                    "type": "number"
+                },
+                "p7_data8": {
+                    "type": "number"
+                },
+                "p7_data9": {
+                    "type": "number"
+                },
+                "temp_set_step": {
+                    "type": "string"
+                },
+                "time_hour": {
+                    "type": "number"
+                },
+                "time_min": {
+                    "type": "number"
+                },
+                "time_week": {
+                    "type": "number"
+                },
+                "timer_switch": {
+                    "type": "number"
+                },
+                "window_switch": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "Heating_state",
+                "boost_switch",
+                "boost_time",
+                "cft_temp",
+                "com_temp",
+                "cur_humi",
+                "cur_mode",
+                "cur_signal",
+                "cur_temp",
+                "data1",
+                "data2",
+                "derog_mode",
+                "derog_time",
+                "eco_temp",
+                "lock_switch",
+                "mode",
+                "p1_data1",
+                "p1_data10",
+                "p1_data11",
+                "p1_data12",
+                "p1_data2",
+                "p1_data3",
+                "p1_data4",
+                "p1_data5",
+                "p1_data6",
+                "p1_data7",
+                "p1_data8",
+                "p1_data9",
+                "p2_data1",
+                "p2_data10",
+                "p2_data11",
+                "p2_data12",
+                "p2_data2",
+                "p2_data3",
+                "p2_data4",
+                "p2_data5",
+                "p2_data6",
+                "p2_data7",
+                "p2_data8",
+                "p2_data9",
+                "p3_data1",
+                "p3_data10",
+                "p3_data11",
+                "p3_data12",
+                "p3_data2",
+                "p3_data3",
+                "p3_data4",
+                "p3_data5",
+                "p3_data6",
+                "p3_data7",
+                "p3_data8",
+                "p3_data9",
+                "p4_data1",
+                "p4_data10",
+                "p4_data11",
+                "p4_data12",
+                "p4_data2",
+                "p4_data3",
+                "p4_data4",
+                "p4_data5",
+                "p4_data6",
+                "p4_data7",
+                "p4_data8",
+                "p4_data9",
+                "p5_data1",
+                "p5_data10",
+                "p5_data11",
+                "p5_data12",
+                "p5_data2",
+                "p5_data3",
+                "p5_data4",
+                "p5_data5",
+                "p5_data6",
+                "p5_data7",
+                "p5_data8",
+                "p5_data9",
+                "p6_data1",
+                "p6_data10",
+                "p6_data11",
+                "p6_data12",
+                "p6_data2",
+                "p6_data3",
+                "p6_data4",
+                "p6_data5",
+                "p6_data6",
+                "p6_data7",
+                "p6_data8",
+                "p6_data9",
+                "p7_data1",
+                "p7_data10",
+                "p7_data11",
+                "p7_data12",
+                "p7_data2",
+                "p7_data3",
+                "p7_data4",
+                "p7_data5",
+                "p7_data6",
+                "p7_data7",
+                "p7_data8",
+                "p7_data9",
+                "temp_set_step",
+                "time_hour",
+                "time_min",
+                "time_week",
+                "timer_switch",
+                "window_switch"
+            ],
+            "type": "object"
+        },
+        "did": {
+            "type": "string"
+        },
+        "updated_at": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "attr",
+        "did",
+        "updated_at"
+    ],
+    "type": "object"
+}
+

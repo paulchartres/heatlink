@@ -1,0 +1,139 @@
+<div class="device-wrapper">
+
+  @if (!device.isOnline) {
+    <div class="device-disconnected-overlay">
+      <ng-icon class="device-disconnected-icon" name="matCloudOffOutline"></ng-icon>
+      <span class="device-disconnected-text"> This device is offline.</span>
+    </div>
+  }
+
+  <img class="device-picture" src="img/devices/heatzy-pro.png">
+
+  <div class="device-info-column">
+
+    <div class="device-title-row">
+      <span class="device-readable-name">{{ device.readableName }}</span>
+      <span class="device-type">{{ productNameToReadableName(device.productName) }}</span>
+    </div>
+
+    <div class="device-current-metrics">
+
+      <div class="device-current-temperature">
+        <span class="device-current-temperature-title">Temperature</span>
+        <div class="device-current-temperature-row">
+          <span class="device-current-temperature-value">{{deviceInfo?.currentTemperature}}</span>
+          <span class="device-current-temperature-unit">°C</span>
+        </div>
+      </div>
+
+      <div class="device-current-humidity">
+        <span class="device-current-humidity-title">Humidity</span>
+        <div class="device-current-humidity-row">
+          <span class="device-current-humidity-value">{{deviceInfo?.currentHumidity}}</span>
+          <span class="device-current-humidity-unit">%</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="device-controls-column">
+
+    <div class="heating-mode-controls-bar">
+
+      @if (extraModes) {
+        <div class="heating-mode-controls-extra-modes-overlay" appClickOutside (clickOutside)="onCloseExtraModes()">
+          <div class="heating-mode-controls-extra-mode" (click)="onSelectHeatingMode(HeatingMode.Comfort1)">
+            <ng-icon class="heating-mode-controls-extra-mode-icon" name="matWbSunnyOutline"></ng-icon>
+            <span class="heating-mode-controls-extra-mode-label">Comfort -1</span>
+          </div>
+          <div class="heating-mode-controls-extra-mode"  (click)="onSelectHeatingMode(HeatingMode.Comfort2)">
+            <ng-icon class="heating-mode-controls-extra-mode-icon" name="matWbSunnyOutline"></ng-icon>
+            <span class="heating-mode-controls-extra-mode-label">Comfort -2</span>
+          </div>
+        </div>
+      }
+
+      <div class="heating-mode-controls-button first" (click)="onSelectHeatingMode(HeatingMode.Off)" [ngClass]="{ enabled: selectedMode == HeatingMode.Off }">
+        <ng-icon class="heating-mode-controls-icon" name="matHideSourceOutline"></ng-icon>
+      </div>
+      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.Comfort)" [ngClass]="{ enabled: selectedMode == HeatingMode.Comfort || selectedMode == HeatingMode.Comfort1 || selectedMode == HeatingMode.Comfort2 }">
+        <ng-icon class="heating-mode-controls-icon" name="matWbSunnyOutline"></ng-icon>
+        @if (selectedMode == HeatingMode.Comfort1) {
+          <span class="heating-mode-controls-extra-label">-1</span>
+        }
+        @if (selectedMode == HeatingMode.Comfort2) {
+          <span class="heating-mode-controls-extra-label">-2</span>
+        }
+      </div>
+      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.Eco)" [ngClass]="{ enabled: selectedMode == HeatingMode.Eco }">
+        <ng-icon class="heating-mode-controls-icon" name="matBedtimeOutline"></ng-icon>
+      </div>
+      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.FrostProtection)" [ngClass]="{ enabled: selectedMode == HeatingMode.FrostProtection }">
+        <ng-icon class="heating-mode-controls-icon" name="matAcUnitOutline"></ng-icon>
+      </div>
+      <div class="heating-mode-controls-button last" (click)="onToggleContextMenu()">
+        <ng-icon class="heating-mode-controls-icon" name="matAddOutline"></ng-icon>
+      </div>
+
+      @if (contextMenu) {
+        <div @fade class="heating-mode-controls-extras"  appClickOutside (clickOutside)="onCloseContextMenu()">
+
+          <div class="heating-mode-extra-item" (click)="onOpenSchedulingUtility()">
+            <ng-icon class="heating-mode-extra-item-icon" name="matAlarmOutline"></ng-icon>
+            <span class="heating-mode-extra-item-label">Heating schedule</span>
+          </div>
+
+          <div class="heating-mode-extra-item">
+            <ng-icon class="heating-mode-extra-item-icon" name="matPersonOutline"></ng-icon>
+            <span class="heating-mode-extra-item-label">Motion detection</span>
+          </div>
+
+          <div class="heating-mode-extra-item" (click)="onOpenVacancyModal()">
+            <ng-icon class="heating-mode-extra-item-icon" name="matWorkOutlineOutline"></ng-icon>
+            <span class="heating-mode-extra-item-label">Vacancy</span>
+          </div>
+
+          <div class="heating-mode-extra-item" (click)="onOpenHistory()">
+            <ng-icon class="heating-mode-extra-item-icon" name="matHistoryOutline"></ng-icon>
+            <span class="heating-mode-extra-item-label">History</span>
+          </div>
+
+          <div class="heating-mode-extra-item" (click)="onOpenBoostModal()">
+            <ng-icon class="heating-mode-extra-item-icon" name="matLocalFireDepartmentOutline"></ng-icon>
+            <span class="heating-mode-extra-item-label">Boost</span>
+          </div>
+
+          <div class="heating-mode-extra-item">
+            <ng-icon class="heating-mode-extra-item-icon" name="matLockOutline"></ng-icon>
+            <span class="heating-mode-extra-item-label">Lock</span>
+          </div>
+
+        </div>
+      }
+
+    </div>
+
+    <div class="target-temperatures-wrapper">
+      <div class="target-temperature-row">
+        <span class="target-temperature-label">Comfort:</span>
+        <span class="target-temperature-value" (click)="onOpenComfortTemperatureModal()">{{deviceInfo?.comfortTargetTemperature}}°C</span>
+      </div>
+      <div class="target-temperature-row">
+        <span class="target-temperature-label">Eco:</span>
+        <span class="target-temperature-value" (click)="onOpenEcoTemperatureModal()">{{deviceInfo?.ecoTargetTemperature}}°C</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+@if (schedulingUtility) {
+  <app-heating-schedule @fade (close)="onCloseSchedulingUtility()"></app-heating-schedule>
+}
+
+@if (history) {
+  <app-history-graphs @fade [temperatureData]="temperatureData" [humidityData]="humidityData" (intervalChange)="onHistoryIntervalChange($event)" (close)="onCloseHistory()"></app-history-graphs>
+}

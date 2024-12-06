@@ -1,0 +1,33 @@
+<div class="vacancy-modal-wrapper">
+
+  <div class="vacancy-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="vacancy-modal-title">Vacancy mode</span>
+
+    <div class="vacancy-time-selector-wrapper">
+
+      <mat-form-field class="vacancy-date-picker">
+        <input matInput [(ngModel)]="targetDate" [min]="tomorrow" [max]="maxDate" [matDatepicker]="picker" >
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <span class="vacancy-time-selector-label">Vacancy until</span>
+      <span class="vacancy-time-selector-value" (click)="picker.open()">{{targetDate.toFormat('LLL d yyyy')}}</span>
+      <span class="vacancy-time-selector-recap">Away for {{Math.round(targetDate.diff(today).as('days'))}} day{{Math.floor(targetDate.diff(today).as('days')) > 1 ? 's' : ''}}</span>
+    </div>
+
+    <div class="vacancy-modal-actions">
+
+      <div class="vacancy-modal-cancel">
+        <span class="vacancy-modal-cancel-label" (click)="onCancel()">Cancel</span>
+      </div>
+
+      <div class="vacancy-modal-button">
+        <span class="vacancy-modal-button-label" (click)="onConfirm()">Confirm</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,71 @@
+@use "@fontsource-variable/inter";
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+body {
+  margin: 0;
+  background: #000;
+  overflow: hidden;
+  color: white;
+  font-family: 'Inter Variable', sans-serif;
+  font-weight: 300;
+}
+
+.reading-block {
+  color: white;
+  opacity: 0.75;
+  font-family: 'Inter Variable', sans-serif !important;
+  font-weight: 200 !important;
+}
+
+// Overrides
+.mat-datepicker-content {
+  background-color: #232323 !important;
+}
+
+.mat-calendar-body .mat-calendar-body-cell-content {
+  color: white !important;
+}
+
+.mat-calendar-body-disabled .mat-calendar-body-cell-content {
+  color: white !important;
+  opacity: 0.3;
+}
+
+.mat-calendar-table-header th {
+  color: white !important;
+  opacity: 0.65;
+}
+
+.mat-calendar-body-label {
+  color: white !important;
+  opacity: 0.65;
+}
+
+.mat-mdc-button:not(:disabled) {
+  color: white !important;
+}
+
+.mat-calendar-arrow {
+  fill: white !important;
+}
+
+.mat-mdc-icon-button {
+  color: white !important;
+}
+
+.mat-calendar-body-selected {
+  background-color: rgba(orange, 0.8) !important;
+  color: black !important;
+}
+
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  background-color: rgba(orange, 0.1) !important;
+}
+
+.tick {
+  fill: rgba(white, 0.5);
+}
+
+.ngx-charts .gridline-path {
+  stroke: rgba(white, 0.1) !important;
+}

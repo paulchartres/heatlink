@@ -1,0 +1,31 @@
+@import "@fontsource/fira-mono/400.css";
+
+.fullpage-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.main-content-wrapper {
+  width: 35%;
+  min-width: 500px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 4rem;
+  box-sizing: border-box;
+}
+
+.main-title {
+  font-size: 2rem;
+}
+
+.devices-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  margin-top: 2rem;
+}

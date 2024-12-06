@@ -1,0 +1,119 @@
+.vacancy-modal-wrapper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vacancy-modal-background {
+  width: 350px;
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+}
+
+.vacancy-modal-title {
+  font-size: 1.2rem;
+  opacity: 0.7;
+  font-weight: 200;
+}
+
+.vacancy-time-selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  row-gap: 0.5rem;
+  position: relative;
+}
+
+.vacancy-time-selector-label {
+  opacity: 0.6;
+  font-size: 0.85rem;
+  font-weight: 200;
+}
+
+.vacancy-time-selector-value {
+  font-size: 1.8rem;
+  font-weight: 200;
+  opacity: 0.9;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.vacancy-time-selector-value:hover {
+  color: orange;
+}
+
+.vacancy-time-selector-recap {
+  opacity: 0.6;
+  font-size: 0.85rem;
+  font-weight: 200;
+}
+
+.vacancy-date-picker {
+  width:1px;
+  visibility:hidden;
+  height:0;
+  position: absolute;
+  left: 0;
+  bottom: 1rem;
+}
+
+.vacancy-modal-actions {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.vacancy-modal-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border: 1px solid #3d3d3d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.vacancy-modal-button:hover {
+  color: orange;
+  border: 1px solid orange;
+}
+
+.vacancy-modal-button-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.vacancy-modal-cancel {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.vacancy-modal-cancel-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  transition: 0.2s;
+}
+
+.vacancy-modal-cancel-label:hover {
+  color: orange;
+}

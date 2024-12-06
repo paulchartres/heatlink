@@ -1,0 +1,30 @@
+export interface Device {
+    protoc: number;
+    ws_port: number;
+    port_s: number;
+    gw_did: number;
+    host: string;
+    sleep_duration: number;
+    port: number;
+    mcu_soft_version: string;
+    product_key: string;
+    state_last_timestamp: number;
+    role: string;
+    is_sandbox: boolean;
+    type: string;
+    product_name: string;
+    is_disabled: boolean;
+    mcu_hard_version: string;
+    wifi_soft_version: string;
+    dev_alias: string;
+    mesh_id: number;
+    is_online: boolean;
+    dev_label: string[];
+    wss_port: number;
+    remark: string;
+    did: string;
+    mac: string;
+    passcode: string;
+    wifi_hard_version: string;
+    is_low_power: boolean;
+}

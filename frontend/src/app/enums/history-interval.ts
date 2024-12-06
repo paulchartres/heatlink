@@ -1,0 +1,13 @@
+export enum HistoryInterval {
+  ONE_HOUR,
+  SIX_HOURS,
+  TWELVE_HOURS,
+  ONE_DAY,
+  THREE_DAYS,
+  ONE_WEEK,
+  ONE_MONTH,
+  THREE_MONTHS,
+  SIX_MONTHS,
+  ONE_YEAR,
+  ALL
+}

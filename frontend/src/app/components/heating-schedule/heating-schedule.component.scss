@@ -1,0 +1,308 @@
+.device-schedule {
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: 0.5rem;
+  height: 30rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  row-gap: 2rem;
+  margin-top: 0.5rem;
+}
+
+.device-schedule-title {
+  font-size: 1.2rem;
+  opacity: 0.6;
+  font-weight: 200;
+}
+
+.device-schedule-title-highlight {
+  opacity: 1 !important;
+  font-weight: 300;
+}
+
+.device-schedule-title-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.device-schedule-control-bar {
+  display: flex;
+  position: relative;
+}
+
+.device-schedule-control-button {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1px solid #3b3b3b;
+  border-bottom: 1px solid #3b3b3b;
+  border-left: 1px solid #3b3b3b;
+  cursor: pointer;
+}
+
+.device-schedule-control-button:first-of-type {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.device-schedule-control-button.last {
+  border-right: 1px solid #3b3b3b;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.schedule-control-button-icon {
+  font-size: 1.1rem;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+.device-schedule-control-button.enabled .schedule-control-button-icon {
+  opacity: 1;
+  color: orange;
+}
+
+.device-schedule-control-button:hover .schedule-control-button-icon {
+  color: orange;
+}
+
+.device-schedule-main-wrapper {
+  height: 80%;
+  width: 100%;
+  display: flex;
+  column-gap: 0.5rem;
+  position: relative;
+}
+
+.device-schedule-legend-wrapper {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.device-schedule-legend-lines-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.device-schedule-legend-line {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed #313131;
+  position: relative;
+}
+
+.device-schedule-days-wrapper {
+  display: flex;
+  width: 85%;
+  height: 100%;
+  justify-content: space-between;
+  padding-right: 2rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.device-schedule-day-wrapper {
+  width: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+.device-schedule-day-section {
+  flex: 1 1 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.device-schedule-day-section:hover {
+  border: 1px solid cornflowerblue;
+}
+
+.device-schedule-day-section.selected {
+  border-left: 2px solid cornflowerblue;
+  border-right: 2px solid cornflowerblue;
+}
+
+.device-schedule-day-section.first {
+  border-top: 2px solid cornflowerblue;
+}
+
+.device-schedule-day-section.last {
+  border-bottom: 2px solid cornflowerblue;
+}
+
+.device-schedule-day-section.first-reverse {
+  border-bottom: 2px solid cornflowerblue;
+}
+
+.device-schedule-day-section.last-reverse {
+  border-top: 2px solid cornflowerblue;
+}
+
+.device-schedule-legend-label {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  position: absolute;
+  left: 0;
+  bottom: 0.25rem;
+}
+
+.device-schedule-mode-selector {
+  position: absolute;
+  background-color: #232323;
+  left: 0;
+  z-index: 1;
+  border-radius: 0.25rem;
+  box-shadow: 2px 2px 15px rgba(black, 0.5);
+  border: 1px solid #333333;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  transform: translateY(-10%);
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.device-schedule-mode-selector.mirror {
+  transform: translateY(-100%);
+}
+
+.device-schedule-mode-selector-title {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  font-weight: 200;
+}
+
+.device-schedule-day-label-wrapper {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transform: translateY(-1.5rem);
+  pointer-events: none;
+}
+
+.device-schedule-day-label {
+  font-size: 0.85rem;
+  opacity: 0.5;
+  font-weight: 200;
+}
+
+.device-schedule-actions {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.device-schedule-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border: 1px solid #3d3d3d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.device-schedule-button:hover {
+  color: orange;
+  border: 1px solid orange;
+}
+
+.device-schedule-button-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.device-schedule-cancel {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.device-schedule-cancel-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  transition: 0.2s;
+}
+
+.device-schedule-cancel-label:hover {
+  color: orange;
+}
+
+.heating-mode-controls-extra-label {
+  position: absolute;
+  right: 0.1rem;
+  bottom: 0.1rem;
+  font-size: 0.6rem;
+  color: orange;
+}
+
+.heating-mode-controls-bar {
+  display: flex;
+  position: relative;
+}
+
+.heating-mode-controls-button {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1px solid #3b3b3b;
+  border-bottom: 1px solid #3b3b3b;
+  border-left: 1px solid #3b3b3b;
+  cursor: pointer;
+  position: relative;
+}
+
+.heating-mode-controls-button.last {
+  border-right: 1px solid #3b3b3b;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.heating-mode-controls-button.first {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.heating-mode-controls-icon {
+  font-size: 1.1rem;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+.heating-mode-controls-button.enabled .heating-mode-controls-icon {
+  opacity: 1;
+  color: orange;
+}
+
+.heating-mode-controls-button:hover .heating-mode-controls-icon {
+  color: orange;
+}

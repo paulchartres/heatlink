@@ -1,0 +1,128 @@
+.boost-modal-wrapper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.boost-modal-background {
+  width: 350px;
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.boost-modal-title {
+  font-size: 1.2rem;
+  opacity: 0.7;
+  font-weight: 200;
+}
+
+.boost-gauge-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  margin-top: 2rem;
+  row-gap: 1rem;
+}
+
+.boost-control-buttons-wrapper {
+  display: flex;
+}
+
+.boost-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  border-top: 1px solid #3b3b3b;
+  border-bottom: 1px solid #3b3b3b;
+  border-right: 1px solid #3b3b3b;
+  cursor: pointer;
+  user-select: none;
+}
+
+.boost-button:first-of-type {
+  border-left: 1px solid #3b3b3b;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.boost-button:last-of-type {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.boost-button-icon {
+  font-size: 1.1rem;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+.boost-button:hover .boost-button-icon {
+  color: orange;
+}
+
+.boost-button:active .boost-button-icon {
+  color: orange;
+  opacity: 1;
+}
+
+.boost-modal-actions {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
+  margin-top: 2rem;
+  column-gap: 0.5rem;
+}
+
+.boost-modal-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border: 1px solid #3d3d3d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.boost-modal-button:hover {
+  color: orange;
+  border: 1px solid orange;
+}
+
+.boost-modal-button-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.boost-modal-cancel {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.boost-modal-cancel-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  transition: 0.2s;
+}
+
+.boost-modal-cancel-label:hover {
+  color: orange;
+}

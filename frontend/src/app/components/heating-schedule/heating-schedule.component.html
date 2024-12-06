@@ -1,0 +1,118 @@
+<div class="device-schedule">
+
+  <div class="device-schedule-title-row">
+
+    <span class="device-schedule-title">
+      Heating schedule for
+      <span class="device-schedule-title-highlight">Bureau</span>
+    </span>
+
+    <div class="device-schedule-control-bar">
+      <div class="device-schedule-control-button" [ngClass]="{ enabled: !scheduleMode }" (click)="onSetScheduleMode(false)">
+        <ng-icon class="schedule-control-button-icon" name="matHideSourceOutline"></ng-icon>
+      </div>
+      <div class="device-schedule-control-button last" [ngClass]="{ enabled: scheduleMode }" (click)="onSetScheduleMode(true)">
+        <ng-icon class="schedule-control-button-icon" name="matCircleOutline"></ng-icon>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="device-schedule-main-wrapper" #scheduleWrapper>
+
+    @if (heatingModeCoordinates) {
+      <div @fade class="device-schedule-mode-selector"
+           [ngClass]="{ mirror: adjacentSections! > 0 }"
+           [ngStyle]="{ top: heatingModeCoordinates.y + 'px', left: heatingModeCoordinates.x + 'px' }">
+        <span class="device-schedule-mode-selector-title">{{getStartTime()}} to {{getEndTime()}}</span>
+
+        <div class="heating-mode-controls-bar">
+
+          <div class="heating-mode-controls-button" (click)="onSelectScheduleHeatingMode(HeatingMode.Comfort)">
+            <ng-icon class="heating-mode-controls-icon" name="matWbSunnyOutline"></ng-icon>
+          </div>
+          <div class="heating-mode-controls-button" (click)="onSelectScheduleHeatingMode(HeatingMode.Eco)">
+            <ng-icon class="heating-mode-controls-icon" name="matBedtimeOutline"></ng-icon>
+          </div>
+          <div class="heating-mode-controls-button last" (click)="onSelectScheduleHeatingMode(HeatingMode.FrostProtection)">
+            <ng-icon class="heating-mode-controls-icon" name="matAcUnitOutline"></ng-icon>
+          </div>
+
+        </div>
+
+      </div>
+    }
+
+
+    <div class="device-schedule-legend-wrapper"></div>
+
+    <div class="device-schedule-legend-lines-wrapper">
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">00:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">03:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">06:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">09:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">12:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">15:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">18:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">21:00</span>
+      </div>
+      <div class="device-schedule-legend-line">
+        <span class="device-schedule-legend-label">00:00</span>
+      </div>
+    </div>
+
+    <div class="device-schedule-days-wrapper">
+
+      @for (day of schedule; track day.day) {
+        <div class="device-schedule-day-wrapper">
+
+          <div class="device-schedule-day-label-wrapper">
+            <span class="device-schedule-day-label">{{day.day[0]}}</span>
+          </div>
+
+          @for (section of day.schedule | keyvalue; track section; let i = $index) {
+            <div class="device-schedule-day-section" (mousedown)="onClickSection(day.day, i, $event)"
+                 [ngClass]="{
+                            selected: (selectedDay == day.day && startSectionIndex == i) || (isBetween(i, startSectionIndex!, startSectionIndex! + adjacentSections!) && selectedDay == day.day),
+                            'first-reverse': (selectedDay == day.day && startSectionIndex! == i && adjacentSections! < 0),
+                            'last-reverse': (selectedDay == day.day && startSectionIndex! + adjacentSections! == i && adjacentSections! < 0),
+                            first: (selectedDay == day.day && startSectionIndex! == i && adjacentSections! > 0) || (startSectionIndex! == i && adjacentSections! == 0 && selectedDay == day.day),
+                            last: (selectedDay == day.day && startSectionIndex! + adjacentSections! == i && adjacentSections! > 0) || (startSectionIndex! == i && adjacentSections! == 0 && selectedDay == day.day)
+                         }"
+                 [ngStyle]="{ background: getColorForHeatingMode(section.value) }"></div>
+          }
+        </div>
+      }
+
+    </div>
+
+  </div>
+
+  <div class="device-schedule-actions">
+
+    <div class="device-schedule-cancel">
+      <span class="device-schedule-cancel-label" (click)="onCloseSchedulingUtility()">Close scheduling utility</span>
+    </div>
+
+    <div class="device-schedule-button">
+      <span class="device-schedule-button-label">Save schedule</span>
+    </div>
+
+  </div>
+
+</div>

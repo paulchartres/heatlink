@@ -1,0 +1,68 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "comfortTargetTemperature": {
+            "type": "number"
+        },
+        "currentHumidity": {
+            "type": "number"
+        },
+        "currentMode": {
+            "$ref": "#/components/schemas/HeatingMode"
+        },
+        "currentSignal": {
+            "$ref": "#/components/schemas/HeatingMode"
+        },
+        "currentTemperature": {
+            "type": "number"
+        },
+        "ecoTargetTemperature": {
+            "type": "number"
+        },
+        "isHeating": {
+            "type": "boolean"
+        },
+        "isLocked": {
+            "type": "boolean"
+        },
+        "isUsingTimer": {
+            "type": "boolean"
+        },
+        "isWindowDetectionOn": {
+            "type": "boolean"
+        },
+        "mode": {
+            "$ref": "#/components/schemas/HeatingMode"
+        },
+        "schedule": {
+            "items": {
+                "$ref": "#/components/schemas/HeatingSchedule"
+            },
+            "type": "array"
+        },
+        "specialMode": {
+            "$ref": "#/components/schemas/SpecialMode"
+        },
+        "specialModeRemainingTime": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "comfortTargetTemperature",
+        "currentHumidity",
+        "currentMode",
+        "currentSignal",
+        "currentTemperature",
+        "ecoTargetTemperature",
+        "isHeating",
+        "isLocked",
+        "isUsingTimer",
+        "isWindowDetectionOn",
+        "mode",
+        "schedule",
+        "specialMode",
+        "specialModeRemainingTime"
+    ],
+    "type": "object"
+}
+

@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "enum": [
+        "OFF",
+        "COMFORT",
+        "ECO",
+        "FROST_PROTECTION",
+        "COMFORT_1",
+        "COMFORT_2",
+        "UNKNOWN"
+    ],
+    "type": "string"
+}
+

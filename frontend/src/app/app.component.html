@@ -1,0 +1,37 @@
+<div class="fullpage-wrapper">
+
+  <!-- Modals -->
+  @if (modals.getComfortTemperatureModalConfig() | async) {
+    <app-temperature-modal @fade [config]="(modals.getComfortTemperatureModalConfig() | async)!" [min]="15" [max]="30" [temperature]="18" label="Comfort temperature" (cancel)="onCloseComfortTemperatureModal()"></app-temperature-modal>
+  }
+
+  @if (modals.getEcoTemperatureModalConfig() | async) {
+    <app-temperature-modal @fade [config]="(modals.getEcoTemperatureModalConfig() | async)!" [min]="10" [max]="17.5" [temperature]="15" label="Eco temperature" (cancel)="onCloseEcoTemperatureModal()"></app-temperature-modal>
+  }
+
+  @if (modals.getVacancyModalConfig() | async) {
+    <app-vacancy-modal @fade [config]="(modals.getVacancyModalConfig() | async)!" (cancel)="onCloseVacancyModal()"></app-vacancy-modal>
+  }
+
+  @if (modals.getBoostModalConfig() | async) {
+    <app-boost-modal @fade [config]="(modals.getBoostModalConfig() | async)!" (cancel)="onCloseBoostModal()"></app-boost-modal>
+  }
+  <!-- End modals -->
+
+  <div class="main-content-wrapper">
+
+    <span class="main-title">
+      Welcome to your Heatzy dashboard!
+    </span>
+
+    <div class="devices-wrapper">
+
+      @for (device of (data.getDevices() | async); track device.deviceId) {
+        <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+      }
+
+    </div>
+
+  </div>
+
+</div>
