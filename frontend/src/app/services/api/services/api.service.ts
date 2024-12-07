@@ -12,23 +12,42 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
 import { Device } from '../models/device';
+import { deviceDeviceIdBoostPost } from '../fn/operations/device-device-id-boost-post';
+import { DeviceDeviceIdBoostPost$Params } from '../fn/operations/device-device-id-boost-post';
 import { deviceDeviceIdGet } from '../fn/operations/device-device-id-get';
 import { DeviceDeviceIdGet$Params } from '../fn/operations/device-device-id-get';
 import { deviceDeviceIdHistoryHumidityPost } from '../fn/operations/device-device-id-history-humidity-post';
 import { DeviceDeviceIdHistoryHumidityPost$Params } from '../fn/operations/device-device-id-history-humidity-post';
 import { deviceDeviceIdHistoryTemperaturePost } from '../fn/operations/device-device-id-history-temperature-post';
 import { DeviceDeviceIdHistoryTemperaturePost$Params } from '../fn/operations/device-device-id-history-temperature-post';
+import { deviceDeviceIdLockPost } from '../fn/operations/device-device-id-lock-post';
+import { DeviceDeviceIdLockPost$Params } from '../fn/operations/device-device-id-lock-post';
 import { deviceDeviceIdModePost } from '../fn/operations/device-device-id-mode-post';
 import { DeviceDeviceIdModePost$Params } from '../fn/operations/device-device-id-mode-post';
+import { deviceDeviceIdMotionDetectionPost } from '../fn/operations/device-device-id-motion-detection-post';
+import { DeviceDeviceIdMotionDetectionPost$Params } from '../fn/operations/device-device-id-motion-detection-post';
+import { deviceDeviceIdResetSpecialModePost } from '../fn/operations/device-device-id-reset-special-mode-post';
+import { DeviceDeviceIdResetSpecialModePost$Params } from '../fn/operations/device-device-id-reset-special-mode-post';
+import { deviceDeviceIdScheduleModePost } from '../fn/operations/device-device-id-schedule-mode-post';
+import { DeviceDeviceIdScheduleModePost$Params } from '../fn/operations/device-device-id-schedule-mode-post';
+import { deviceDeviceIdSchedulePost } from '../fn/operations/device-device-id-schedule-post';
+import { DeviceDeviceIdSchedulePost$Params } from '../fn/operations/device-device-id-schedule-post';
 import { deviceDeviceIdTargetComfortPost } from '../fn/operations/device-device-id-target-comfort-post';
 import { DeviceDeviceIdTargetComfortPost$Params } from '../fn/operations/device-device-id-target-comfort-post';
 import { deviceDeviceIdTargetEcoPost } from '../fn/operations/device-device-id-target-eco-post';
 import { DeviceDeviceIdTargetEcoPost$Params } from '../fn/operations/device-device-id-target-eco-post';
+import { deviceDeviceIdUnlockPost } from '../fn/operations/device-device-id-unlock-post';
+import { DeviceDeviceIdUnlockPost$Params } from '../fn/operations/device-device-id-unlock-post';
+import { deviceDeviceIdVacancyPost } from '../fn/operations/device-device-id-vacancy-post';
+import { DeviceDeviceIdVacancyPost$Params } from '../fn/operations/device-device-id-vacancy-post';
+import { DeviceInfo } from '../models/device-info';
 import { DeviceInfoStripped } from '../models/device-info-stripped';
 import { devicesGet } from '../fn/operations/devices-get';
 import { DevicesGet$Params } from '../fn/operations/devices-get';
 import { DeviceStripped } from '../models/device-stripped';
 import { HumidityHistory } from '../models/humidity-history';
+import { rawDeviceDeviceIdGet } from '../fn/operations/raw-device-device-id-get';
+import { RawDeviceDeviceIdGet$Params } from '../fn/operations/raw-device-device-id-get';
 import { rawDevicesGet } from '../fn/operations/raw-devices-get';
 import { RawDevicesGet$Params } from '../fn/operations/raw-devices-get';
 import { TemperatureHistory } from '../models/temperature-history';
@@ -102,6 +121,39 @@ export class ApiService extends BaseService {
   devicesGet(params?: DevicesGet$Params, context?: HttpContext): Observable<Array<DeviceStripped>> {
     return this.devicesGet$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<DeviceStripped>>): Array<DeviceStripped> => r.body)
+    );
+  }
+
+  /** Path part for operation `rawDeviceDeviceIdGet()` */
+  static readonly RawDeviceDeviceIdGetPath = '/raw/device/{deviceId}';
+
+  /**
+   * Retrieves the stripped and readable information relative to a specific device.
+   *
+   * Retrieves the raw Heatzy information relative to a specific device, using the device's did (device ID). Another endpoint is available to retrieve stripped and readable data. The heating schedule is expressed in readable hours in this payload.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `rawDeviceDeviceIdGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  rawDeviceDeviceIdGet$Response(params: RawDeviceDeviceIdGet$Params, context?: HttpContext): Observable<StrictHttpResponse<DeviceInfo>> {
+    return rawDeviceDeviceIdGet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Retrieves the stripped and readable information relative to a specific device.
+   *
+   * Retrieves the raw Heatzy information relative to a specific device, using the device's did (device ID). Another endpoint is available to retrieve stripped and readable data. The heating schedule is expressed in readable hours in this payload.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `rawDeviceDeviceIdGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  rawDeviceDeviceIdGet(params: RawDeviceDeviceIdGet$Params, context?: HttpContext): Observable<DeviceInfo> {
+    return this.rawDeviceDeviceIdGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<DeviceInfo>): DeviceInfo => r.body)
     );
   }
 
@@ -299,6 +351,270 @@ export class ApiService extends BaseService {
    */
   deviceDeviceIdTargetEcoPost(params: DeviceDeviceIdTargetEcoPost$Params, context?: HttpContext): Observable<void> {
     return this.deviceDeviceIdTargetEcoPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdVacancyPost()` */
+  static readonly DeviceDeviceIdVacancyPostPath = '/device/{deviceId}/vacancy';
+
+  /**
+   * Enables vacancy mode for a specific device.
+   *
+   * Enables vacancy mode for a specific device, for a certain amount of time (in days).
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdVacancyPost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdVacancyPost$Response(params: DeviceDeviceIdVacancyPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdVacancyPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Enables vacancy mode for a specific device.
+   *
+   * Enables vacancy mode for a specific device, for a certain amount of time (in days).
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdVacancyPost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdVacancyPost(params: DeviceDeviceIdVacancyPost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdVacancyPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdBoostPost()` */
+  static readonly DeviceDeviceIdBoostPostPath = '/device/{deviceId}/boost';
+
+  /**
+   * Enables boost mode for a specific device.
+   *
+   * Enables boost mode for a specific device, for a certain amount of time (in minutes).
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdBoostPost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdBoostPost$Response(params: DeviceDeviceIdBoostPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdBoostPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Enables boost mode for a specific device.
+   *
+   * Enables boost mode for a specific device, for a certain amount of time (in minutes).
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdBoostPost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdBoostPost(params: DeviceDeviceIdBoostPost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdBoostPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdLockPost()` */
+  static readonly DeviceDeviceIdLockPostPath = '/device/{deviceId}/lock';
+
+  /**
+   * Locks the physical interface of a specific device.
+   *
+   * Locks the physical interface of a specific device. This doesn't affect the device in the dashboard.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdLockPost()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdLockPost$Response(params: DeviceDeviceIdLockPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdLockPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Locks the physical interface of a specific device.
+   *
+   * Locks the physical interface of a specific device. This doesn't affect the device in the dashboard.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdLockPost$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdLockPost(params: DeviceDeviceIdLockPost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdLockPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdUnlockPost()` */
+  static readonly DeviceDeviceIdUnlockPostPath = '/device/{deviceId}/unlock';
+
+  /**
+   * Unlocks the physical interface of a specific device.
+   *
+   * Unlocks the physical interface of a specific device. This doesn't affect the device in the dashboard.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdUnlockPost()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdUnlockPost$Response(params: DeviceDeviceIdUnlockPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdUnlockPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Unlocks the physical interface of a specific device.
+   *
+   * Unlocks the physical interface of a specific device. This doesn't affect the device in the dashboard.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdUnlockPost$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdUnlockPost(params: DeviceDeviceIdUnlockPost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdUnlockPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdMotionDetectionPost()` */
+  static readonly DeviceDeviceIdMotionDetectionPostPath = '/device/{deviceId}/motion-detection';
+
+  /**
+   * Enables motion detection mode for a specific device.
+   *
+   * Enables motion detection mode for a specific device.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdMotionDetectionPost()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdMotionDetectionPost$Response(params: DeviceDeviceIdMotionDetectionPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdMotionDetectionPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Enables motion detection mode for a specific device.
+   *
+   * Enables motion detection mode for a specific device.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdMotionDetectionPost$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdMotionDetectionPost(params: DeviceDeviceIdMotionDetectionPost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdMotionDetectionPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdResetSpecialModePost()` */
+  static readonly DeviceDeviceIdResetSpecialModePostPath = '/device/{deviceId}/reset-special-mode';
+
+  /**
+   * Disables any kind of special mode for a specific device.
+   *
+   * Disables any kind of special mode for a specific device. Includes motion detection, boost or vacancy.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdResetSpecialModePost()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdResetSpecialModePost$Response(params: DeviceDeviceIdResetSpecialModePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdResetSpecialModePost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Disables any kind of special mode for a specific device.
+   *
+   * Disables any kind of special mode for a specific device. Includes motion detection, boost or vacancy.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdResetSpecialModePost$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deviceDeviceIdResetSpecialModePost(params: DeviceDeviceIdResetSpecialModePost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdResetSpecialModePost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdSchedulePost()` */
+  static readonly DeviceDeviceIdSchedulePostPath = '/device/{deviceId}/schedule';
+
+  /**
+   * Updates the heating schedule of a specific device.
+   *
+   * Updates the heating schedule of a specific device.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdSchedulePost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdSchedulePost$Response(params: DeviceDeviceIdSchedulePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdSchedulePost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Updates the heating schedule of a specific device.
+   *
+   * Updates the heating schedule of a specific device.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdSchedulePost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdSchedulePost(params: DeviceDeviceIdSchedulePost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdSchedulePost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdScheduleModePost()` */
+  static readonly DeviceDeviceIdScheduleModePostPath = '/device/{deviceId}/schedule-mode';
+
+  /**
+   * Sets the schedule mode of a specific device.
+   *
+   * Sets the schedule mode of a specific device.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdScheduleModePost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdScheduleModePost$Response(params: DeviceDeviceIdScheduleModePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdScheduleModePost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Sets the schedule mode of a specific device.
+   *
+   * Sets the schedule mode of a specific device.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdScheduleModePost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdScheduleModePost(params: DeviceDeviceIdScheduleModePost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdScheduleModePost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

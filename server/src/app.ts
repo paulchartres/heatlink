@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import {getDeviceInfo, getDevices, login, updateDevice} from "./services/heatzy";
 import {DeviceStripped} from "./models/device.stripped";
-import {convertScheduleToReadable} from "./converters/schedule";
+import {convertReadableScheduleToHeatzyFormat, convertScheduleToReadable} from "./converters/schedule";
 import {DeviceInfoStripped} from "./models/device-info.stripped";
 import {heatingModeEnumToNumber, modeStringToEnum, specialModeNumberToEnum} from "./converters/enums";
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -25,6 +25,7 @@ import {getHumidityHistory, getTemperatureHistory, openDatabase} from "./service
 import {archiveTemperatureHistory} from "./tasks/temperature-history";
 import {archiveHumidityHistory} from "./tasks/humidity-history";
 import {HeatingMode} from "./enums/heating-mode";
+import {HeatingSchedule} from "./models/heating-schedule";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -122,10 +123,10 @@ app.get('/devices', function (req: Request, res: Response) {
 
 /**
  * @swagger
- * /device/{deviceId}:
+ * /raw/device/{deviceId}:
  *   get:
  *     summary: Retrieves the stripped and readable information relative to a specific device.
- *     description: Retrieves the stripped and readable information relative to a specific device, using the device's did (device ID). Another endpoint is available to retrieve raw data. The heating schedule is expressed in readable hours in this payload.
+ *     description: Retrieves the raw Heatzy information relative to a specific device, using the device's did (device ID). Another endpoint is available to retrieve stripped and readable data. The heating schedule is expressed in readable hours in this payload.
  *     parameters:
  *       - in: path
  *         name: deviceId
@@ -333,8 +334,8 @@ app.post('/device/:deviceId/mode', function (req: Request, res: Response) {
         attrs: {
             mode: heatingModeEnumToNumber(mode)
         }
-    }).then((history) => {
-        res.send(history);
+    }).then(() => {
+        res.send();
     });
 });
 
@@ -379,8 +380,8 @@ app.post('/device/:deviceId/target/comfort', function (req: Request, res: Respon
         attrs: {
             cft_temp: targetTemperature * 10
         }
-    }).then((history) => {
-        res.send(history);
+    }).then(() => {
+        res.send();
     });
 });
 
@@ -425,8 +426,8 @@ app.post('/device/:deviceId/target/eco', function (req: Request, res: Response) 
         attrs: {
             eco_temp: targetTemperature * 10
         }
-    }).then((history) => {
-        res.send(history);
+    }).then(() => {
+        res.send();
     });
 });
 
@@ -450,29 +451,258 @@ app.post('/device/:deviceId/target/eco', function (req: Request, res: Response) 
  *           schema:
  *             type: object
  *             properties:
- *               temperature:
- *                 type: number
- *                 format: float
- *                 description: The target temperature of the eco mode
- *                 example: 15
+ *               duration:
+ *                 type: integer
+ *                 description: The duration (in days) of the vacancy
+ *                 example: 7
  *     responses:
  *       200:
- *         description: The eco target temperature has been updated
+ *         description: Vacancy mode has been enabled
  */
 app.post('/device/:deviceId/vacancy', function (req: Request, res: Response) {
-    const targetTemperature: number = parseFloat(req.body?.temperature);
+    const duration: number = parseFloat(req.body?.duration);
 
-    if (!targetTemperature) {
+    if (!duration) {
         res.sendStatus(400);
         return;
     }
 
     updateDevice(req.params.deviceId, {
         attrs: {
-            eco_temp: targetTemperature * 10
+            derog_mode: 1,
+            derog_time: duration
         }
-    }).then((history) => {
-        res.send(history);
+    }).then(() => {
+        res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /device/{deviceId}/boost:
+ *   post:
+ *     summary: Enables boost mode for a specific device.
+ *     description: Enables boost mode for a specific device, for a certain amount of time (in minutes).
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the device that should be set to boost mode.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               duration:
+ *                 type: integer
+ *                 description: The duration (in minutes) of the boost
+ *                 example: 60
+ *     responses:
+ *       200:
+ *         description: Boost mode has been enabled
+ */
+app.post('/device/:deviceId/boost', function (req: Request, res: Response) {
+    const duration: number = parseFloat(req.body?.duration);
+
+    if (!duration) {
+        res.sendStatus(400);
+        return;
+    }
+
+    updateDevice(req.params.deviceId, {
+        attrs: {
+            derog_mode: 2,
+            derog_time: duration
+        }
+    }).then(() => {
+        res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /device/{deviceId}/lock:
+ *   post:
+ *     summary: Locks the physical interface of a specific device.
+ *     description: Locks the physical interface of a specific device. This doesn't affect the device in the dashboard.
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The device has been locked
+ */
+app.post('/device/:deviceId/lock', function (req: Request, res: Response) {
+    updateDevice(req.params.deviceId, {
+        attrs: {
+            lock_switch: 1
+        }
+    }).then(() => {
+        res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /device/{deviceId}/unlock:
+ *   post:
+ *     summary: Unlocks the physical interface of a specific device.
+ *     description: Unlocks the physical interface of a specific device. This doesn't affect the device in the dashboard.
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The device has been unlocked
+ */
+app.post('/device/:deviceId/unlock', function (req: Request, res: Response) {
+    updateDevice(req.params.deviceId, {
+        attrs: {
+            lock_switch: 0
+        }
+    }).then(() => {
+        res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /device/{deviceId}/motion-detection:
+ *   post:
+ *     summary: Enables motion detection mode for a specific device.
+ *     description: Enables motion detection mode for a specific device.
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Motion detection mode for the selected device has been enabled
+ */
+app.post('/device/:deviceId/motion-detection', function (req: Request, res: Response) {
+    updateDevice(req.params.deviceId, {
+        attrs: {
+            derog_mode: 3
+        }
+    }).then(() => {
+        res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /device/{deviceId}/reset-special-mode:
+ *   post:
+ *     summary: Disables any kind of special mode for a specific device.
+ *     description: Disables any kind of special mode for a specific device. Includes motion detection, boost or vacancy.
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Special modes have been reset
+ */
+app.post('/device/:deviceId/reset-special-mode', function (req: Request, res: Response) {
+    updateDevice(req.params.deviceId, {
+        attrs: {
+            derog_mode: 0
+        }
+    }).then(() => {
+        res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /device/{deviceId}/schedule:
+ *   post:
+ *     summary: Updates the heating schedule of a specific device.
+ *     description: Updates the heating schedule of a specific device.
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the device whose schedule should be updated
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/HeatingSchedule'
+ *     responses:
+ *       200:
+ *         description: The heating schedule has been updated
+ */
+app.post('/device/:deviceId/schedule', function (req: Request, res: Response) {
+    updateDevice(req.params.deviceId, {
+        attrs: {
+            ...convertReadableScheduleToHeatzyFormat(req.body)
+        }
+    }).then(() => {
+        res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /device/{deviceId}/schedule-mode:
+ *   post:
+ *     summary: Sets the schedule mode of a specific device.
+ *     description: Sets the schedule mode of a specific device.
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               enable:
+ *                 type: boolean
+ *                 description: Whether the scheduling mode should be enabled
+ *                 example: true
+ *     responses:
+ *       200:
+ *         description: The device's schedule mode has been updated
+ */
+app.post('/device/:deviceId/schedule-mode', function (req: Request, res: Response) {
+    const enable: boolean = req.body?.enable;
+
+    if (enable == null) {
+        res.sendStatus(400);
+        return;
+    }
+
+    updateDevice(req.params.deviceId, {
+        attrs: {
+            timer_switch: enable ? 1 : 0
+        }
+    }).then(() => {
+        res.send();
     });
 });
 

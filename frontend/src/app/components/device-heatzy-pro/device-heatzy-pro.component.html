@@ -85,7 +85,7 @@
             <span class="heating-mode-extra-item-label">Heating schedule</span>
           </div>
 
-          <div class="heating-mode-extra-item">
+          <div class="heating-mode-extra-item" (click)="onEnableMotionDetection()">
             <ng-icon class="heating-mode-extra-item-icon" name="matPersonOutline"></ng-icon>
             <span class="heating-mode-extra-item-label">Motion detection</span>
           </div>
@@ -105,9 +105,9 @@
             <span class="heating-mode-extra-item-label">Boost</span>
           </div>
 
-          <div class="heating-mode-extra-item">
-            <ng-icon class="heating-mode-extra-item-icon" name="matLockOutline"></ng-icon>
-            <span class="heating-mode-extra-item-label">Lock</span>
+          <div class="heating-mode-extra-item" (click)="onToggleLockMode()">
+            <ng-icon class="heating-mode-extra-item-icon" [name]="deviceInfo?.isLocked ? 'matLockOpenOutline' : 'matLockOutline'"></ng-icon>
+            <span class="heating-mode-extra-item-label">{{ deviceInfo?.isLocked ? 'Unlock' : 'Lock' }}</span>
           </div>
 
         </div>
@@ -131,7 +131,7 @@
 </div>
 
 @if (schedulingUtility) {
-  <app-heating-schedule @fade (close)="onCloseSchedulingUtility()"></app-heating-schedule>
+  <app-heating-schedule @fade [schedule]="deviceInfo?.schedule!" [deviceId]="device.deviceId" (close)="onCloseSchedulingUtility()"></app-heating-schedule>
 }
 
 @if (history) {

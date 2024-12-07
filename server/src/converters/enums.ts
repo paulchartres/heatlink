@@ -23,6 +23,27 @@ export function weekDayNumberToEnum(value: number): WeekDay {
     }
 }
 
+export function weekDayEnumToNumber(weekDay: WeekDay): number {
+    switch (weekDay) {
+        case WeekDay.MONDAY:
+            return 1;
+        case WeekDay.TUESDAY:
+            return 2;
+        case WeekDay.WEDNESDAY:
+            return 3;
+        case WeekDay.THURSDAY:
+            return 4;
+        case WeekDay.FRIDAY:
+            return 5;
+        case WeekDay.SATURDAY:
+            return 6;
+        case WeekDay.SUNDAY:
+            return 7;
+        default:
+            return 0;
+    }
+}
+
 export function modeStringToEnum(value: string): HeatingMode {
     switch (value) {
         case 'stop':

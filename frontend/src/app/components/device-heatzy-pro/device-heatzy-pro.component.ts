@@ -1,14 +1,10 @@
-import {Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HeatingMode} from "../../services/api/models/heating-mode";
-import {isBetween} from "../../helpers/math.helper";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
-import {CommonModule, KeyValuePipe} from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {NgIcon} from "@ng-icons/core";
 import {DeviceStripped} from "../../services/api/models/device-stripped";
 import {ModalsService} from "../../services/modals/modals.service";
-import {Point} from "../../models/point.model";
-import {WeekDay} from "../../services/api/models/week-day";
-import {HeatingSchedule} from "../../services/api/models/heating-schedule";
 import {fadeAnimation} from "../../animations/fade-in-out.animation";
 import {HeatingScheduleComponent} from "../heating-schedule/heating-schedule.component";
 import {HistoryGraphsComponent} from "../history-graphs/history-graphs.component";
@@ -209,7 +205,15 @@ export class DeviceHeatzyProComponent implements OnInit {
     this._modals.onOpenVacancyModal({
       deviceId: this.device.deviceId,
       callback: (deviceId, value) => {
-        console.log(deviceId, value);
+        this._api.deviceDeviceIdVacancyPost({
+          deviceId,
+          body: {
+            duration: value
+          }
+        }).subscribe(() => {
+          console.log('Vacancy mode enabled');
+          // TODO display vacancy status on device card
+        });
       }
     });
   }
@@ -219,8 +223,43 @@ export class DeviceHeatzyProComponent implements OnInit {
     this._modals.onOpenBoostModal({
       deviceId: this.device.deviceId,
       callback: (deviceId, value) => {
-        console.log(deviceId, value);
+        this._api.deviceDeviceIdBoostPost({
+          deviceId,
+          body: {
+            duration: value
+          }
+        }).subscribe(() => {
+          console.log('Boost mode enabled');
+          // TODO display boost status on device card
+        });
       }
+    });
+  }
+
+  onToggleLockMode(): void {
+    this.deviceInfo!.isLocked = !this.deviceInfo!.isLocked;
+    this.contextMenu = false;
+    if (this.deviceInfo!.isLocked) {
+      this._api.deviceDeviceIdLockPost({
+        deviceId: this.device.deviceId
+      }).subscribe(() => {
+        // TODO display notification
+      });
+    } else {
+      this._api.deviceDeviceIdUnlockPost({
+        deviceId: this.device.deviceId
+      }).subscribe(() => {
+        // TODO display notification
+      });
+    }
+  }
+
+  onEnableMotionDetection(): void {
+    this.contextMenu = false;
+    this._api.deviceDeviceIdMotionDetectionPost({
+      deviceId: this.device.deviceId
+    }).subscribe(() => {
+      // TODO display notification
     });
   }
 
