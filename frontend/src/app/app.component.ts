@@ -101,5 +101,9 @@ export class AppComponent implements OnInit {
     this.modals.onCloseDisableMotionDetectionModal();
   }
 
+  onCloseDisableBoostModal(): void {
+    this.modals.onCloseDisableBoostModal();
+  }
+
   protected readonly HeatingMode = HeatingMode;
 }

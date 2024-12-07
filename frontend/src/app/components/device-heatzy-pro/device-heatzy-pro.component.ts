@@ -109,7 +109,7 @@ export class DeviceHeatzyProComponent implements OnInit {
   }
 
   onSelectHeatingMode(heatingMode: HeatingMode): void {
-    if (this.deviceInfo?.specialMode == SpecialMode.MotionDetection) {
+    if (this.deviceInfo?.specialMode != SpecialMode.None) {
       return;
     }
 
@@ -275,6 +275,20 @@ export class DeviceHeatzyProComponent implements OnInit {
 
   onDisableMotionDetection(): void {
     this._modals.onOpenDisableMotionDetectionModal({
+      deviceId: this.device.deviceId,
+      callback: (deviceId, value) => {
+        this.deviceInfo!.specialMode = SpecialMode.None;
+        this._api.deviceDeviceIdResetSpecialModePost({
+          deviceId
+        }).subscribe(() => {
+          // TODO display notification
+        });
+      }
+    });
+  }
+
+  onDisableBoost(): void {
+    this._modals.onOpenDisableBoostModal({
       deviceId: this.device.deviceId,
       callback: (deviceId, value) => {
         this.deviceInfo!.specialMode = SpecialMode.None;

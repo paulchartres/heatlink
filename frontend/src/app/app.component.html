@@ -21,6 +21,11 @@
     <app-prompt-modal @fade [config]="(modals.getDisableMotionDetectionModalConfig() | async)!" label="Stop motion detection"
                       body="Are you sure you wish to stop the motion detection mode?" (cancel)="onCloseDisableMotionDetectionModal()"></app-prompt-modal>
   }
+
+  @if (modals.getDisableBoostModalConfig() | async) {
+    <app-prompt-modal @fade [config]="(modals.getDisableBoostModalConfig() | async)!" label="Stop boost mode"
+                      body="Are you sure you wish to stop the current boost mode?" (cancel)="onCloseDisableBoostModal()"></app-prompt-modal>
+  }
   <!-- End modals -->
 
   <div class="main-content-wrapper">
