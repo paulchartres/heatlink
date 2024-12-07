@@ -68,6 +68,11 @@
           <ng-icon class="heating-mode-controls-icon" name="matLocalFireDepartmentOutline"></ng-icon>
           <span class="special-mode-label">Boost</span>
         </div>
+      } @else if (deviceInfo?.specialMode == SpecialMode.Vacancy) {
+        <div class="heating-mode-controls-button first enabled" (click)="onDisableVacancy()">
+          <ng-icon class="heating-mode-controls-icon" name="matWorkOutlineOutline"></ng-icon>
+          <span class="special-mode-label">Vacancy</span>
+        </div>
       } @else {
         <div class="heating-mode-controls-button first" (click)="onSelectHeatingMode(HeatingMode.Off)" [ngClass]="{ enabled: selectedMode == HeatingMode.Off, disabled: deviceInfo?.specialMode != SpecialMode.None }">
           <ng-icon class="heating-mode-controls-icon" name="matHideSourceOutline"></ng-icon>

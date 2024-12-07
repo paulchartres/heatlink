@@ -13,6 +13,7 @@ export class ModalsService {
   private _boostModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
   private _disableMotionDetectionModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
   private _disableBoostModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
+  private _disableVacancyModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
 
   constructor() { }
 
@@ -86,6 +87,18 @@ export class ModalsService {
 
   getDisableBoostModalConfig(): Observable<ModalConfig | undefined> {
     return this._disableBoostModal$.asObservable();
+  }
+
+  onOpenDisableVacancyModal(config: ModalConfig): void {
+    this._disableVacancyModal$.next(config);
+  }
+
+  onCloseDisableVacancyModal(): void {
+    this._disableVacancyModal$.next(undefined);
+  }
+
+  getDisableVacancyModalConfig(): Observable<ModalConfig | undefined> {
+    return this._disableVacancyModal$.asObservable();
   }
 
 }

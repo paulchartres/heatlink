@@ -26,6 +26,11 @@
     <app-prompt-modal @fade [config]="(modals.getDisableBoostModalConfig() | async)!" label="Stop boost mode"
                       body="Are you sure you wish to stop the current boost mode?" (cancel)="onCloseDisableBoostModal()"></app-prompt-modal>
   }
+
+  @if (modals.getDisableVacancyModalConfig() | async) {
+    <app-prompt-modal @fade [config]="(modals.getDisableVacancyModalConfig() | async)!" label="Stop vacancy mode"
+                      body="Are you sure you wish to stop the current vacancy mode?" (cancel)="onCloseDisableVacancyModal()"></app-prompt-modal>
+  }
   <!-- End modals -->
 
   <div class="main-content-wrapper">

@@ -301,6 +301,20 @@ export class DeviceHeatzyProComponent implements OnInit {
     });
   }
 
+  onDisableVacancy(): void {
+    this._modals.onOpenDisableVacancyModal({
+      deviceId: this.device.deviceId,
+      callback: (deviceId, value) => {
+        this.deviceInfo!.specialMode = SpecialMode.None;
+        this._api.deviceDeviceIdResetSpecialModePost({
+          deviceId
+        }).subscribe(() => {
+          // TODO display notification
+        });
+      }
+    });
+  }
+
   onCloseExtraModes(): void {
     this.extraModes = false;
   }
