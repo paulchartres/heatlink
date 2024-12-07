@@ -32,6 +32,7 @@ import {ClickOutsideDirective} from "./directives/click-outside.directive";
 import {DeviceHeatzyProComponent} from "./components/device-heatzy-pro/device-heatzy-pro.component";
 import {ModalsService} from "./services/modals/modals.service";
 import {DataService} from "./services/data/data.service";
+import {PromptModalComponent} from "./modals/prompt-modal/prompt-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -44,7 +45,8 @@ import {DataService} from "./services/data/data.service";
     VacancyModalComponent,
     BoostModalComponent,
     ClickOutsideDirective,
-    DeviceHeatzyProComponent
+    DeviceHeatzyProComponent,
+    PromptModalComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -93,6 +95,10 @@ export class AppComponent implements OnInit {
 
   onCloseBoostModal(): void {
     this.modals.onCloseBoostModal();
+  }
+
+  onCloseDisableMotionDetectionModal(): void {
+    this.modals.onCloseDisableMotionDetectionModal();
   }
 
   protected readonly HeatingMode = HeatingMode;

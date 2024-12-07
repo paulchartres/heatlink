@@ -58,10 +58,18 @@
         </div>
       }
 
-      <div class="heating-mode-controls-button first" (click)="onSelectHeatingMode(HeatingMode.Off)" [ngClass]="{ enabled: selectedMode == HeatingMode.Off }">
-        <ng-icon class="heating-mode-controls-icon" name="matHideSourceOutline"></ng-icon>
-      </div>
-      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.Comfort)" [ngClass]="{ enabled: selectedMode == HeatingMode.Comfort || selectedMode == HeatingMode.Comfort1 || selectedMode == HeatingMode.Comfort2 }">
+      @if (deviceInfo?.specialMode == SpecialMode.MotionDetection) {
+        <div class="heating-mode-controls-button first enabled" (click)="onDisableMotionDetection()">
+          <ng-icon class="heating-mode-controls-icon" name="matPersonOutline"></ng-icon>
+          <span class="special-mode-label">Motion</span>
+        </div>
+      } @else {
+        <div class="heating-mode-controls-button first" (click)="onSelectHeatingMode(HeatingMode.Off)" [ngClass]="{ enabled: selectedMode == HeatingMode.Off, disabled: deviceInfo?.specialMode == SpecialMode.MotionDetection }">
+          <ng-icon class="heating-mode-controls-icon" name="matHideSourceOutline"></ng-icon>
+        </div>
+      }
+
+      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.Comfort)" [ngClass]="{ enabled: selectedMode == HeatingMode.Comfort || selectedMode == HeatingMode.Comfort1 || selectedMode == HeatingMode.Comfort2, disabled: deviceInfo?.specialMode == SpecialMode.MotionDetection }">
         <ng-icon class="heating-mode-controls-icon" name="matWbSunnyOutline"></ng-icon>
         @if (selectedMode == HeatingMode.Comfort1) {
           <span class="heating-mode-controls-extra-label">-1</span>
@@ -70,10 +78,10 @@
           <span class="heating-mode-controls-extra-label">-2</span>
         }
       </div>
-      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.Eco)" [ngClass]="{ enabled: selectedMode == HeatingMode.Eco }">
+      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.Eco)" [ngClass]="{ enabled: selectedMode == HeatingMode.Eco, disabled: deviceInfo?.specialMode == SpecialMode.MotionDetection }">
         <ng-icon class="heating-mode-controls-icon" name="matBedtimeOutline"></ng-icon>
       </div>
-      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.FrostProtection)" [ngClass]="{ enabled: selectedMode == HeatingMode.FrostProtection }">
+      <div class="heating-mode-controls-button" (click)="onSelectHeatingMode(HeatingMode.FrostProtection)" [ngClass]="{ enabled: selectedMode == HeatingMode.FrostProtection, disabled: deviceInfo?.specialMode == SpecialMode.MotionDetection }">
         <ng-icon class="heating-mode-controls-icon" name="matAcUnitOutline"></ng-icon>
       </div>
       <div class="heating-mode-controls-button last" (click)="onToggleContextMenu()">
@@ -134,7 +142,7 @@
 </div>
 
 @if (schedulingUtility) {
-  <app-heating-schedule @fade [schedule]="deviceInfo?.schedule!" [deviceId]="device.deviceId" (close)="onCloseSchedulingUtility()"></app-heating-schedule>
+  <app-heating-schedule @fade [schedule]="deviceInfo?.schedule!" [scheduleModeStatus]="deviceInfo!.isUsingTimer" [deviceId]="device.deviceId" (close)="onCloseSchedulingUtility()"></app-heating-schedule>
 }
 
 @if (history) {

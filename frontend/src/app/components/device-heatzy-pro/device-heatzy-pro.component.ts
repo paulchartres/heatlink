@@ -16,6 +16,7 @@ import {MinMax} from "../../models/min-max";
 import {DateTime} from "luxon";
 import {DeviceInfoStripped} from "../../services/api/models/device-info-stripped";
 import {DataService} from "../../services/data/data.service";
+import {SpecialMode} from "../../services/api/models/special-mode";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -108,6 +109,10 @@ export class DeviceHeatzyProComponent implements OnInit {
   }
 
   onSelectHeatingMode(heatingMode: HeatingMode): void {
+    if (this.deviceInfo?.specialMode == SpecialMode.MotionDetection) {
+      return;
+    }
+
     if (heatingMode == HeatingMode.Comfort && (this.selectedMode == HeatingMode.Comfort || this.selectedMode == HeatingMode.Comfort1 || this.selectedMode == HeatingMode.Comfort2)) {
       this.extraModes = true;
     }
@@ -205,6 +210,8 @@ export class DeviceHeatzyProComponent implements OnInit {
     this._modals.onOpenVacancyModal({
       deviceId: this.device.deviceId,
       callback: (deviceId, value) => {
+        this.deviceInfo!.specialMode = SpecialMode.Vacancy;
+        this.deviceInfo!.specialModeRemainingTime = value;
         this._api.deviceDeviceIdVacancyPost({
           deviceId,
           body: {
@@ -223,6 +230,8 @@ export class DeviceHeatzyProComponent implements OnInit {
     this._modals.onOpenBoostModal({
       deviceId: this.device.deviceId,
       callback: (deviceId, value) => {
+        this.deviceInfo!.specialMode = SpecialMode.Boost;
+        this.deviceInfo!.specialModeRemainingTime = value;
         this._api.deviceDeviceIdBoostPost({
           deviceId,
           body: {
@@ -256,10 +265,25 @@ export class DeviceHeatzyProComponent implements OnInit {
 
   onEnableMotionDetection(): void {
     this.contextMenu = false;
+    this.deviceInfo!.specialMode = SpecialMode.MotionDetection;
     this._api.deviceDeviceIdMotionDetectionPost({
       deviceId: this.device.deviceId
     }).subscribe(() => {
       // TODO display notification
+    });
+  }
+
+  onDisableMotionDetection(): void {
+    this._modals.onOpenDisableMotionDetectionModal({
+      deviceId: this.device.deviceId,
+      callback: (deviceId, value) => {
+        this.deviceInfo!.specialMode = SpecialMode.None;
+        this._api.deviceDeviceIdResetSpecialModePost({
+          deviceId
+        }).subscribe(() => {
+          // TODO display notification
+        });
+      }
     });
   }
 
@@ -273,4 +297,5 @@ export class DeviceHeatzyProComponent implements OnInit {
 
   protected readonly HeatingMode = HeatingMode;
 
+  protected readonly SpecialMode = SpecialMode;
 }

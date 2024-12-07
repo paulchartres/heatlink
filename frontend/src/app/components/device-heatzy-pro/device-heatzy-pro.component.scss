@@ -135,6 +135,10 @@
   position: relative;
 }
 
+.heating-mode-controls-button.disabled {
+  cursor: not-allowed;
+}
+
 .heating-mode-controls-button.last {
   border-right: 1px solid #3b3b3b;
   border-top-right-radius: 0.25rem;
@@ -152,12 +156,16 @@
   transition: 0.2s;
 }
 
+.heating-mode-controls-button.disabled .heating-mode-controls-icon {
+  opacity: 0.2;
+}
+
 .heating-mode-controls-button.enabled .heating-mode-controls-icon {
   opacity: 1;
   color: orange;
 }
 
-.heating-mode-controls-button:hover .heating-mode-controls-icon {
+.heating-mode-controls-button:hover:not(.disabled) .heating-mode-controls-icon {
   color: orange;
 }
 
@@ -297,4 +305,11 @@
 
 .device-locked-icon {
   margin-right: 0.4rem;
+}
+
+.special-mode-label {
+  margin-left: 0.25rem;
+  opacity: 0.5;
+  font-size: 0.8rem;
+  color: orange;
 }

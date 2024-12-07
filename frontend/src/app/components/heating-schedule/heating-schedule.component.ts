@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {HeatingMode} from "../../services/api/models/heating-mode";
 import {isBetween} from "../../helpers/math.helper";
 import {CommonModule, KeyValuePipe} from "@angular/common";
@@ -20,12 +20,13 @@ import {ApiService} from "../../services/api/services/api.service";
   styleUrl: './heating-schedule.component.scss',
   animations: [fadeAnimation]
 })
-export class HeatingScheduleComponent {
+export class HeatingScheduleComponent implements OnInit {
 
   @ViewChild('scheduleWrapper') scheduleWrapper!: ElementRef<HTMLDivElement>;
 
   @Input({ required: true }) schedule!: HeatingSchedule[];
   @Input({ required: true }) deviceId!: string;
+  @Input({ required: true }) scheduleModeStatus!: boolean;
 
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
@@ -94,6 +95,10 @@ export class HeatingScheduleComponent {
   ];
 
   constructor(private _api: ApiService) {}
+
+  ngOnInit() {
+    this.scheduleMode = this.scheduleModeStatus;
+  }
 
   onSetScheduleMode(mode: boolean): void {
     this.scheduleMode = mode;

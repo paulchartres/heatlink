@@ -1,0 +1,23 @@
+<div class="prompt-modal-wrapper">
+
+  <div class="prompt-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="prompt-modal-title">{{label}}</span>
+
+    <span class="prompt-modal-body">{{body}}</span>
+
+    <div class="prompt-modal-actions">
+
+      <div class="prompt-modal-cancel">
+        <span class="prompt-modal-cancel-label" (click)="onCancel()">Cancel</span>
+      </div>
+
+      <div class="prompt-modal-button">
+        <span class="prompt-modal-button-label" (click)="onConfirm()">Confirm</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
