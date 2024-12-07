@@ -12,6 +12,9 @@
   <div class="device-info-column">
 
     <div class="device-title-row">
+      @if (deviceInfo?.isLocked) {
+        <ng-icon class="device-locked-icon" @fade name="matLockOutline"></ng-icon>
+      }
       <span class="device-readable-name">{{ device.readableName }}</span>
       <span class="device-type">{{ productNameToReadableName(device.productName) }}</span>
     </div>

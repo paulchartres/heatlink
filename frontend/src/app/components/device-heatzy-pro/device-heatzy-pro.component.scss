@@ -27,13 +27,13 @@
 
 .device-title-row {
   display: flex;
-  column-gap: 0.75rem;
   align-items: center;
 }
 
 .device-readable-name {
   font-size: 1.4rem;
   font-weight: 200;
+  margin-right: 0.75rem;
 }
 
 .device-type {
@@ -293,4 +293,8 @@
   bottom: 0.1rem;
   font-size: 0.6rem;
   color: orange;
+}
+
+.device-locked-icon {
+  margin-right: 0.4rem;
 }
