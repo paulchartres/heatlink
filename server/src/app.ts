@@ -8,6 +8,7 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import * as swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import cron from 'node-cron';
+import figlet from 'figlet';
 
 // Schemas for OpenAPI spec
 import deviceSchema from './schemas/device-schema.json';
@@ -710,15 +711,18 @@ app.post('/device/:deviceId/schedule-mode', function (req: Request, res: Respons
 cron.schedule('* * * * *', archiveTemperatureHistory);
 cron.schedule('* * * * *', archiveHumidityHistory);
 
-openDatabase().then(() => {
-    // When we start the app, we always start with a sign-in to populate the authentication service.
-    login()
-        .catch((err: Error) => {
-            return Promise.reject(err);
-        })
-        .then(() => {
-            app.listen(port, () => {
-                console.log(`[server]: Server is running at http://localhost:${port}`);
+figlet('Heatlink', { horizontalLayout: 'full', font: 'Big' }, (err, data) => {
+    console.log(data);
+    openDatabase().then(() => {
+        // When we start the app, we always start with a sign-in to populate the authentication service.
+        login()
+            .catch((err: Error) => {
+                return Promise.reject(err);
+            })
+            .then(() => {
+                app.listen(port, () => {
+                    console.log(`[server]: Server is running at http://localhost:${port}`);
+                });
             });
-        });
+    });
 });
