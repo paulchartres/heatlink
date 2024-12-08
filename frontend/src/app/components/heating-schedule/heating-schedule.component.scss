@@ -298,3 +298,11 @@
 .heating-mode-controls-button:hover .heating-mode-controls-icon {
   color: orange;
 }
+
+.device-schedule-current-time-indicator {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: 1px;
+  background: orange;
+}

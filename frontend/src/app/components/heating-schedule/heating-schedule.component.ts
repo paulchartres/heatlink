@@ -8,6 +8,7 @@ import {WeekDay} from "../../services/api/models/week-day";
 import {Point} from "../../models/point.model";
 import {fadeAnimation} from "../../animations/fade-in-out.animation";
 import {ApiService} from "../../services/api/services/api.service";
+import {DateTime} from "luxon";
 
 @Component({
   selector: 'app-heating-schedule',
@@ -41,6 +42,7 @@ export class HeatingScheduleComponent implements OnInit {
   adjacentSections?: number;
   dragging: boolean = false;
   heatingModeCoordinates?: Point;
+  now: DateTime = DateTime.now();
 
   timeKeys: string[] = [
     "00:00",
@@ -98,6 +100,13 @@ export class HeatingScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.scheduleMode = this.scheduleModeStatus;
+    this._initTime();
+  }
+
+  private _initTime(): void {
+    setInterval(() => {
+      this.now = DateTime.now();
+    }, 1000);
   }
 
   onSetScheduleMode(mode: boolean): void {
@@ -218,6 +227,12 @@ export class HeatingScheduleComponent implements OnInit {
     }).subscribe(() => {
       // TODO display notification
     });
+  }
+
+  getCurrentTimeBarPosition(): number {
+    const currentTimeInMinutes: number = this.now.hour * 60 + this.now.minute;
+    const oneDayInMinutes: number = 24 * 60;
+    return currentTimeInMinutes * 100 / oneDayInMinutes;
   }
 
   protected readonly HeatingMode = HeatingMode;
