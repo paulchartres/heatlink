@@ -59,7 +59,7 @@
       Welcome to your Heatzy dashboard!
     </span>
 
-    <ng-scrollbar>
+    <ng-scrollbar class="devices-scrollbox">
       <div class="devices-wrapper">
 
           @for (device of (data.getDevices() | async); track device.deviceId) {
