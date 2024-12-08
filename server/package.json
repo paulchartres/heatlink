@@ -21,15 +21,18 @@
     "@types/node-cron": "^3.0.11",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.7",
+    "@types/ws": "^8.5.13",
     "concurrently": "^9.1.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@types/express-ws": "^3.0.5",
     "axios": "^1.7.8",
     "cors": "^2.8.5",
     "express": "^4.21.1",
+    "express-ws": "^5.0.2",
     "figlet": "^1.8.0",
     "luxon": "^3.5.0",
     "node-cron": "^3.0.3",
@@ -38,6 +41,7 @@
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "typescript-json-schema": "^0.65.1"
+    "typescript-json-schema": "^0.65.1",
+    "ws": "^8.18.0"
   }
 }

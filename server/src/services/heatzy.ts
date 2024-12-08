@@ -4,9 +4,14 @@ import {Token} from "../models/token";
 import {Device} from "../models/device";
 import {DeviceInfo} from "../models/device-info";
 import {DeviceInfoPartial} from "../models/device-info-partial";
+import {renameKey} from "../helpers/json";
 
 const appUrl: string = 'http://euapi.gizwits.com';
 const appId: string = 'c70a66ff039d41b4a220e198b0fcc8b3';
+
+export function getAppId(): string {
+    return appId;
+}
 
 export function login(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -31,7 +36,7 @@ export function login(): Promise<void> {
         .then((res) => {
             console.log('[heatzy]: Login successful.');
 
-            saveToken(res.data.token, res.data.expire_at);
+            saveToken(res.data.token, res.data.expire_at, res.data.uid);
             resolve();
         })
         .catch((err) => {
@@ -71,7 +76,10 @@ export function getDeviceInfo(deviceId: string): Promise<DeviceInfo> {
             }
         })
         .then((res) => {
-            resolve(res.data);
+            // For some reason, receiving the attributes through that endpoint puts them in 'attr' and not 'attrs', as
+            // is the case for other data points (like the websocket). I renamed it for convenience, so it matches
+            // the typings we use throughout the app.
+            resolve(renameKey(res.data, 'attr', 'attrs'));
         })
         .catch((err) => {
             console.error(`[heatzy]: Could not retrieve device ${deviceId}.`);

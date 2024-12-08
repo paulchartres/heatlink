@@ -67,7 +67,7 @@ export function convertScheduleToReadable(deviceInfo: DeviceInfo): HeatingSchedu
         for (let j = 1; j <= 12; j++) {
             let key = 'p' + i + '_data' + j;
             // @ts-ignore
-            const value: number = deviceInfo.attr[key] as number;
+            const value: number = deviceInfo.attrs[key] as number;
             const binary: string = Number(value).toString(2).padStart(8, '0');
             const splitBinary: RegExpMatchArray = binary.match(/.{1,2}/g)!;
 

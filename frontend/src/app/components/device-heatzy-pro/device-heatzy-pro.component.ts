@@ -19,6 +19,7 @@ import {DataService} from "../../services/data/data.service";
 import {SpecialMode} from "../../services/api/models/special-mode";
 import {SkeletonLoaderComponent} from "../skeleton-loader/skeleton-loader.component";
 import {NotificationsService} from "../../services/notifications/notifications.service";
+import {DevicesWsService} from "../../services/ws/devices/devices-ws.service";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -56,6 +57,7 @@ export class DeviceHeatzyProComponent implements OnInit {
 
   constructor(private _modals: ModalsService,
               private _data: DataService,
+              private _devicesWs: DevicesWsService,
               private _notifications: NotificationsService,
               private _api: ApiService) {}
 
@@ -63,6 +65,15 @@ export class DeviceHeatzyProComponent implements OnInit {
     this._requestHistory();
     this._getDeviceData();
     this._data.getRefreshEvent().subscribe(() => this._getDeviceData());
+    this._getWsEvents();
+  }
+
+  private _getWsEvents(): void {
+    this._devicesWs.getDeviceEventBus(this.device.deviceId).subscribe((event) => {
+      console.log(event.data);
+      this.deviceInfo = event.data;
+      this.selectedMode = event.data.mode;
+    });
   }
 
   private _getDeviceData(): void {
@@ -222,7 +233,7 @@ export class DeviceHeatzyProComponent implements OnInit {
             duration: value
           }
         }).subscribe(() => {
-          this._notifications._notify({ body: `Vacancy mode has been enabled for ${value} day${value > 1 ? 's' : ''}.`, icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
+          this._notifications._notify({ body: `Vacancy mode has been enabled for ${value} day${value > 1 ? 's' : ''}.`, icon: 'matWorkOutlineOutline', deviceName: this.device.readableName });
         });
       }
     });

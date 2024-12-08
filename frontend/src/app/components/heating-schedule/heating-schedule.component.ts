@@ -31,11 +31,10 @@ export class HeatingScheduleComponent implements OnInit {
   @Input({ required: true }) schedule!: HeatingSchedule[];
   @Input({ required: true }) deviceId!: string;
   @Input({ required: true }) deviceName!: string;
-  @Input({ required: true }) scheduleModeStatus!: boolean;
+  @Input({ required: true }) scheduleMode!: boolean;
 
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
-  scheduleMode: boolean = false;
   loading: boolean = false;
 
   // For schedule selection
@@ -105,7 +104,6 @@ export class HeatingScheduleComponent implements OnInit {
               private _notifications: NotificationsService) {}
 
   ngOnInit() {
-    this.scheduleMode = this.scheduleModeStatus;
     this._initTime();
   }
 
@@ -116,12 +114,10 @@ export class HeatingScheduleComponent implements OnInit {
   }
 
   onSetScheduleMode(mode: boolean): void {
-    this.scheduleMode = mode;
-
     this._api.deviceDeviceIdScheduleModePost({
       deviceId: this.deviceId,
       body: {
-        enable: this.scheduleMode
+        enable: !this.scheduleMode
       }
     }).subscribe(() => {});
   }

@@ -6,7 +6,7 @@ export function archiveTemperatureHistory() {
     getDevices().then((devices) => {
         for (const device of devices) {
             getDeviceInfo(device.did).then((deviceInfo) => {
-                archiveTemperature(deviceInfo.attr.cur_temp / 10, device.did).then(() => {
+                archiveTemperature(deviceInfo.attrs.cur_temp / 10, device.did).then(() => {
                     console.log(`[temperature-history]: Archived temperature.`);
                 });
             }).catch(() => {

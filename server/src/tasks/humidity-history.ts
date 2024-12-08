@@ -6,7 +6,7 @@ export function archiveHumidityHistory() {
     getDevices().then((devices) => {
         for (const device of devices) {
             getDeviceInfo(device.did).then((deviceInfo) => {
-                archiveHumidity(deviceInfo.attr.cur_humi, device.did).then(() => {
+                archiveHumidity(deviceInfo.attrs.cur_humi, device.did).then(() => {
                     console.log(`[humidity-history]: Archived humidity.`);
                 });
             }).catch(() => {

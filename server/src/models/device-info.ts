@@ -1,7 +1,7 @@
 export interface DeviceInfo {
     did: string;
     updated_at: number;
-    attr: {
+    attrs: {
         time_week: number,
         eco_temp: number,
         p4_data11: number,

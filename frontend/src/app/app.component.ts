@@ -39,6 +39,7 @@ import {Weather} from "./services/api/models/weather";
 import {NotificationComponent} from "./components/notification/notification.component";
 import {Notification} from "./models/notification";
 import {NotificationsService} from "./services/notifications/notifications.service";
+import {DevicesWsService} from "./services/ws/devices/devices-ws.service";
 
 @Component({
   selector: 'app-root',
@@ -87,12 +88,14 @@ export class AppComponent implements OnInit {
 
   constructor(private _api: ApiService,
               private _notifications: NotificationsService,
+              private _devicesWs: DevicesWsService,
               public data: DataService,
               public modals: ModalsService,
               public wmo: WmoService) {}
 
   ngOnInit() {
     this.data.fetchDevices();
+    this._devicesWs.connect();
     this._getWeather();
     this._initTimeUpdate();
     this._getNotifications();

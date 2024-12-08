@@ -3,10 +3,11 @@ import {DateTime} from "luxon";
 
 let currentToken: Token;
 
-export function saveToken(token: string, expiry: number): void {
+export function saveToken(token: string, expiry: number, uid: string): void {
     currentToken = {
         token,
-        expiry
+        expiry,
+        uid
     };
 }
 

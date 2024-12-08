@@ -5,6 +5,7 @@ import {convertReadableScheduleToHeatzyFormat, convertScheduleToReadable} from "
 import {DeviceInfoStripped} from "./models/device-info.stripped";
 import {heatingModeEnumToNumber, modeStringToEnum, specialModeNumberToEnum} from "./converters/enums";
 import swaggerJsdoc from 'swagger-jsdoc';
+import expressWs from "express-ws";
 import * as swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import cron from 'node-cron';
@@ -29,8 +30,13 @@ import {archiveHumidityHistory} from "./tasks/humidity-history";
 import {HeatingMode} from "./enums/heating-mode";
 import {getCurrentWeather} from "./services/open-meteo";
 import {autoRefreshToken} from "./services/authentication";
+import {connectToWebsockets} from "./websockets/heatzy-websocket";
+import { WebSocket } from "ws";
+import {convertHeatzyDeviceInfoToReadable} from "./converters/device-info";
+import {DeviceInfo} from "./models/device-info";
+import {DeviceWebsocketEvent} from "./events/device-websocket-event";
 
-const app: Express = express();
+const app: expressWs.Application = expressWs(express()).app;
 const port = process.env.PORT || 3000;
 
 // Auto generation of the swagger docs
@@ -181,24 +187,7 @@ app.get('/raw/device/:deviceId', function (req: Request, res: Response) {
  */
 app.get('/device/:deviceId', function (req: Request, res: Response) {
     getDeviceInfo(req.params.deviceId).then((deviceInfo) => {
-        res.send(
-            {
-                schedule: convertScheduleToReadable(deviceInfo),
-                mode: modeStringToEnum(deviceInfo.attr.mode),
-                currentMode: modeStringToEnum(deviceInfo.attr.cur_mode),
-                isHeating: deviceInfo.attr.Heating_state == 1,
-                currentSignal: modeStringToEnum(deviceInfo.attr.cur_signal),
-                isUsingTimer: deviceInfo.attr.timer_switch == 1,
-                specialMode: specialModeNumberToEnum(deviceInfo.attr.derog_mode),
-                specialModeRemainingTime: deviceInfo.attr.derog_time,
-                isWindowDetectionOn: deviceInfo.attr.window_switch == 1,
-                currentTemperature: deviceInfo.attr.cur_temp / 10,
-                comfortTargetTemperature: deviceInfo.attr.cft_temp / 10,
-                ecoTargetTemperature: deviceInfo.attr.eco_temp / 10,
-                currentHumidity: deviceInfo.attr.cur_humi,
-                isLocked: deviceInfo.attr.lock_switch == 1
-            } as DeviceInfoStripped
-        );
+        res.send(convertHeatzyDeviceInfoToReadable(deviceInfo));
     }).catch(() => {
         res.sendStatus(404);
     });
@@ -764,6 +753,25 @@ app.get('/weather', function (req: Request, res: Response) {
     });
 });
 
+// Websockets
+// TODO move this whole block to the proper websocket service
+const connections: WebSocket[] = [];
+app.ws('/ws/devices', (ws, req) => {
+    connections.push(ws);
+    ws.on('close', () => {
+        connections.splice(connections.indexOf(ws), 1);
+    });
+});
+export function broadcastDeviceInfo(deviceInfo: DeviceInfo, deviceId: string): void {
+    const event: DeviceWebsocketEvent = {
+        deviceId,
+        data: convertHeatzyDeviceInfoToReadable(deviceInfo)
+    }
+    for (const client of connections) {
+        client.send(JSON.stringify(event));
+    }
+}
+
 // CRON jobs
 cron.schedule('0 * * * *', autoRefreshToken);
 cron.schedule('* * * * *', archiveTemperatureHistory);
@@ -778,6 +786,7 @@ figlet('Heatlink', { horizontalLayout: 'full', font: 'Big' }, (err, data) => {
                 return Promise.reject(err);
             })
             .then(() => {
+                connectToWebsockets();
                 app.listen(port, () => {
                     console.log(`[server]: Server is running at http://localhost:${port}`);
                 });
