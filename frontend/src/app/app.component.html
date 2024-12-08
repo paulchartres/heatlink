@@ -35,6 +35,20 @@
 
   <div class="main-content-wrapper">
 
+    <div class="main-header">
+     <div class="main-date-time-wrapper">
+       <span class="main-time">{{ now.toFormat('HH:mm') }}</span>
+       <span class="main-date">{{ now.toFormat('cccc, LLLL dd') }}</span>
+     </div>
+
+      @if (currentWeather) {
+        <div class="main-weather-wrapper">
+          <img class="main-weather-image" [src]="wmo.getIconForWmo(currentWeather!.wmo)">
+          <span class="main-weather-temperature">{{currentWeather!.temperature | number : '1.0-1'}}°C</span>
+        </div>
+      }
+    </div>
+
     <span class="main-title">
       Welcome to your Heatzy dashboard!
     </span>

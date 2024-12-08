@@ -33,6 +33,7 @@
     "figlet": "^1.8.0",
     "luxon": "^3.5.0",
     "node-cron": "^3.0.3",
+    "openmeteo": "^1.1.4",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^6.2.8",

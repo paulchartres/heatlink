@@ -51,6 +51,9 @@ import { RawDeviceDeviceIdGet$Params } from '../fn/operations/raw-device-device-
 import { rawDevicesGet } from '../fn/operations/raw-devices-get';
 import { RawDevicesGet$Params } from '../fn/operations/raw-devices-get';
 import { TemperatureHistory } from '../models/temperature-history';
+import { Weather } from '../models/weather';
+import { weatherGet } from '../fn/operations/weather-get';
+import { WeatherGet$Params } from '../fn/operations/weather-get';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService extends BaseService {
@@ -616,6 +619,39 @@ export class ApiService extends BaseService {
   deviceDeviceIdScheduleModePost(params: DeviceDeviceIdScheduleModePost$Params, context?: HttpContext): Observable<void> {
     return this.deviceDeviceIdScheduleModePost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `weatherGet()` */
+  static readonly WeatherGetPath = '/weather';
+
+  /**
+   * Retrieves the current external temperature at the location set in the environment variables.
+   *
+   * Retrieves the current external temperature at the location set in the environment variables. If no variables are set, returns an error code in order not to display the values in the webapp.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `weatherGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  weatherGet$Response(params?: WeatherGet$Params, context?: HttpContext): Observable<StrictHttpResponse<Weather>> {
+    return weatherGet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Retrieves the current external temperature at the location set in the environment variables.
+   *
+   * Retrieves the current external temperature at the location set in the environment variables. If no variables are set, returns an error code in order not to display the values in the webapp.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `weatherGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  weatherGet(params?: WeatherGet$Params, context?: HttpContext): Observable<Weather> {
+    return this.weatherGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Weather>): Weather => r.body)
     );
   }
 

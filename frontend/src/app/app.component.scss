@@ -29,3 +29,42 @@
   row-gap: 0.5rem;
   margin-top: 2rem;
 }
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-time {
+  font-size: 1.6rem;
+  font-weight: 200;
+}
+
+.main-date {
+  font-weight: 200;
+  opacity: 0.5;
+}
+
+.main-date-time-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  row-gap: 0.25rem;
+}
+
+.main-weather-wrapper {
+  display: flex;
+  column-gap: 0.5rem;
+  align-items: center;
+}
+
+.main-weather-image {
+  height: 2.5rem;
+}
+
+.main-weather-temperature {
+  font-size: 2rem;
+  font-weight: 200;
+  opacity: 0.8;
+}

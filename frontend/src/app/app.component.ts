@@ -33,6 +33,9 @@ import {DeviceHeatzyProComponent} from "./components/device-heatzy-pro/device-he
 import {ModalsService} from "./services/modals/modals.service";
 import {DataService} from "./services/data/data.service";
 import {PromptModalComponent} from "./modals/prompt-modal/prompt-modal.component";
+import {DateTime} from "luxon";
+import {WmoService} from "./services/wmo/wmo.service";
+import {Weather} from "./services/api/models/weather";
 
 @Component({
   selector: 'app-root',
@@ -74,11 +77,30 @@ export class AppComponent implements OnInit {
 
   title = 'heatlink';
 
-  constructor(public data: DataService,
-              public modals: ModalsService) {}
+  now: DateTime = DateTime.now();
+  currentWeather?: Weather;
+
+  constructor(private _api: ApiService,
+              public data: DataService,
+              public modals: ModalsService,
+              public wmo: WmoService) {}
 
   ngOnInit() {
     this.data.fetchDevices();
+    this._getWeather();
+    this._initTimeUpdate();
+  }
+
+  private _getWeather(): void {
+    this._api.weatherGet().subscribe((weather) => {
+      this.currentWeather = weather;
+    });
+  }
+
+  private _initTimeUpdate(): void {
+    setInterval(() => {
+      this.now = DateTime.now();
+    }, 1000);
   }
 
   onCloseComfortTemperatureModal(): void {
@@ -110,4 +132,5 @@ export class AppComponent implements OnInit {
   }
 
   protected readonly HeatingMode = HeatingMode;
+  protected readonly DateTime = DateTime;
 }

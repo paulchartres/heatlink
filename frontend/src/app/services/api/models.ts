@@ -11,4 +11,5 @@ export { HeatingSchedule } from './models/heating-schedule';
 export { HumidityHistory } from './models/humidity-history';
 export { SpecialMode } from './models/special-mode';
 export { TemperatureHistory } from './models/temperature-history';
+export { Weather } from './models/weather';
 export { WeekDay } from './models/week-day';

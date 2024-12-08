@@ -21,12 +21,13 @@ import heatingSchedule from './schemas/heating-schedule.json';
 import specialMode from './schemas/special-mode.json';
 import temperatureHistory from './schemas/temperature-history.json';
 import humidityHistory from './schemas/humidity-history.json';
+import weather from './schemas/weather.json';
 
 import {getHumidityHistory, getTemperatureHistory, openDatabase} from "./services/database";
 import {archiveTemperatureHistory} from "./tasks/temperature-history";
 import {archiveHumidityHistory} from "./tasks/humidity-history";
 import {HeatingMode} from "./enums/heating-mode";
-import {HeatingSchedule} from "./models/heating-schedule";
+import {getCurrentWeather} from "./services/open-meteo";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -50,7 +51,8 @@ const options = {
                 HeatingSchedule: heatingSchedule,
                 SpecialMode: specialMode,
                 TemperatureHistory: temperatureHistory,
-                HumidityHistory: humidityHistory
+                HumidityHistory: humidityHistory,
+                Weather: weather
             }
         },
     },
@@ -704,6 +706,30 @@ app.post('/device/:deviceId/schedule-mode', function (req: Request, res: Respons
         }
     }).then(() => {
         res.send();
+    });
+});
+
+/**
+ * @swagger
+ * /weather:
+ *   get:
+ *     summary: Retrieves the current external temperature at the location set in the environment variables.
+ *     description: Retrieves the current external temperature at the location set in the environment variables. If no variables are set, returns an error code in order not to display the values in the webapp.
+ *     responses:
+ *       200:
+ *         description: The current weather
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Weather'
+ */
+app.get('/weather', function (req: Request, res: Response) {
+    getCurrentWeather().then((weather) => {
+        if (!weather) {
+            res.sendStatus(404);
+        } else {
+            res.send(weather);
+        }
     });
 });
 
