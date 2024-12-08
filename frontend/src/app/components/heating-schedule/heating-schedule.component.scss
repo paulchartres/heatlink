@@ -216,27 +216,6 @@
   column-gap: 0.5rem;
 }
 
-.device-schedule-button {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  background: #2a2a2a;
-  border: 1px solid #3d3d3d;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.device-schedule-button:hover {
-  color: orange;
-  border: 1px solid orange;
-}
-
-.device-schedule-button-label {
-  font-size: 0.85rem;
-  opacity: 0.75;
-}
-
 .device-schedule-cancel {
   display: flex;
   align-items: center;

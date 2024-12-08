@@ -10,14 +10,16 @@ import {fadeAnimation} from "../../animations/fade-in-out.animation";
 import {ApiService} from "../../services/api/services/api.service";
 import {DateTime, Duration} from "luxon";
 import {NotificationsService} from "../../services/notifications/notifications.service";
+import {ButtonComponent} from "../button/button.component";
 
 @Component({
   selector: 'app-heating-schedule',
   standalone: true,
-    imports: [
-        CommonModule,
-        NgIcon
-    ],
+  imports: [
+    CommonModule,
+    NgIcon,
+    ButtonComponent
+  ],
   templateUrl: './heating-schedule.component.html',
   styleUrl: './heating-schedule.component.scss',
   animations: [fadeAnimation]
@@ -34,6 +36,7 @@ export class HeatingScheduleComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
   scheduleMode: boolean = false;
+  loading: boolean = false;
 
   // For schedule selection
   selectedDay?: WeekDay;
@@ -224,10 +227,12 @@ export class HeatingScheduleComponent implements OnInit {
   }
 
   onSaveSchedule(): void {
+    this.loading = true;
     this._api.deviceDeviceIdSchedulePost({
       deviceId: this.deviceId,
       body: this.schedule
     }).subscribe(() => {
+      this.loading = false;
       this._notifications._notify({ body: `The heating schedule for this device has been updated.`, icon: 'matAlarmOutline', deviceName: this.deviceName });
     });
   }

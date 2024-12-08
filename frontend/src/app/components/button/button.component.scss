@@ -1,0 +1,44 @@
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border: 1px solid #3d3d3d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.button-wrapper:not(.loading):hover {
+  color: orange;
+  border: 1px solid orange;
+}
+
+.button-wrapper.loading {
+  cursor: progress;
+}
+
+.button-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.button-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #484848;
+  border-bottom-color: orange;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

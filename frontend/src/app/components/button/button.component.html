@@ -1,0 +1,9 @@
+<div class="button-wrapper" [ngClass]="{ loading }" (click)="onClick()">
+  @if (loading) {
+    <div class="button-spinner"></div>
+  } @else {
+    <span class="button-label">
+      <ng-content></ng-content>
+    </span>
+  }
+</div>
