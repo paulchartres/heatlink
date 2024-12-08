@@ -17,6 +17,7 @@ import {DateTime} from "luxon";
 import {DeviceInfoStripped} from "../../services/api/models/device-info-stripped";
 import {DataService} from "../../services/data/data.service";
 import {SpecialMode} from "../../services/api/models/special-mode";
+import {SkeletonLoaderComponent} from "../skeleton-loader/skeleton-loader.component";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -26,7 +27,8 @@ import {SpecialMode} from "../../services/api/models/special-mode";
     ClickOutsideDirective,
     NgIcon,
     HeatingScheduleComponent,
-    HistoryGraphsComponent
+    HistoryGraphsComponent,
+    SkeletonLoaderComponent
   ],
   templateUrl: './device-heatzy-pro.component.html',
   styleUrl: './device-heatzy-pro.component.scss',

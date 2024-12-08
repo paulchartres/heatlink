@@ -24,7 +24,11 @@
       <div class="device-current-temperature">
         <span class="device-current-temperature-title">Temperature</span>
         <div class="device-current-temperature-row">
-          <span class="device-current-temperature-value">{{deviceInfo?.currentTemperature}}</span>
+          @if (!deviceInfo) {
+            <app-skeleton-loader class="device-current-temperature-placeholder" [width]="50" [height]="35"></app-skeleton-loader>
+          } @else {
+            <span class="device-current-temperature-value">{{deviceInfo?.currentTemperature}}</span>
+          }
           <span class="device-current-temperature-unit">°C</span>
         </div>
       </div>
@@ -32,7 +36,11 @@
       <div class="device-current-humidity">
         <span class="device-current-humidity-title">Humidity</span>
         <div class="device-current-humidity-row">
-          <span class="device-current-humidity-value">{{deviceInfo?.currentHumidity}}</span>
+          @if (!deviceInfo) {
+            <app-skeleton-loader class="device-current-temperature-placeholder" [width]="50" [height]="35"></app-skeleton-loader>
+          } @else {
+            <span class="device-current-humidity-value">{{deviceInfo?.currentHumidity}}</span>
+          }
           <span class="device-current-humidity-unit">%</span>
         </div>
       </div>
@@ -139,11 +147,19 @@
     <div class="target-temperatures-wrapper">
       <div class="target-temperature-row">
         <span class="target-temperature-label">Comfort:</span>
-        <span class="target-temperature-value" (click)="onOpenComfortTemperatureModal()">{{deviceInfo?.comfortTargetTemperature}}°C</span>
+        @if (!deviceInfo) {
+          <app-skeleton-loader [width]="20" [height]="15"></app-skeleton-loader>
+        } @else {
+          <span class="target-temperature-value" (click)="onOpenComfortTemperatureModal()">{{deviceInfo?.comfortTargetTemperature}}°C</span>
+        }
       </div>
       <div class="target-temperature-row">
         <span class="target-temperature-label">Eco:</span>
-        <span class="target-temperature-value" (click)="onOpenEcoTemperatureModal()">{{deviceInfo?.ecoTargetTemperature}}°C</span>
+        @if (!deviceInfo) {
+          <app-skeleton-loader [width]="20" [height]="15"></app-skeleton-loader>
+        } @else {
+          <span class="target-temperature-value" (click)="onOpenEcoTemperatureModal()">{{deviceInfo?.ecoTargetTemperature}}°C</span>
+        }
       </div>
     </div>
 
