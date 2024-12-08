@@ -89,6 +89,8 @@ app.use(express.json());
 app.get('/raw/devices', function (req: Request, res: Response) {
     getDevices().then((devices) => {
         res.send(devices);
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -121,6 +123,8 @@ app.get('/devices', function (req: Request, res: Response) {
                 }
             })
         );
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -148,6 +152,8 @@ app.get('/devices', function (req: Request, res: Response) {
 app.get('/raw/device/:deviceId', function (req: Request, res: Response) {
     getDeviceInfo(req.params.deviceId).then((deviceInfo) => {
         res.send(deviceInfo);
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -192,6 +198,8 @@ app.get('/device/:deviceId', function (req: Request, res: Response) {
                 isLocked: deviceInfo.attr.lock_switch == 1
             } as DeviceInfoStripped
         );
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -339,6 +347,8 @@ app.post('/device/:deviceId/mode', function (req: Request, res: Response) {
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -385,6 +395,8 @@ app.post('/device/:deviceId/target/comfort', function (req: Request, res: Respon
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -431,6 +443,8 @@ app.post('/device/:deviceId/target/eco', function (req: Request, res: Response) 
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -477,6 +491,8 @@ app.post('/device/:deviceId/vacancy', function (req: Request, res: Response) {
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -523,6 +539,8 @@ app.post('/device/:deviceId/boost', function (req: Request, res: Response) {
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -549,6 +567,8 @@ app.post('/device/:deviceId/lock', function (req: Request, res: Response) {
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -575,6 +595,8 @@ app.post('/device/:deviceId/unlock', function (req: Request, res: Response) {
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -601,6 +623,8 @@ app.post('/device/:deviceId/motion-detection', function (req: Request, res: Resp
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -627,6 +651,8 @@ app.post('/device/:deviceId/reset-special-mode', function (req: Request, res: Re
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -662,6 +688,8 @@ app.post('/device/:deviceId/schedule', function (req: Request, res: Response) {
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 
@@ -706,6 +734,8 @@ app.post('/device/:deviceId/schedule-mode', function (req: Request, res: Respons
         }
     }).then(() => {
         res.send();
+    }).catch(() => {
+        res.sendStatus(404);
     });
 });
 

@@ -52,6 +52,10 @@ export function getDevices(): Promise<Device[]> {
         })
         .then((res) => {
             resolve(res.data.devices);
+        })
+        .catch((err) => {
+            console.error('[heatzy]: Could not retrieve devices.');
+            reject();
         });
 
     });
@@ -68,6 +72,10 @@ export function getDeviceInfo(deviceId: string): Promise<DeviceInfo> {
         })
         .then((res) => {
             resolve(res.data);
+        })
+        .catch((err) => {
+            console.error(`[heatzy]: Could not retrieve device ${deviceId}.`);
+            reject();
         });
 
     });
@@ -82,9 +90,13 @@ export function updateDevice(deviceId: string, attributes: Partial<DeviceInfoPar
                 'X-Gizwits-User-token': getToken().token
             },
         })
-            .then((res) => {
-                resolve();
-            });
+        .then((res) => {
+            resolve();
+        })
+        .catch((err) => {
+            console.error(`[heatzy]: Could not update device ${deviceId}.`);
+            reject();
+        });
 
     });
 }

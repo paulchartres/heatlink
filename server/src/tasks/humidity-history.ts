@@ -9,7 +9,11 @@ export function archiveHumidityHistory() {
                 archiveHumidity(deviceInfo.attr.cur_humi, device.did).then(() => {
                     console.log(`[humidity-history]: Archived humidity.`);
                 });
+            }).catch(() => {
+                console.warn(`[humidity-history]: Could not retrieve device info for ${device.did}.`);
             });
         }
+    }).catch(() => {
+        console.warn(`[humidity-history]: Could not retrieve list of devices.`);
     });
 }

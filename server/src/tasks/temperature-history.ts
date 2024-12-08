@@ -9,7 +9,11 @@ export function archiveTemperatureHistory() {
                 archiveTemperature(deviceInfo.attr.cur_temp / 10, device.did).then(() => {
                     console.log(`[temperature-history]: Archived temperature.`);
                 });
+            }).catch(() => {
+                console.warn(`[temperature-history]: Could not retrieve device info for ${device.did}.`);
             });
         }
+    }).catch(() => {
+        console.warn(`[temperature-history]: Could not retrieve list of devices.`);
     });
 }
