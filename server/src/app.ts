@@ -35,6 +35,8 @@ import { WebSocket } from "ws";
 import {convertHeatzyDeviceInfoToReadable} from "./converters/device-info";
 import {DeviceInfo} from "./models/device-info";
 import {DeviceWebsocketEvent} from "./events/device-websocket-event";
+import {Weather} from "./models/weather";
+import {autoUpdateWeather} from "./tasks/weather-auto-update";
 
 const app: expressWs.Application = expressWs(express()).app;
 const port = process.env.PORT || 3000;
@@ -755,11 +757,11 @@ app.get('/weather', function (req: Request, res: Response) {
 
 // Websockets
 // TODO move this whole block to the proper websocket service
-const connections: WebSocket[] = [];
+const devicesWsConnections: WebSocket[] = [];
 app.ws('/ws/devices', (ws, req) => {
-    connections.push(ws);
+    devicesWsConnections.push(ws);
     ws.on('close', () => {
-        connections.splice(connections.indexOf(ws), 1);
+        devicesWsConnections.splice(devicesWsConnections.indexOf(ws), 1);
     });
 });
 export function broadcastDeviceInfo(deviceInfo: DeviceInfo, deviceId: string): void {
@@ -767,8 +769,39 @@ export function broadcastDeviceInfo(deviceInfo: DeviceInfo, deviceId: string): v
         deviceId,
         data: convertHeatzyDeviceInfoToReadable(deviceInfo)
     }
-    for (const client of connections) {
+    for (const client of devicesWsConnections) {
         client.send(JSON.stringify(event));
+    }
+}
+
+// TODO move this whole block to the proper websocket service
+const weatherWsConnections: WebSocket[] = [];
+app.ws('/ws/weather', (ws, req) => {
+    weatherWsConnections.push(ws);
+    ws.on('close', () => {
+        weatherWsConnections.splice(weatherWsConnections.indexOf(ws), 1);
+    });
+});
+export function broadcastWeather(weather: Weather): void {
+    for (const client of weatherWsConnections) {
+        client.send(JSON.stringify(weather));
+    }
+}
+export function isWeatherWsInUse(): boolean {
+    return weatherWsConnections.length > 0;
+}
+
+// TODO move this whole block to the proper websocket service
+const historyWsConnections: WebSocket[] = [];
+app.ws('/ws/history', (ws, req) => {
+    historyWsConnections.push(ws);
+    ws.on('close', () => {
+        historyWsConnections.splice(historyWsConnections.indexOf(ws), 1);
+    });
+});
+export function broadcastHistoryUpdate(): void {
+    for (const client of historyWsConnections) {
+        client.send('true');
     }
 }
 
@@ -776,6 +809,11 @@ export function broadcastDeviceInfo(deviceInfo: DeviceInfo, deviceId: string): v
 cron.schedule('0 * * * *', autoRefreshToken);
 cron.schedule(process.env.ARCHIVAL_CRON ? process.env.ARCHIVAL_CRON : '* * * * *', archiveTemperatureHistory);
 cron.schedule(process.env.ARCHIVAL_CRON ? process.env.ARCHIVAL_CRON : '* * * * *', archiveHumidityHistory);
+
+if (process.env.LATITUDE && process.env.LONGITUDE) {
+    cron.schedule('*/5 * * * *', autoUpdateWeather);
+}
+
 
 figlet('Heatlink', { horizontalLayout: 'full', font: 'Big' }, (err, data) => {
     console.log(data);

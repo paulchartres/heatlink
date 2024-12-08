@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgIcon} from "@ng-icons/core";
 import {CommonModule} from "@angular/common";
 import {Color, LineChartModule, ScaleType, Series} from "@swimlane/ngx-charts";
@@ -8,6 +8,7 @@ import {DateTime} from "luxon";
 import {HistoryInterval} from "../../enums/history-interval";
 import {MinMax} from "../../models/min-max";
 import {Subject} from "rxjs";
+import {HistoryWsService} from "../../services/ws/history/history-ws.service";
 
 @Component({
   selector: 'app-history-graphs',
@@ -20,7 +21,7 @@ import {Subject} from "rxjs";
   templateUrl: './history-graphs.component.html',
   styleUrl: './history-graphs.component.scss'
 })
-export class HistoryGraphsComponent implements OnChanges {
+export class HistoryGraphsComponent implements OnChanges, OnInit {
 
   @Input({ required: true }) temperatureData!: TemperatureHistory[];
   @Input({ required: true }) humidityData!: HumidityHistory[];
@@ -50,6 +51,18 @@ export class HistoryGraphsComponent implements OnChanges {
       series: []
     }
   ];
+
+  constructor(private _historyWs: HistoryWsService) {}
+
+  ngOnInit() {
+    this._getHistoryUpdateEvents();
+  }
+
+  private _getHistoryUpdateEvents(): void {
+    this._historyWs.getHistoryUpdateBus().subscribe(() => {
+        this.onSetInterval(this.selectedInterval);
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('temperatureData')) {

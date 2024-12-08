@@ -20,6 +20,7 @@ import {SpecialMode} from "../../services/api/models/special-mode";
 import {SkeletonLoaderComponent} from "../skeleton-loader/skeleton-loader.component";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {DevicesWsService} from "../../services/ws/devices/devices-ws.service";
+import {HistoryWsService} from "../../services/ws/history/history-ws.service";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -70,7 +71,6 @@ export class DeviceHeatzyProComponent implements OnInit {
 
   private _getWsEvents(): void {
     this._devicesWs.getDeviceEventBus(this.device.deviceId).subscribe((event) => {
-      console.log(event.data);
       this.deviceInfo = event.data;
       this.selectedMode = event.data.mode;
     });

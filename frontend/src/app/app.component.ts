@@ -41,6 +41,8 @@ import {Notification} from "./models/notification";
 import {NotificationsService} from "./services/notifications/notifications.service";
 import {DevicesWsService} from "./services/ws/devices/devices-ws.service";
 import {NgScrollbar} from "ngx-scrollbar";
+import {WeatherWsService} from "./services/ws/weather/weather-ws.service";
+import {HistoryWsService} from "./services/ws/history/history-ws.service";
 
 @Component({
   selector: 'app-root',
@@ -91,6 +93,8 @@ export class AppComponent implements OnInit {
   constructor(private _api: ApiService,
               private _notifications: NotificationsService,
               private _devicesWs: DevicesWsService,
+              private _weatherWs: WeatherWsService,
+              private _historyWs: HistoryWsService,
               public data: DataService,
               public modals: ModalsService,
               public wmo: WmoService) {}
@@ -98,9 +102,18 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.data.fetchDevices();
     this._devicesWs.connect();
+    this._weatherWs.connect();
+    this._historyWs.connect();
     this._getWeather();
     this._initTimeUpdate();
     this._getNotifications();
+    this._subscribeToWeatherWs();
+  }
+
+  private _subscribeToWeatherWs(): void {
+    this._weatherWs.getWeatherEventBus().subscribe((event) => {
+      this.currentWeather = event;
+    });
   }
 
   private _getNotifications(): void {

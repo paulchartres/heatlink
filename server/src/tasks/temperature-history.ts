@@ -1,5 +1,6 @@
 import {getDeviceInfo, getDevices} from "../services/heatzy";
 import {archiveTemperature} from "../services/database";
+import {broadcastHistoryUpdate} from "../app";
 
 export function archiveTemperatureHistory() {
     console.log(`[temperature-history]: Archiving temperature history...`);
@@ -8,6 +9,7 @@ export function archiveTemperatureHistory() {
             getDeviceInfo(device.did).then((deviceInfo) => {
                 archiveTemperature(deviceInfo.attrs.cur_temp / 10, device.did).then(() => {
                     console.log(`[temperature-history]: Archived temperature.`);
+                    broadcastHistoryUpdate();
                 });
             }).catch(() => {
                 console.warn(`[temperature-history]: Could not retrieve device info for ${device.did}.`);
