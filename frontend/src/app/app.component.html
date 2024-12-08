@@ -35,6 +35,12 @@
 
   <div class="main-content-wrapper">
 
+    <div class="notifications-wrapper">
+      @for (notification of notifications; track notification) {
+        <app-notification @fade [notification]="notification" (close)="onCloseNotification(notification)" class="notification"></app-notification>
+      }
+    </div>
+
     <div class="main-header">
      <div class="main-date-time-wrapper">
        <span class="main-time">{{ now.toFormat('HH:mm') }}</span>

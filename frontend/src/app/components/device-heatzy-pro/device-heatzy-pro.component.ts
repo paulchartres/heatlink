@@ -13,11 +13,12 @@ import {HumidityHistory} from "../../services/api/models/humidity-history";
 import {ApiService} from "../../services/api/services/api.service";
 import {forkJoin} from "rxjs";
 import {MinMax} from "../../models/min-max";
-import {DateTime} from "luxon";
+import {DateTime, Duration} from "luxon";
 import {DeviceInfoStripped} from "../../services/api/models/device-info-stripped";
 import {DataService} from "../../services/data/data.service";
 import {SpecialMode} from "../../services/api/models/special-mode";
 import {SkeletonLoaderComponent} from "../skeleton-loader/skeleton-loader.component";
+import {NotificationsService} from "../../services/notifications/notifications.service";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -55,6 +56,7 @@ export class DeviceHeatzyProComponent implements OnInit {
 
   constructor(private _modals: ModalsService,
               private _data: DataService,
+              private _notifications: NotificationsService,
               private _api: ApiService) {}
 
   ngOnInit() {
@@ -220,8 +222,7 @@ export class DeviceHeatzyProComponent implements OnInit {
             duration: value
           }
         }).subscribe(() => {
-          console.log('Vacancy mode enabled');
-          // TODO display vacancy status on device card
+          this._notifications._notify({ body: `Vacancy mode has been enabled for ${value} day${value > 1 ? 's' : ''}.`, icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -240,8 +241,7 @@ export class DeviceHeatzyProComponent implements OnInit {
             duration: value
           }
         }).subscribe(() => {
-          console.log('Boost mode enabled');
-          // TODO display boost status on device card
+          this._notifications._notify({ body: `Boost mode has been enabled for ${Duration.fromObject({ minutes: value }).toFormat('hh:mm')}.`, icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -254,13 +254,13 @@ export class DeviceHeatzyProComponent implements OnInit {
       this._api.deviceDeviceIdLockPost({
         deviceId: this.device.deviceId
       }).subscribe(() => {
-        // TODO display notification
+        this._notifications._notify({ body: `This device's interface is now locked.`, icon: 'matLockOutline', deviceName: this.device.readableName });
       });
     } else {
       this._api.deviceDeviceIdUnlockPost({
         deviceId: this.device.deviceId
       }).subscribe(() => {
-        // TODO display notification
+        this._notifications._notify({ body: `This device's interface is now unlocked.`, icon: 'matLockOpenOutline', deviceName: this.device.readableName });
       });
     }
   }
@@ -271,7 +271,7 @@ export class DeviceHeatzyProComponent implements OnInit {
     this._api.deviceDeviceIdMotionDetectionPost({
       deviceId: this.device.deviceId
     }).subscribe(() => {
-      // TODO display notification
+      this._notifications._notify({ body: `Motion detection mode has been enabled.`, icon: 'matPersonOutline', deviceName: this.device.readableName });
     });
   }
 
@@ -283,7 +283,7 @@ export class DeviceHeatzyProComponent implements OnInit {
         this._api.deviceDeviceIdResetSpecialModePost({
           deviceId
         }).subscribe(() => {
-          // TODO display notification
+          this._notifications._notify({ body: `Motion detection mode has been disabled.`, icon: 'matPersonOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -297,7 +297,7 @@ export class DeviceHeatzyProComponent implements OnInit {
         this._api.deviceDeviceIdResetSpecialModePost({
           deviceId
         }).subscribe(() => {
-          // TODO display notification
+          this._notifications._notify({ body: `Boost mode has been disabled.`, icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -311,7 +311,7 @@ export class DeviceHeatzyProComponent implements OnInit {
         this._api.deviceDeviceIdResetSpecialModePost({
           deviceId
         }).subscribe(() => {
-          // TODO display notification
+          this._notifications._notify({ body: `Vacancy mode has been disabled.`, icon: 'matWorkOutlineOutline', deviceName: this.device.readableName });
         });
       }
     });

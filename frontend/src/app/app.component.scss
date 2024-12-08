@@ -15,7 +15,28 @@
   flex-direction: column;
   margin: auto;
   padding: 4rem;
+  position: relative;
   box-sizing: border-box;
+}
+
+.notifications-wrapper {
+  position: absolute;
+  box-sizing: border-box;
+  width: calc(100% - 8rem);
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  margin-top: -4rem;
+  padding: 1rem;
+  align-items: center;
+  row-gap: 0.5rem;
+}
+
+.notification {
+  width: 80%;
 }
 
 .main-title {

@@ -1,0 +1,8 @@
+<div class="notification-wrapper">
+  <ng-icon class="notification-icon" [svg]="iconSvg"></ng-icon>
+  <span class="notification-text">{{notification.body}}</span>
+
+  <span class="notification-device-name">{{notification.deviceName}}</span>
+
+  <div class="remaining-time-bar" [ngStyle]="{ width: getRemainingTimeBarWidth() + '%' }"></div>
+</div>

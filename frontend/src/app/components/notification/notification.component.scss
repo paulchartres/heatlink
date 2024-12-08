@@ -1,0 +1,39 @@
+.notification-wrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  background: #232323;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  align-items: center;
+  column-gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.notification-text {
+  font-weight: 200;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.notification-icon {
+  opacity: 0.8;
+  font-size: 1.2rem;
+}
+
+.remaining-time-bar {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: orange;
+  margin-left: -1rem;
+}
+
+.notification-device-name {
+  margin-left: auto;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-weight: 200;
+}

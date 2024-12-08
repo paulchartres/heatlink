@@ -8,7 +8,8 @@ import {WeekDay} from "../../services/api/models/week-day";
 import {Point} from "../../models/point.model";
 import {fadeAnimation} from "../../animations/fade-in-out.animation";
 import {ApiService} from "../../services/api/services/api.service";
-import {DateTime} from "luxon";
+import {DateTime, Duration} from "luxon";
+import {NotificationsService} from "../../services/notifications/notifications.service";
 
 @Component({
   selector: 'app-heating-schedule',
@@ -27,6 +28,7 @@ export class HeatingScheduleComponent implements OnInit {
 
   @Input({ required: true }) schedule!: HeatingSchedule[];
   @Input({ required: true }) deviceId!: string;
+  @Input({ required: true }) deviceName!: string;
   @Input({ required: true }) scheduleModeStatus!: boolean;
 
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
@@ -96,7 +98,8 @@ export class HeatingScheduleComponent implements OnInit {
     "00:00"
   ];
 
-  constructor(private _api: ApiService) {}
+  constructor(private _api: ApiService,
+              private _notifications: NotificationsService) {}
 
   ngOnInit() {
     this.scheduleMode = this.scheduleModeStatus;
@@ -225,7 +228,7 @@ export class HeatingScheduleComponent implements OnInit {
       deviceId: this.deviceId,
       body: this.schedule
     }).subscribe(() => {
-      // TODO display notification
+      this._notifications._notify({ body: `The heating schedule for this device has been updated.`, icon: 'matAlarmOutline', deviceName: this.deviceName });
     });
   }
 

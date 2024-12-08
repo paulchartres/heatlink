@@ -36,6 +36,9 @@ import {PromptModalComponent} from "./modals/prompt-modal/prompt-modal.component
 import {DateTime} from "luxon";
 import {WmoService} from "./services/wmo/wmo.service";
 import {Weather} from "./services/api/models/weather";
+import {NotificationComponent} from "./components/notification/notification.component";
+import {Notification} from "./models/notification";
+import {NotificationsService} from "./services/notifications/notifications.service";
 
 @Component({
   selector: 'app-root',
@@ -49,7 +52,8 @@ import {Weather} from "./services/api/models/weather";
     BoostModalComponent,
     ClickOutsideDirective,
     DeviceHeatzyProComponent,
-    PromptModalComponent
+    PromptModalComponent,
+    NotificationComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -79,8 +83,10 @@ export class AppComponent implements OnInit {
 
   now: DateTime = DateTime.now();
   currentWeather?: Weather;
+  notifications: Notification[] = [];
 
   constructor(private _api: ApiService,
+              private _notifications: NotificationsService,
               public data: DataService,
               public modals: ModalsService,
               public wmo: WmoService) {}
@@ -89,6 +95,13 @@ export class AppComponent implements OnInit {
     this.data.fetchDevices();
     this._getWeather();
     this._initTimeUpdate();
+    this._getNotifications();
+  }
+
+  private _getNotifications(): void {
+    this._notifications.getNotificationEvent().subscribe((notification) => {
+      this.notifications.push(notification);
+    });
   }
 
   private _getWeather(): void {
@@ -129,6 +142,10 @@ export class AppComponent implements OnInit {
 
   onCloseDisableVacancyModal(): void {
     this.modals.onCloseDisableVacancyModal();
+  }
+
+  onCloseNotification(notification: Notification): void {
+    this.notifications.splice(this.notifications.indexOf(notification), 1);
   }
 
   protected readonly HeatingMode = HeatingMode;
