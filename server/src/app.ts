@@ -774,8 +774,8 @@ export function broadcastDeviceInfo(deviceInfo: DeviceInfo, deviceId: string): v
 
 // CRON jobs
 cron.schedule('0 * * * *', autoRefreshToken);
-cron.schedule('* * * * *', archiveTemperatureHistory);
-cron.schedule('* * * * *', archiveHumidityHistory);
+cron.schedule(process.env.ARCHIVAL_CRON ? process.env.ARCHIVAL_CRON : '* * * * *', archiveTemperatureHistory);
+cron.schedule(process.env.ARCHIVAL_CRON ? process.env.ARCHIVAL_CRON : '* * * * *', archiveHumidityHistory);
 
 figlet('Heatlink', { horizontalLayout: 'full', font: 'Big' }, (err, data) => {
     console.log(data);
