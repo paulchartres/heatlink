@@ -40,6 +40,7 @@ import {NotificationComponent} from "./components/notification/notification.comp
 import {Notification} from "./models/notification";
 import {NotificationsService} from "./services/notifications/notifications.service";
 import {DevicesWsService} from "./services/ws/devices/devices-ws.service";
+import {NgScrollbar} from "ngx-scrollbar";
 
 @Component({
   selector: 'app-root',
@@ -54,7 +55,8 @@ import {DevicesWsService} from "./services/ws/devices/devices-ws.service";
     ClickOutsideDirective,
     DeviceHeatzyProComponent,
     PromptModalComponent,
-    NotificationComponent
+    NotificationComponent,
+    NgScrollbar
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

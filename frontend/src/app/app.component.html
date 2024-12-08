@@ -59,13 +59,15 @@
       Welcome to your Heatzy dashboard!
     </span>
 
-    <div class="devices-wrapper">
+    <ng-scrollbar>
+      <div class="devices-wrapper">
 
-      @for (device of (data.getDevices() | async); track device.deviceId) {
-        <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
-      }
+          @for (device of (data.getDevices() | async); track device.deviceId) {
+            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+          }
 
-    </div>
+      </div>
+    </ng-scrollbar>
 
   </div>
 
