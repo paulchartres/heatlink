@@ -28,6 +28,7 @@ import {archiveTemperatureHistory} from "./tasks/temperature-history";
 import {archiveHumidityHistory} from "./tasks/humidity-history";
 import {HeatingMode} from "./enums/heating-mode";
 import {getCurrentWeather} from "./services/open-meteo";
+import {autoRefreshToken} from "./services/authentication";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -764,6 +765,7 @@ app.get('/weather', function (req: Request, res: Response) {
 });
 
 // CRON jobs
+cron.schedule('0 * * * *', autoRefreshToken);
 cron.schedule('* * * * *', archiveTemperatureHistory);
 cron.schedule('* * * * *', archiveHumidityHistory);
 
