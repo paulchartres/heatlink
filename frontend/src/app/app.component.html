@@ -64,10 +64,23 @@
 
           @for (device of (data.getDevices() | async); track device.deviceId) {
             <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
           }
 
       </div>
     </ng-scrollbar>
+
+    <div class="watermark">
+      <span>Made with</span>
+      <ng-icon class="watermark-heart" name="matFavoriteOutline"></ng-icon>
+      <span>by</span>
+      <a class="watermark-link" href="https://pauldln.fr" target="_blank">CykaDev</a>
+    </div>
 
   </div>
 

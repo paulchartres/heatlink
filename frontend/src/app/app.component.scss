@@ -93,3 +93,25 @@
   font-weight: 200;
   opacity: 0.8;
 }
+
+.watermark {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  column-gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.watermark-heart {
+  color: orange;
+}
+
+.watermark-link {
+  text-decoration: underline;
+  color: white;
+}

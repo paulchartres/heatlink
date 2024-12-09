@@ -9,7 +9,7 @@ import {
   matAlarmOutline,
   matBedtimeOutline,
   matCircleOutline,
-  matCloudOffOutline,
+  matCloudOffOutline, matFavoriteOutline,
   matHideSourceOutline, matHistoryOutline,
   matLocalFireDepartmentOutline,
   matLockOpenOutline,
@@ -77,7 +77,8 @@ import {HistoryWsService} from "./services/ws/history/history-ws.service";
       matWorkOutlineOutline,
       matCloudOffOutline,
       matCircleOutline,
-      matHistoryOutline
+      matHistoryOutline,
+      matFavoriteOutline
     })
   ],
   animations: [fadeAnimation]

@@ -55,6 +55,8 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
   constructor(private _historyWs: HistoryWsService) {}
 
   ngOnInit() {
+    // To auto update data when we open the widget
+    this.onSetInterval(this.selectedInterval);
     this._getHistoryUpdateEvents();
   }
 
