@@ -1,14 +1,14 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {HeatingMode} from "../../services/api/models/heating-mode";
 import {isBetween} from "../../helpers/math.helper";
-import {CommonModule, KeyValuePipe} from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {NgIcon} from "@ng-icons/core";
 import {HeatingSchedule} from "../../services/api/models/heating-schedule";
 import {WeekDay} from "../../services/api/models/week-day";
 import {Point} from "../../models/point.model";
 import {fadeAnimation} from "../../animations/fade-in-out.animation";
 import {ApiService} from "../../services/api/services/api.service";
-import {DateTime, Duration} from "luxon";
+import {DateTime, Info} from "luxon";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {ButtonComponent} from "../button/button.component";
 
@@ -47,6 +47,7 @@ export class HeatingScheduleComponent implements OnInit {
   dragging: boolean = false;
   heatingModeCoordinates?: Point;
   now: DateTime = DateTime.now();
+  currentDay: WeekDay = WeekDay.Unknown;
 
   timeKeys: string[] = [
     "00:00",
@@ -104,12 +105,14 @@ export class HeatingScheduleComponent implements OnInit {
               private _notifications: NotificationsService) {}
 
   ngOnInit() {
+    this.currentDay = Info.weekdays()[this.now.weekday - 1].toUpperCase() as WeekDay;
     this._initTime();
   }
 
   private _initTime(): void {
     setInterval(() => {
       this.now = DateTime.now();
+      this.currentDay = Info.weekdays()[this.now.weekday - 1].toUpperCase() as WeekDay;
     }, 1000);
   }
 

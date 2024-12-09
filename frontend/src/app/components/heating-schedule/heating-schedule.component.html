@@ -84,7 +84,7 @@
         <div class="device-schedule-day-wrapper">
 
           <div class="device-schedule-day-label-wrapper">
-            <span class="device-schedule-day-label">{{day.day[0]}}</span>
+            <span class="device-schedule-day-label" [ngClass]="{ highlighted: day.day == currentDay }">{{day.day[0]}}</span>
           </div>
 
           @for (section of day.schedule | keyvalue; track section; let i = $index) {

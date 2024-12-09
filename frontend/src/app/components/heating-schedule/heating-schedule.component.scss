@@ -208,6 +208,11 @@
   font-weight: 200;
 }
 
+.device-schedule-day-label.highlighted {
+  color: orange;
+  opacity: 0.75;
+}
+
 .device-schedule-actions {
   display: flex;
   width: 100%;
