@@ -9,6 +9,8 @@ import {HistoryInterval} from "../../enums/history-interval";
 import {MinMax} from "../../models/min-max";
 import {Subject} from "rxjs";
 import {HistoryWsService} from "../../services/ws/history/history-ws.service";
+import {TranslocoDirective} from "@jsverse/transloco";
+import {LocaleService} from "../../services/locale/locale.service";
 
 @Component({
   selector: 'app-history-graphs',
@@ -16,7 +18,8 @@ import {HistoryWsService} from "../../services/ws/history/history-ws.service";
   imports: [
     CommonModule,
     NgIcon,
-    LineChartModule
+    LineChartModule,
+    TranslocoDirective
   ],
   templateUrl: './history-graphs.component.html',
   styleUrl: './history-graphs.component.scss'
@@ -25,9 +28,12 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
 
   @Input({ required: true }) temperatureData!: TemperatureHistory[];
   @Input({ required: true }) humidityData!: HumidityHistory[];
+  @Input({ required: true }) deviceName!: string;
 
   @Output() intervalChange: EventEmitter<MinMax> = new EventEmitter<MinMax>();
   @Output() close: EventEmitter<void> = new EventEmitter();
+
+  dateFormatFunction!: (value: Date) => string;
 
   selectedInterval: HistoryInterval = HistoryInterval.ONE_DAY;
 
@@ -52,7 +58,17 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
     }
   ];
 
-  constructor(private _historyWs: HistoryWsService) {}
+  constructor(private _historyWs: HistoryWsService,
+              public locale: LocaleService) {
+    this.dateFormatFunction = (value: Date): string => {
+      const date: DateTime = DateTime.fromJSDate(value);
+      if (date.hour == 0) {
+        return date.toLocaleString(DateTime.DATE_MED, { locale: this.locale.getCurrentLocale() });
+      } else {
+        return date.toLocaleString(DateTime.TIME_SIMPLE, { locale: this.locale.getCurrentLocale() });
+      }
+    }
+  }
 
   ngOnInit() {
     // To auto update data when we open the widget

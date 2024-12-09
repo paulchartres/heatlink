@@ -1,4 +1,4 @@
-<div class="prompt-modal-wrapper">
+<div class="prompt-modal-wrapper" *transloco="let t">
 
   <div class="prompt-modal-background" appClickOutside (clickOutside)="onCancel()">
 
@@ -9,11 +9,11 @@
     <div class="prompt-modal-actions">
 
       <div class="prompt-modal-cancel">
-        <span class="prompt-modal-cancel-label" (click)="onCancel()">Cancel</span>
+        <span class="prompt-modal-cancel-label" (click)="onCancel()">{{ t('cancel') }}</span>
       </div>
 
       <div class="prompt-modal-button">
-        <span class="prompt-modal-button-label" (click)="onConfirm()">Confirm</span>
+        <span class="prompt-modal-button-label" (click)="onConfirm()">{{ t('confirm') }}</span>
       </div>
 
     </div>

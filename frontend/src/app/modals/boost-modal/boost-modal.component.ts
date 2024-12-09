@@ -5,6 +5,7 @@ import {matMinusOutline, matPlusOutline} from "@ng-icons/material-icons/outline"
 import {DateTime, Duration} from "luxon";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {ModalConfig} from "../../models/modal-config";
+import {TranslocoDirective} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-boost-modal',
@@ -12,7 +13,8 @@ import {ModalConfig} from "../../models/modal-config";
   imports: [
     NgxGaugeModule,
     NgIconComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    TranslocoDirective
   ],
   providers: [
     provideIcons({

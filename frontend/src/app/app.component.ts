@@ -43,6 +43,8 @@ import {DevicesWsService} from "./services/ws/devices/devices-ws.service";
 import {NgScrollbar} from "ngx-scrollbar";
 import {WeatherWsService} from "./services/ws/weather/weather-ws.service";
 import {HistoryWsService} from "./services/ws/history/history-ws.service";
+import {TranslocoDirective} from "@jsverse/transloco";
+import {LocaleService} from "./services/locale/locale.service";
 
 @Component({
   selector: 'app-root',
@@ -58,7 +60,8 @@ import {HistoryWsService} from "./services/ws/history/history-ws.service";
     DeviceHeatzyProComponent,
     PromptModalComponent,
     NotificationComponent,
-    NgScrollbar
+    NgScrollbar,
+    TranslocoDirective
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -85,22 +88,23 @@ import {HistoryWsService} from "./services/ws/history/history-ws.service";
 })
 export class AppComponent implements OnInit {
 
-  title = 'heatlink';
-
   now: DateTime = DateTime.now();
   currentWeather?: Weather;
   notifications: Notification[] = [];
+  languagePicker: boolean = false;
 
   constructor(private _api: ApiService,
               private _notifications: NotificationsService,
               private _devicesWs: DevicesWsService,
               private _weatherWs: WeatherWsService,
               private _historyWs: HistoryWsService,
+              public locale: LocaleService,
               public data: DataService,
               public modals: ModalsService,
               public wmo: WmoService) {}
 
   ngOnInit() {
+    this.locale.init();
     this.data.fetchDevices();
     this._devicesWs.connect();
     this._weatherWs.connect();
@@ -165,6 +169,19 @@ export class AppComponent implements OnInit {
 
   onCloseNotification(notification: Notification): void {
     this.notifications.splice(this.notifications.indexOf(notification), 1);
+  }
+
+  onOpenLanguagePicker(): void {
+    this.languagePicker = true;
+  }
+
+  onCloseLanguagePicker(): void {
+    this.languagePicker = false;
+  }
+
+  onSetLocale(locale: string): void {
+    this.onCloseLanguagePicker();
+    this.locale.setCurrentLocale(locale);
   }
 
   protected readonly HeatingMode = HeatingMode;

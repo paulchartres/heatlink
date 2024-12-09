@@ -1,12 +1,12 @@
-<div class="fullpage-wrapper">
+<div class="fullpage-wrapper" *transloco="let t">
 
   <!-- Modals -->
   @if (modals.getComfortTemperatureModalConfig() | async) {
-    <app-temperature-modal @fade [config]="(modals.getComfortTemperatureModalConfig() | async)!" [min]="15" [max]="30" [temperature]="18" label="Comfort temperature" (cancel)="onCloseComfortTemperatureModal()"></app-temperature-modal>
+    <app-temperature-modal @fade [config]="(modals.getComfortTemperatureModalConfig() | async)!" [min]="15" [max]="30" [temperature]="18" [label]="t('comfort-temperature')" (cancel)="onCloseComfortTemperatureModal()"></app-temperature-modal>
   }
 
   @if (modals.getEcoTemperatureModalConfig() | async) {
-    <app-temperature-modal @fade [config]="(modals.getEcoTemperatureModalConfig() | async)!" [min]="10" [max]="17.5" [temperature]="15" label="Eco temperature" (cancel)="onCloseEcoTemperatureModal()"></app-temperature-modal>
+    <app-temperature-modal @fade [config]="(modals.getEcoTemperatureModalConfig() | async)!" [min]="10" [max]="17.5" [temperature]="15" [label]="t('eco-temperature')" (cancel)="onCloseEcoTemperatureModal()"></app-temperature-modal>
   }
 
   @if (modals.getVacancyModalConfig() | async) {
@@ -18,18 +18,18 @@
   }
 
   @if (modals.getDisableMotionDetectionModalConfig() | async) {
-    <app-prompt-modal @fade [config]="(modals.getDisableMotionDetectionModalConfig() | async)!" label="Stop motion detection"
-                      body="Are you sure you wish to stop the motion detection mode?" (cancel)="onCloseDisableMotionDetectionModal()"></app-prompt-modal>
+    <app-prompt-modal @fade [config]="(modals.getDisableMotionDetectionModalConfig() | async)!" [label]="t('stop-motion-detection')"
+                      [body]="t('stop-motion-detection-body')" (cancel)="onCloseDisableMotionDetectionModal()"></app-prompt-modal>
   }
 
   @if (modals.getDisableBoostModalConfig() | async) {
-    <app-prompt-modal @fade [config]="(modals.getDisableBoostModalConfig() | async)!" label="Stop boost mode"
-                      body="Are you sure you wish to stop the current boost mode?" (cancel)="onCloseDisableBoostModal()"></app-prompt-modal>
+    <app-prompt-modal @fade [config]="(modals.getDisableBoostModalConfig() | async)!" [label]="t('stop-boost')"
+                      [body]="t('stop-boost-body')" (cancel)="onCloseDisableBoostModal()"></app-prompt-modal>
   }
 
   @if (modals.getDisableVacancyModalConfig() | async) {
-    <app-prompt-modal @fade [config]="(modals.getDisableVacancyModalConfig() | async)!" label="Stop vacancy mode"
-                      body="Are you sure you wish to stop the current vacancy mode?" (cancel)="onCloseDisableVacancyModal()"></app-prompt-modal>
+    <app-prompt-modal @fade [config]="(modals.getDisableVacancyModalConfig() | async)!" [label]="t('stop-vacancy')"
+                      [body]="t('stop-vacancy-body')" (cancel)="onCloseDisableVacancyModal()"></app-prompt-modal>
   }
   <!-- End modals -->
 
@@ -43,8 +43,8 @@
 
     <div class="main-header">
      <div class="main-date-time-wrapper">
-       <span class="main-time">{{ now.toFormat('HH:mm') }}</span>
-       <span class="main-date">{{ now.toFormat('cccc, LLLL dd') }}</span>
+       <span class="main-time">{{ now.toLocaleString(DateTime.TIME_SIMPLE, { locale: locale.getCurrentLocale() }) }}</span>
+       <span class="main-date">{{ now.toLocaleString(DateTime.DATE_FULL, { locale: locale.getCurrentLocale() }) }}</span>
      </div>
 
       @if (currentWeather) {
@@ -56,7 +56,7 @@
     </div>
 
     <span class="main-title">
-      Welcome to your Heatzy dashboard!
+      {{ t('welcome-title') }}
     </span>
 
     <ng-scrollbar class="devices-scrollbox">
@@ -64,21 +64,48 @@
 
           @for (device of (data.getDevices() | async); track device.deviceId) {
             <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
-            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
-            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
-            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
-            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
-            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
-            <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
           }
 
       </div>
     </ng-scrollbar>
 
+    <div class="language-picker">
+      @switch (locale.getCurrentLocale()) {
+
+        @case ('en') {
+          <div class="language-picker-current-language" (click)="onOpenLanguagePicker()">
+            <img class="language-picker-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"/>
+            <span class="language-picker-label">{{ t('english') }}</span>
+          </div>
+        }
+        @case ('fr') {
+          <div class="language-picker-current-language" (click)="onOpenLanguagePicker()">
+            <img class="language-picker-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg"/>
+            <span class="language-picker-label">{{ t('french') }}</span>
+          </div>
+        }
+
+      }
+
+      @if (languagePicker) {
+        <div class="language-picker-menu" @fade appClickOutside (clickOutside)="onCloseLanguagePicker()">
+          <div class="language-picker-item" (click)="onSetLocale('fr')">
+            <img class="language-picker-item-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg"/>
+            <span class="language-picker-item-label">{{ t('french') }}</span>
+          </div>
+          <div class="language-picker-item" (click)="onSetLocale('en')">
+            <img class="language-picker-item-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"/>
+            <span class="language-picker-item-label">{{ t('english') }}</span>
+          </div>
+        </div>
+      }
+
+    </div>
+
     <div class="watermark">
-      <span>Made with</span>
+      <span>{{ t('made-with') }}</span>
       <ng-icon class="watermark-heart" name="matFavoriteOutline"></ng-icon>
-      <span>by</span>
+      <span>{{ t('by') }}</span>
       <a class="watermark-link" href="https://pauldln.fr" target="_blank">CykaDev</a>
     </div>
 

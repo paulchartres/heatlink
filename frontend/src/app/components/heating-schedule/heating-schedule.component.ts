@@ -11,6 +11,7 @@ import {ApiService} from "../../services/api/services/api.service";
 import {DateTime, Info} from "luxon";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {ButtonComponent} from "../button/button.component";
+import {TranslocoDirective, TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-heating-schedule',
@@ -18,7 +19,8 @@ import {ButtonComponent} from "../button/button.component";
   imports: [
     CommonModule,
     NgIcon,
-    ButtonComponent
+    ButtonComponent,
+    TranslocoDirective
   ],
   templateUrl: './heating-schedule.component.html',
   styleUrl: './heating-schedule.component.scss',
@@ -102,6 +104,7 @@ export class HeatingScheduleComponent implements OnInit {
   ];
 
   constructor(private _api: ApiService,
+              private _transloco: TranslocoService,
               private _notifications: NotificationsService) {}
 
   ngOnInit() {
@@ -120,7 +123,7 @@ export class HeatingScheduleComponent implements OnInit {
     this._api.deviceDeviceIdScheduleModePost({
       deviceId: this.deviceId,
       body: {
-        enable: !this.scheduleMode
+        enable: mode
       }
     }).subscribe(() => {});
   }
@@ -212,7 +215,6 @@ export class HeatingScheduleComponent implements OnInit {
   @HostListener('document:mouseup', ['$event'])
   onMouseUp(event: MouseEvent): void {
     if (this.selectedDay && this.startSectionIndex != undefined) {
-
       this.dragging = false;
       this.heatingModeCoordinates = {
         x: this.xOffset!  - this.scheduleWrapper.nativeElement.getBoundingClientRect().x,
@@ -232,7 +234,7 @@ export class HeatingScheduleComponent implements OnInit {
       body: this.schedule
     }).subscribe(() => {
       this.loading = false;
-      this._notifications._notify({ body: `The heating schedule for this device has been updated.`, icon: 'matAlarmOutline', deviceName: this.deviceName });
+      this._notifications._notify({ body: this._transloco.translate('heating-schedule-updated-notification'), icon: 'matAlarmOutline', deviceName: this.deviceName });
     });
   }
 

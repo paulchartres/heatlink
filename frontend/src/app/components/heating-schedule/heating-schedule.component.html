@@ -1,10 +1,10 @@
-<div class="device-schedule">
+<div class="device-schedule" *transloco="let t">
 
   <div class="device-schedule-title-row">
 
     <span class="device-schedule-title">
-      Heating schedule for
-      <span class="device-schedule-title-highlight">Bureau</span>
+      {{ t('heating-schedule-for') }}
+      <span class="device-schedule-title-highlight">{{deviceName}}</span>
     </span>
 
     <div class="device-schedule-control-bar">
@@ -24,7 +24,7 @@
       <div @fade class="device-schedule-mode-selector"
            [ngClass]="{ mirror: adjacentSections! > 0 }"
            [ngStyle]="{ top: heatingModeCoordinates.y + 'px', left: heatingModeCoordinates.x + 'px' }">
-        <span class="device-schedule-mode-selector-title">{{getStartTime()}} to {{getEndTime()}}</span>
+        <span class="device-schedule-mode-selector-title">{{getStartTime()}} {{ t('to') }} {{getEndTime()}}</span>
 
         <div class="heating-mode-controls-bar">
 
@@ -84,7 +84,7 @@
         <div class="device-schedule-day-wrapper">
 
           <div class="device-schedule-day-label-wrapper">
-            <span class="device-schedule-day-label" [ngClass]="{ highlighted: day.day == currentDay }">{{day.day[0]}}</span>
+            <span class="device-schedule-day-label" [ngClass]="{ highlighted: day.day == currentDay }">{{ t(day.day)[0] }}</span>
           </div>
 
           @for (section of day.schedule | keyvalue; track section; let i = $index) {
@@ -108,11 +108,11 @@
   <div class="device-schedule-actions">
 
     <div class="device-schedule-cancel">
-      <span class="device-schedule-cancel-label" (click)="onCloseSchedulingUtility()">Close scheduling utility</span>
+      <span class="device-schedule-cancel-label" (click)="onCloseSchedulingUtility()">{{ t('close-scheduling-utility') }}</span>
     </div>
 
     <app-button (press)="onSaveSchedule()" [loading]="loading">
-      Save schedule
+      {{ t('save-schedule') }}
     </app-button>
 
   </div>

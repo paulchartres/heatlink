@@ -1,10 +1,14 @@
-import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection, isDevMode, LOCALE_ID} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import {provideHttpClient} from "@angular/common/http";
 import {ApiModule} from "./services/api/api.module";
 import {provideAnimations} from "@angular/platform-browser/animations";
+import { TranslocoHttpLoader } from './transloco-loader';
+import { provideTransloco } from '@jsverse/transloco';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {LuxonDateAdapter, MAT_LUXON_DATE_FORMATS} from "@angular/material-luxon-adapter";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +18,20 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       ApiModule.forRoot({ rootUrl: 'http://localhost:3000' }),
     ),
-    provideAnimations()
+    provideAnimations(),
+    provideHttpClient(),
+    provideTransloco({
+      config: {
+        availableLangs: ['en', 'fr'],
+        defaultLang: 'en',
+        // Remove this option if your application doesn't support changing language in runtime.
+        reRenderOnLangChange: true,
+        prodMode: !isDevMode(),
+      },
+      loader: TranslocoHttpLoader
+    }),
+    { provide: MAT_DATE_LOCALE, useValue: 'en' },
+    { provide: DateAdapter, useClass: LuxonDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_LUXON_DATE_FORMATS }
   ]
 };

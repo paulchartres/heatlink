@@ -4,6 +4,7 @@ import {NgIconComponent, NgIconsModule, provideIcons} from "@ng-icons/core";
 import {matMinusOutline, matPlusOutline} from "@ng-icons/material-icons/outline";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {ModalConfig} from "../../models/modal-config";
+import {TranslocoDirective} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-temperature-modal',
@@ -11,7 +12,8 @@ import {ModalConfig} from "../../models/modal-config";
   imports: [
     NgxGaugeModule,
     NgIconComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    TranslocoDirective
   ],
   providers: [
     provideIcons({

@@ -1,12 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {ModalConfig} from "../../models/modal-config";
+import {TranslocoDirective} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-prompt-modal',
   standalone: true,
   imports: [
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    TranslocoDirective
   ],
   templateUrl: './prompt-modal.component.html',
   styleUrl: './prompt-modal.component.scss'

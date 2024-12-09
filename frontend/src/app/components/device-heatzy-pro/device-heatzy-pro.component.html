@@ -1,9 +1,9 @@
-<div class="device-wrapper">
+<div class="device-wrapper" *transloco="let t">
 
   @if (!device.isOnline) {
     <div class="device-disconnected-overlay">
       <ng-icon class="device-disconnected-icon" name="matCloudOffOutline"></ng-icon>
-      <span class="device-disconnected-text"> This device is offline.</span>
+      <span class="device-disconnected-text">{{ t('device-offline') }}</span>
     </div>
   }
 
@@ -22,7 +22,7 @@
     <div class="device-current-metrics">
 
       <div class="device-current-temperature">
-        <span class="device-current-temperature-title">Temperature</span>
+        <span class="device-current-temperature-title">{{ t('temperature') }}</span>
         <div class="device-current-temperature-row">
           @if (!deviceInfo) {
             <app-skeleton-loader class="device-current-temperature-placeholder" [width]="50" [height]="35"></app-skeleton-loader>
@@ -34,7 +34,7 @@
       </div>
 
       <div class="device-current-humidity">
-        <span class="device-current-humidity-title">Humidity</span>
+        <span class="device-current-humidity-title">{{ t('humidity') }}</span>
         <div class="device-current-humidity-row">
           @if (!deviceInfo) {
             <app-skeleton-loader class="device-current-temperature-placeholder" [width]="50" [height]="35"></app-skeleton-loader>
@@ -57,11 +57,11 @@
         <div class="heating-mode-controls-extra-modes-overlay" appClickOutside (clickOutside)="onCloseExtraModes()">
           <div class="heating-mode-controls-extra-mode" (click)="onSelectHeatingMode(HeatingMode.Comfort1)">
             <ng-icon class="heating-mode-controls-extra-mode-icon" name="matWbSunnyOutline"></ng-icon>
-            <span class="heating-mode-controls-extra-mode-label">Comfort -1</span>
+            <span class="heating-mode-controls-extra-mode-label">{{ t('comfort') }} -1</span>
           </div>
           <div class="heating-mode-controls-extra-mode"  (click)="onSelectHeatingMode(HeatingMode.Comfort2)">
             <ng-icon class="heating-mode-controls-extra-mode-icon" name="matWbSunnyOutline"></ng-icon>
-            <span class="heating-mode-controls-extra-mode-label">Comfort -2</span>
+            <span class="heating-mode-controls-extra-mode-label">{{ t('comfort') }} -2</span>
           </div>
         </div>
       }
@@ -69,17 +69,17 @@
       @if (deviceInfo?.specialMode == SpecialMode.MotionDetection) {
         <div class="heating-mode-controls-button first enabled" (click)="onDisableMotionDetection()">
           <ng-icon class="heating-mode-controls-icon" name="matPersonOutline"></ng-icon>
-          <span class="special-mode-label">Motion</span>
+          <span class="special-mode-label">{{ t('motion') }}</span>
         </div>
       } @else if (deviceInfo?.specialMode == SpecialMode.Boost) {
         <div class="heating-mode-controls-button first enabled" (click)="onDisableBoost()">
           <ng-icon class="heating-mode-controls-icon" name="matLocalFireDepartmentOutline"></ng-icon>
-          <span class="special-mode-label">Boost</span>
+          <span class="special-mode-label">{{ t('boost') }}</span>
         </div>
       } @else if (deviceInfo?.specialMode == SpecialMode.Vacancy) {
         <div class="heating-mode-controls-button first enabled" (click)="onDisableVacancy()">
           <ng-icon class="heating-mode-controls-icon" name="matWorkOutlineOutline"></ng-icon>
-          <span class="special-mode-label">Vacancy</span>
+          <span class="special-mode-label">{{ t('vacancy') }}</span>
         </div>
       } @else {
         <div class="heating-mode-controls-button first" (click)="onSelectHeatingMode(HeatingMode.Off)" [ngClass]="{ enabled: selectedMode == HeatingMode.Off, disabled: deviceInfo?.specialMode != SpecialMode.None }">
@@ -111,32 +111,32 @@
 
           <div class="heating-mode-extra-item" (click)="onOpenSchedulingUtility()">
             <ng-icon class="heating-mode-extra-item-icon" name="matAlarmOutline"></ng-icon>
-            <span class="heating-mode-extra-item-label">Heating schedule</span>
+            <span class="heating-mode-extra-item-label">{{ t('heating-schedule') }}</span>
           </div>
 
           <div class="heating-mode-extra-item" (click)="onEnableMotionDetection()">
             <ng-icon class="heating-mode-extra-item-icon" name="matPersonOutline"></ng-icon>
-            <span class="heating-mode-extra-item-label">Motion detection</span>
+            <span class="heating-mode-extra-item-label">{{ t('motion-detection') }}</span>
           </div>
 
           <div class="heating-mode-extra-item" (click)="onOpenVacancyModal()">
             <ng-icon class="heating-mode-extra-item-icon" name="matWorkOutlineOutline"></ng-icon>
-            <span class="heating-mode-extra-item-label">Vacancy</span>
+            <span class="heating-mode-extra-item-label">{{ t('vacancy') }}</span>
           </div>
 
           <div class="heating-mode-extra-item" (click)="onOpenHistory()">
             <ng-icon class="heating-mode-extra-item-icon" name="matHistoryOutline"></ng-icon>
-            <span class="heating-mode-extra-item-label">History</span>
+            <span class="heating-mode-extra-item-label">{{ t('history') }}</span>
           </div>
 
           <div class="heating-mode-extra-item" (click)="onOpenBoostModal()">
             <ng-icon class="heating-mode-extra-item-icon" name="matLocalFireDepartmentOutline"></ng-icon>
-            <span class="heating-mode-extra-item-label">Boost</span>
+            <span class="heating-mode-extra-item-label">{{ t('boost') }}</span>
           </div>
 
           <div class="heating-mode-extra-item" (click)="onToggleLockMode()">
             <ng-icon class="heating-mode-extra-item-icon" [name]="deviceInfo?.isLocked ? 'matLockOpenOutline' : 'matLockOutline'"></ng-icon>
-            <span class="heating-mode-extra-item-label">{{ deviceInfo?.isLocked ? 'Unlock' : 'Lock' }}</span>
+            <span class="heating-mode-extra-item-label">{{ deviceInfo?.isLocked ? t('unlock') : t('lock') }}</span>
           </div>
 
         </div>
@@ -146,7 +146,7 @@
 
     <div class="target-temperatures-wrapper">
       <div class="target-temperature-row">
-        <span class="target-temperature-label">Comfort:</span>
+        <span class="target-temperature-label">{{ t('comfort') }}:</span>
         @if (!deviceInfo) {
           <app-skeleton-loader [width]="20" [height]="15"></app-skeleton-loader>
         } @else {
@@ -154,7 +154,7 @@
         }
       </div>
       <div class="target-temperature-row">
-        <span class="target-temperature-label">Eco:</span>
+        <span class="target-temperature-label">{{ t('eco') }}:</span>
         @if (!deviceInfo) {
           <app-skeleton-loader [width]="20" [height]="15"></app-skeleton-loader>
         } @else {
@@ -172,5 +172,5 @@
 }
 
 @if (history) {
-  <app-history-graphs @fade [temperatureData]="temperatureData" [humidityData]="humidityData" (intervalChange)="onHistoryIntervalChange($event)" (close)="onCloseHistory()"></app-history-graphs>
+  <app-history-graphs @fade [temperatureData]="temperatureData" [deviceName]="device.readableName" [humidityData]="humidityData" (intervalChange)="onHistoryIntervalChange($event)" (close)="onCloseHistory()"></app-history-graphs>
 }

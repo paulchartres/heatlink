@@ -1,8 +1,8 @@
-<div class="boost-modal-wrapper">
+<div class="boost-modal-wrapper" *transloco="let t">
 
   <div class="boost-modal-background" appClickOutside (clickOutside)="onCancel()">
 
-    <span class="boost-modal-title">Boost mode</span>
+    <span class="boost-modal-title">{{ t('boost-mode') }}</span>
 
     <div class="boost-gauge-wrapper">
       <ngx-gauge [thick]="8" [min]="30" [max]="120" [value]="boostDuration" [duration]="100" backgroundColor="#3f3f3f" foregroundColor="orange">
@@ -24,11 +24,11 @@
     <div class="boost-modal-actions">
 
       <div class="boost-modal-cancel">
-        <span class="boost-modal-cancel-label" (click)="onCancel()">Cancel</span>
+        <span class="boost-modal-cancel-label" (click)="onCancel()">{{ t('cancel') }}</span>
       </div>
 
       <div class="boost-modal-button">
-        <span class="boost-modal-button-label" (click)="onConfirm()">Confirm</span>
+        <span class="boost-modal-button-label" (click)="onConfirm()">{{ t('confirm') }}</span>
       </div>
 
     </div>

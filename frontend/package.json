@@ -24,6 +24,7 @@
     "@angular/router": "^18.0.0",
     "@fontsource-variable/inter": "^5.1.0",
     "@fontsource/fira-mono": "^5.1.0",
+    "@jsverse/transloco": "^7.5.0",
     "@ng-icons/core": "^29.10.0",
     "@ng-icons/material-icons": "^29.10.0",
     "@swimlane/ngx-charts": "^21.0.0",

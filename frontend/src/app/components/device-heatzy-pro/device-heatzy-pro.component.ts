@@ -21,6 +21,7 @@ import {SkeletonLoaderComponent} from "../skeleton-loader/skeleton-loader.compon
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {DevicesWsService} from "../../services/ws/devices/devices-ws.service";
 import {HistoryWsService} from "../../services/ws/history/history-ws.service";
+import {TranslocoDirective, TranslocoService} from "@jsverse/transloco";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -31,7 +32,8 @@ import {HistoryWsService} from "../../services/ws/history/history-ws.service";
     NgIcon,
     HeatingScheduleComponent,
     HistoryGraphsComponent,
-    SkeletonLoaderComponent
+    SkeletonLoaderComponent,
+    TranslocoDirective
   ],
   templateUrl: './device-heatzy-pro.component.html',
   styleUrl: './device-heatzy-pro.component.scss',
@@ -60,6 +62,7 @@ export class DeviceHeatzyProComponent implements OnInit {
               private _data: DataService,
               private _devicesWs: DevicesWsService,
               private _notifications: NotificationsService,
+              private _transloco: TranslocoService,
               private _api: ApiService) {}
 
   ngOnInit() {
@@ -233,7 +236,7 @@ export class DeviceHeatzyProComponent implements OnInit {
             duration: value
           }
         }).subscribe(() => {
-          this._notifications._notify({ body: `Vacancy mode has been enabled for ${value} day${value > 1 ? 's' : ''}.`, icon: 'matWorkOutlineOutline', deviceName: this.device.readableName });
+          this._notifications._notify({ body: this._transloco.translate('vacancy-mode-enabled-notification', { duration: value, suffix: value > 1 ? 's' : '' }), icon: 'matWorkOutlineOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -252,7 +255,7 @@ export class DeviceHeatzyProComponent implements OnInit {
             duration: value
           }
         }).subscribe(() => {
-          this._notifications._notify({ body: `Boost mode has been enabled for ${Duration.fromObject({ minutes: value }).toFormat('hh:mm')}.`, icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
+          this._notifications._notify({ body: this._transloco.translate('boost-mode-enabled-notification', { duration: Duration.fromObject({ minutes: value }).toFormat('hh:mm') }), icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -265,13 +268,13 @@ export class DeviceHeatzyProComponent implements OnInit {
       this._api.deviceDeviceIdLockPost({
         deviceId: this.device.deviceId
       }).subscribe(() => {
-        this._notifications._notify({ body: `This device's interface is now locked.`, icon: 'matLockOutline', deviceName: this.device.readableName });
+        this._notifications._notify({ body: this._transloco.translate('device-locked-notification'), icon: 'matLockOutline', deviceName: this.device.readableName });
       });
     } else {
       this._api.deviceDeviceIdUnlockPost({
         deviceId: this.device.deviceId
       }).subscribe(() => {
-        this._notifications._notify({ body: `This device's interface is now unlocked.`, icon: 'matLockOpenOutline', deviceName: this.device.readableName });
+        this._notifications._notify({ body: this._transloco.translate('device-unlocked-notification'), icon: 'matLockOpenOutline', deviceName: this.device.readableName });
       });
     }
   }
@@ -282,7 +285,7 @@ export class DeviceHeatzyProComponent implements OnInit {
     this._api.deviceDeviceIdMotionDetectionPost({
       deviceId: this.device.deviceId
     }).subscribe(() => {
-      this._notifications._notify({ body: `Motion detection mode has been enabled.`, icon: 'matPersonOutline', deviceName: this.device.readableName });
+      this._notifications._notify({ body: this._transloco.translate('motion-detection-enabled-notification'), icon: 'matPersonOutline', deviceName: this.device.readableName });
     });
   }
 
@@ -294,7 +297,7 @@ export class DeviceHeatzyProComponent implements OnInit {
         this._api.deviceDeviceIdResetSpecialModePost({
           deviceId
         }).subscribe(() => {
-          this._notifications._notify({ body: `Motion detection mode has been disabled.`, icon: 'matPersonOutline', deviceName: this.device.readableName });
+          this._notifications._notify({ body: this._transloco.translate('motion-detection-disabled-notification'), icon: 'matPersonOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -308,7 +311,7 @@ export class DeviceHeatzyProComponent implements OnInit {
         this._api.deviceDeviceIdResetSpecialModePost({
           deviceId
         }).subscribe(() => {
-          this._notifications._notify({ body: `Boost mode has been disabled.`, icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
+          this._notifications._notify({ body: this._transloco.translate('boost-mode-disabled-notification'), icon: 'matLocalFireDepartmentOutline', deviceName: this.device.readableName });
         });
       }
     });
@@ -322,7 +325,7 @@ export class DeviceHeatzyProComponent implements OnInit {
         this._api.deviceDeviceIdResetSpecialModePost({
           deviceId
         }).subscribe(() => {
-          this._notifications._notify({ body: `Vacancy mode has been disabled.`, icon: 'matWorkOutlineOutline', deviceName: this.device.readableName });
+          this._notifications._notify({ body: this._transloco.translate('vacancy-mode-disabled-notification'), icon: 'matWorkOutlineOutline', deviceName: this.device.readableName });
         });
       }
     });

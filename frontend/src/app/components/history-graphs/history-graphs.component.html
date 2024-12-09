@@ -1,52 +1,52 @@
-<div class="history-graphs-wrapper">
+<div class="history-graphs-wrapper" *transloco="let t">
 
   <div class="history-graphs-title-row">
 
     <span class="history-graphs-title">
-      History for
-      <span class="history-graphs-title-highlight">Bureau</span>
+      {{ t('history-for') }}
+      <span class="history-graphs-title-highlight">{{deviceName}}</span>
     </span>
 
     <div class="history-graph-filter-bar">
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ALL }" (click)="onSetInterval(HistoryInterval.ALL)">
-        <span class="history-interval-label">All</span>
+        <span class="history-interval-label">{{ t('all') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_YEAR }" (click)="onSetInterval(HistoryInterval.ONE_YEAR)">
-        <span class="history-interval-label">1Y</span>
+        <span class="history-interval-label">{{ t('1y') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.SIX_MONTHS }" (click)="onSetInterval(HistoryInterval.SIX_MONTHS)">
-        <span class="history-interval-label">6M</span>
+        <span class="history-interval-label">{{ t('6m') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.THREE_MONTHS }" (click)="onSetInterval(HistoryInterval.THREE_MONTHS)">
-        <span class="history-interval-label">3M</span>
+        <span class="history-interval-label">{{ t('3m') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_MONTH }" (click)="onSetInterval(HistoryInterval.ONE_MONTH)">
-        <span class="history-interval-label">1M</span>
+        <span class="history-interval-label">{{ t('1m') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_WEEK }" (click)="onSetInterval(HistoryInterval.ONE_WEEK)">
-        <span class="history-interval-label">1W</span>
+        <span class="history-interval-label">{{ t('1w') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.THREE_DAYS }" (click)="onSetInterval(HistoryInterval.THREE_DAYS)">
-        <span class="history-interval-label">3D</span>
+        <span class="history-interval-label">{{ t('3d') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_DAY }" (click)="onSetInterval(HistoryInterval.ONE_DAY)">
-        <span class="history-interval-label">1D</span>
+        <span class="history-interval-label">{{ t('1d') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.TWELVE_HOURS }" (click)="onSetInterval(HistoryInterval.TWELVE_HOURS)">
-        <span class="history-interval-label">12H</span>
+        <span class="history-interval-label">{{ t('12h') }}</span>
       </div>
       <div class="history-graph-filter-button" [ngClass]="{ enabled: selectedInterval == HistoryInterval.SIX_HOURS }" (click)="onSetInterval(HistoryInterval.SIX_HOURS)">
-        <span class="history-interval-label">6H</span>
+        <span class="history-interval-label">{{ t('6h') }}</span>
       </div>
       <div class="history-graph-filter-button last" [ngClass]="{ enabled: selectedInterval == HistoryInterval.ONE_HOUR }" (click)="onSetInterval(HistoryInterval.ONE_HOUR)">
-        <span class="history-interval-label">1H</span>
+        <span class="history-interval-label">{{ t('1h') }}</span>
       </div>
     </div>
 
   </div>
 
   <div class="history-graph-wrapper">
-    <span class="history-graph-title">Temperature</span>
+    <span class="history-graph-title">{{ t('temperature') }}</span>
 
     @if (temperatureData.length > 0) {
       <div class="ngx-chart-wrapper">
@@ -57,6 +57,7 @@
           [yScaleMax]="40"
           [scheme]="colorScheme"
           [yAxisTickFormatting]="formatTemperature"
+          [xAxisTickFormatting]="dateFormatFunction"
           [results]="temperatureChartData">
 
           <ng-template #tooltipTemplate let-model="model">
@@ -65,7 +66,7 @@
                 <span class="series-tooltip-value">{{model.value}}°C</span>
               </div>
               <div class="series-tooltip-bottom-row">
-                <span class="series-tooltip-date">{{DateTime.fromJSDate(model.name).toFormat('yyyy-MM-dd HH:mm')}}</span>
+                <span class="series-tooltip-date">{{DateTime.fromJSDate(model.name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>
               </div>
             </div>
           </ng-template>
@@ -76,7 +77,7 @@
                 <span class="series-tooltip-value">{{model[0].value}}°C</span>
               </div>
               <div class="series-tooltip-bottom-row">
-                <span class="series-tooltip-date">{{DateTime.fromJSDate(model[0].name).toFormat('yyyy-MM-dd HH:mm')}}</span>
+                <span class="series-tooltip-date">{{DateTime.fromJSDate(model[0].name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>
               </div>
             </div>
           </ng-template>
@@ -87,7 +88,7 @@
   </div>
 
   <div class="history-graph-wrapper">
-    <span class="history-graph-title">Humidity</span>
+    <span class="history-graph-title">{{ t('humidity') }}</span>
 
     @if (humidityData.length > 0) {
       <div class="ngx-chart-wrapper">
@@ -98,6 +99,7 @@
           [yScaleMax]="100"
           [scheme]="colorScheme"
           [yAxisTickFormatting]="formatHumidity"
+          [xAxisTickFormatting]="dateFormatFunction"
           [results]="humidityChartData">
 
           <ng-template #tooltipTemplate let-model="model">
@@ -106,7 +108,7 @@
                 <span class="series-tooltip-value">{{model.value}}%</span>
               </div>
               <div class="series-tooltip-bottom-row">
-                <span class="series-tooltip-date">{{DateTime.fromJSDate(model.name).toFormat('yyyy-MM-dd HH:mm')}}</span>
+                <span class="series-tooltip-date">{{DateTime.fromJSDate(model.name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>
               </div>
             </div>
           </ng-template>
@@ -117,7 +119,7 @@
                 <span class="series-tooltip-value">{{model[0].value}}%</span>
               </div>
               <div class="series-tooltip-bottom-row">
-                <span class="series-tooltip-date">{{DateTime.fromJSDate(model[0].name).toFormat('yyyy-MM-dd HH:mm')}}</span>
+                <span class="series-tooltip-date">{{DateTime.fromJSDate(model[0].name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>
               </div>
             </div>
           </ng-template>
@@ -130,7 +132,7 @@
   <div class="history-graphs-actions">
 
     <div class="history-graphs-cancel">
-      <span class="history-graphs-cancel-label" (click)="onCloseHistory()">Close history</span>
+      <span class="history-graphs-cancel-label" (click)="onCloseHistory()">{{ t('close-history') }}</span>
     </div>
 
   </div>

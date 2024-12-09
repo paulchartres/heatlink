@@ -1,4 +1,4 @@
-<div class="temperature-modal-wrapper">
+<div class="temperature-modal-wrapper" *transloco="let t">
 
   <div class="temperature-modal-background" appClickOutside (clickOutside)="onCancel()">
 
@@ -20,11 +20,11 @@
     <div class="temperature-modal-actions">
 
       <div class="temperature-modal-cancel">
-        <span class="temperature-modal-cancel-label" (click)="onCancel()">Cancel</span>
+        <span class="temperature-modal-cancel-label" (click)="onCancel()">{{ t('cancel') }}</span>
       </div>
 
       <div class="temperature-modal-button">
-        <span class="temperature-modal-button-label" (click)="onConfirm()">Confirm</span>
+        <span class="temperature-modal-button-label" (click)="onConfirm()">{{ t('confirm') }}</span>
       </div>
 
     </div>
