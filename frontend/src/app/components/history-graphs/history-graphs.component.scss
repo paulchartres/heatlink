@@ -39,6 +39,44 @@
   border-radius: 0.5rem;
 }
 
+.history-graph-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-graph-legend {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+}
+
+.history-graph-legend-item {
+  display: flex;
+  column-gap: 0.25rem;
+  align-items: center;
+  justify-content: end;
+}
+
+.history-graph-legend-color {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 2px;
+}
+
+.history-graph-legend-color.orange {
+  background: orange;
+}
+
+.history-graph-legend-color.cornflowerblue {
+  background: cornflowerblue;
+}
+
+.history-graph-legend-label {
+  opacity: 0.5;
+  font-size: 0.7rem;
+}
+
 .history-graph-title {
   opacity: 0.6;
   font-size: 0.85rem;

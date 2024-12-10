@@ -12,4 +12,5 @@ export { HumidityHistory } from './models/humidity-history';
 export { SpecialMode } from './models/special-mode';
 export { TemperatureHistory } from './models/temperature-history';
 export { Weather } from './models/weather';
+export { WeatherHistory } from './models/weather-history';
 export { WeekDay } from './models/week-day';

@@ -172,5 +172,5 @@
 }
 
 @if (history) {
-  <app-history-graphs @fade [temperatureData]="temperatureData" [deviceName]="device.readableName" [humidityData]="humidityData" (intervalChange)="onHistoryIntervalChange($event)" (close)="onCloseHistory()"></app-history-graphs>
+  <app-history-graphs @fade [externalData]="externalData" [temperatureData]="temperatureData" [deviceName]="device.readableName" [humidityData]="humidityData" (intervalChange)="onHistoryIntervalChange($event)" (close)="onCloseHistory()"></app-history-graphs>
 }

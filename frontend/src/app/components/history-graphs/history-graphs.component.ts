@@ -7,10 +7,10 @@ import {HumidityHistory} from "../../services/api/models/humidity-history";
 import {DateTime} from "luxon";
 import {HistoryInterval} from "../../enums/history-interval";
 import {MinMax} from "../../models/min-max";
-import {Subject} from "rxjs";
 import {HistoryWsService} from "../../services/ws/history/history-ws.service";
 import {TranslocoDirective} from "@jsverse/transloco";
 import {LocaleService} from "../../services/locale/locale.service";
+import {WeatherHistory} from "../../services/api/models/weather-history";
 
 @Component({
   selector: 'app-history-graphs',
@@ -28,6 +28,7 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
 
   @Input({ required: true }) temperatureData!: TemperatureHistory[];
   @Input({ required: true }) humidityData!: HumidityHistory[];
+  @Input({ required: false }) externalData?: WeatherHistory[];
   @Input({ required: true }) deviceName!: string;
 
   @Output() intervalChange: EventEmitter<MinMax> = new EventEmitter<MinMax>();
@@ -36,17 +37,22 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
   dateFormatFunction!: (value: Date) => string;
 
   selectedInterval: HistoryInterval = HistoryInterval.ONE_DAY;
+  currentIntervalBounds!: MinMax;
 
   colorScheme: Color = {
     name: 'heatlink',
     selectable: true,
     group: ScaleType.Linear,
-    domain: ['orange']
+    domain: ['orange', 'cornflowerblue']
   };
 
   temperatureChartData: Series[] = [
     {
       name: 'Temperature',
+      series: []
+    },
+    {
+      name: 'External temperature',
       series: []
     }
   ];
@@ -55,6 +61,10 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
     {
       name: 'Humidity',
       series: []
+    },
+    {
+      name: 'External humidity',
+      series: []
     }
   ];
 
@@ -62,8 +72,10 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
               public locale: LocaleService) {
     this.dateFormatFunction = (value: Date): string => {
       const date: DateTime = DateTime.fromJSDate(value);
+      const DATE_MED_WITHOUT_YEAR = { month: "short", day: "numeric" };
       if (date.hour == 0) {
-        return date.toLocaleString(DateTime.DATE_MED, { locale: this.locale.getCurrentLocale() });
+        // @ts-ignore
+        return date.toLocaleString(DATE_MED_WITHOUT_YEAR, { locale: this.locale.getCurrentLocale() });
       } else {
         return date.toLocaleString(DateTime.TIME_SIMPLE, { locale: this.locale.getCurrentLocale() });
       }
@@ -97,6 +109,21 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
       }));
       this.humidityChartData = Object.assign([], this.humidityChartData);
     }
+    if (changes.hasOwnProperty('externalData')) {
+      if (this.externalData) {
+        this.temperatureChartData[1].series = this.externalData.map((item) => ({
+          value: item.temperature,
+          name: DateTime.fromSeconds(item.timestamp).toJSDate()
+        }));
+        this.temperatureChartData = Object.assign([], this.temperatureChartData);
+
+        this.humidityChartData[1].series = this.externalData.map((item) => ({
+          value: item.humidity,
+          name: DateTime.fromSeconds(item.timestamp).toJSDate()
+        }));
+        this.humidityChartData = Object.assign([], this.humidityChartData);
+      }
+    }
   }
 
   onSetInterval(interval: HistoryInterval): void {
@@ -107,6 +134,9 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
     switch (interval) {
       case HistoryInterval.ALL:
         minDate = minDate.minus({ year: 10 }); // Heatzy probably didn't exist ten years ago, right?
+        break;
+      case HistoryInterval.ONE_YEAR:
+        minDate = minDate.minus({ year: 1 });
         break;
       case HistoryInterval.SIX_MONTHS:
         minDate = minDate.minus({ month: 6 });
@@ -141,6 +171,8 @@ export class HistoryGraphsComponent implements OnChanges, OnInit {
       min: minDate.toSeconds(),
       max: DateTime.now().toSeconds()
     };
+
+    this.currentIntervalBounds = newBounds;
 
     this.intervalChange.emit(newBounds);
   }

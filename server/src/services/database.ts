@@ -72,3 +72,11 @@ export function getHumidityHistory(startTimestamp: number, endTimestamp: number,
         });
     });
 }
+
+export function getFirstTemperatureDataPoint(deviceId: string): Promise<TemperatureHistory> {
+    return new Promise((resolve, reject) => {
+       database.get(`SELECT * FROM temperatures WHERE deviceId = ? ORDER BY timestamp asc`, deviceId).then((result) => {
+           resolve(result);
+       })
+    });
+}

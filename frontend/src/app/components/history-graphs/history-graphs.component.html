@@ -46,7 +46,22 @@
   </div>
 
   <div class="history-graph-wrapper">
-    <span class="history-graph-title">{{ t('temperature') }}</span>
+
+    <div class="history-graph-title-row">
+      <span class="history-graph-title">{{ t('temperature') }}</span>
+      @if (externalData) {
+        <div class="history-graph-legend">
+          <div class="history-graph-legend-item">
+            <div class="history-graph-legend-color orange"></div>
+            <span class="history-graph-legend-label">{{ t('temperature') }}</span>
+          </div>
+          <div class="history-graph-legend-item">
+            <div class="history-graph-legend-color cornflowerblue"></div>
+            <span class="history-graph-legend-label">{{ t('external-temperature') }}</span>
+          </div>
+        </div>
+      }
+    </div>
 
     @if (temperatureData.length > 0) {
       <div class="ngx-chart-wrapper">
@@ -63,7 +78,7 @@
           <ng-template #tooltipTemplate let-model="model">
             <div class="series-tooltip-wrapper">
               <div class="series-tooltip-top-row">
-                <span class="series-tooltip-value">{{model.value}}°C</span>
+                <span class="series-tooltip-value">{{model.value | number : '1.0-1'}}°C</span>
               </div>
               <div class="series-tooltip-bottom-row">
                 <span class="series-tooltip-date">{{DateTime.fromJSDate(model.name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>
@@ -74,7 +89,7 @@
           <ng-template #seriesTooltipTemplate let-model="model">
             <div class="series-tooltip-wrapper">
               <div class="series-tooltip-top-row">
-                <span class="series-tooltip-value">{{model[0].value}}°C</span>
+                <span class="series-tooltip-value">{{model[0].value | number : '1.0-1'}}°C</span>
               </div>
               <div class="series-tooltip-bottom-row">
                 <span class="series-tooltip-date">{{DateTime.fromJSDate(model[0].name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>
@@ -88,7 +103,21 @@
   </div>
 
   <div class="history-graph-wrapper">
-    <span class="history-graph-title">{{ t('humidity') }}</span>
+    <div class="history-graph-title-row">
+      <span class="history-graph-title">{{ t('humidity') }}</span>
+      @if (externalData) {
+        <div class="history-graph-legend">
+          <div class="history-graph-legend-item">
+            <div class="history-graph-legend-color orange"></div>
+            <span class="history-graph-legend-label">{{ t('humidity') }}</span>
+          </div>
+          <div class="history-graph-legend-item">
+            <div class="history-graph-legend-color cornflowerblue"></div>
+            <span class="history-graph-legend-label">{{ t('external-humidity') }}</span>
+          </div>
+        </div>
+      }
+    </div>
 
     @if (humidityData.length > 0) {
       <div class="ngx-chart-wrapper">
@@ -105,7 +134,7 @@
           <ng-template #tooltipTemplate let-model="model">
             <div class="series-tooltip-wrapper">
               <div class="series-tooltip-top-row">
-                <span class="series-tooltip-value">{{model.value}}%</span>
+                <span class="series-tooltip-value">{{model.value | number : '1.0-1'}}%</span>
               </div>
               <div class="series-tooltip-bottom-row">
                 <span class="series-tooltip-date">{{DateTime.fromJSDate(model.name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>
@@ -116,7 +145,7 @@
           <ng-template #seriesTooltipTemplate let-model="model">
             <div class="series-tooltip-wrapper">
               <div class="series-tooltip-top-row">
-                <span class="series-tooltip-value">{{model[0].value}}%</span>
+                <span class="series-tooltip-value">{{model[0].value | number : '1.0-1'}}%</span>
               </div>
               <div class="series-tooltip-bottom-row">
                 <span class="series-tooltip-date">{{DateTime.fromJSDate(model[0].name).toLocaleString(DateTime.DATETIME_MED, { locale: locale.getCurrentLocale() })}}</span>

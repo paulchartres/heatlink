@@ -54,6 +54,9 @@ import { TemperatureHistory } from '../models/temperature-history';
 import { Weather } from '../models/weather';
 import { weatherGet } from '../fn/operations/weather-get';
 import { WeatherGet$Params } from '../fn/operations/weather-get';
+import { WeatherHistory } from '../models/weather-history';
+import { weatherRangePost } from '../fn/operations/weather-range-post';
+import { WeatherRangePost$Params } from '../fn/operations/weather-range-post';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService extends BaseService {
@@ -652,6 +655,39 @@ export class ApiService extends BaseService {
   weatherGet(params?: WeatherGet$Params, context?: HttpContext): Observable<Weather> {
     return this.weatherGet$Response(params, context).pipe(
       map((r: StrictHttpResponse<Weather>): Weather => r.body)
+    );
+  }
+
+  /** Path part for operation `weatherRangePost()` */
+  static readonly WeatherRangePostPath = '/weather/range';
+
+  /**
+   * Retrieves weather data in a specific range.
+   *
+   * Retrieves weather data in a specific range at the location provided in the environment variables. If no variables are set, returns an error code in order not to display the values in the webapp.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `weatherRangePost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  weatherRangePost$Response(params: WeatherRangePost$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<WeatherHistory>>> {
+    return weatherRangePost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Retrieves weather data in a specific range.
+   *
+   * Retrieves weather data in a specific range at the location provided in the environment variables. If no variables are set, returns an error code in order not to display the values in the webapp.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `weatherRangePost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  weatherRangePost(params: WeatherRangePost$Params, context?: HttpContext): Observable<Array<WeatherHistory>> {
+    return this.weatherRangePost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<WeatherHistory>>): Array<WeatherHistory> => r.body)
     );
   }
 

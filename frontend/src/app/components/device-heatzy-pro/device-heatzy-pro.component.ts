@@ -11,7 +11,7 @@ import {HistoryGraphsComponent} from "../history-graphs/history-graphs.component
 import {TemperatureHistory} from "../../services/api/models/temperature-history";
 import {HumidityHistory} from "../../services/api/models/humidity-history";
 import {ApiService} from "../../services/api/services/api.service";
-import {forkJoin} from "rxjs";
+import {catchError, forkJoin, of} from "rxjs";
 import {MinMax} from "../../models/min-max";
 import {DateTime, Duration} from "luxon";
 import {DeviceInfoStripped} from "../../services/api/models/device-info-stripped";
@@ -22,6 +22,7 @@ import {NotificationsService} from "../../services/notifications/notifications.s
 import {DevicesWsService} from "../../services/ws/devices/devices-ws.service";
 import {HistoryWsService} from "../../services/ws/history/history-ws.service";
 import {TranslocoDirective, TranslocoService} from "@jsverse/transloco";
+import {WeatherHistory} from "../../services/api/models/weather-history";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -57,6 +58,7 @@ export class DeviceHeatzyProComponent implements OnInit {
   };
   temperatureData: TemperatureHistory[] = [];
   humidityData: HumidityHistory[] = [];
+  externalData?: WeatherHistory[];
 
   constructor(private _modals: ModalsService,
               private _data: DataService,
@@ -105,10 +107,18 @@ export class DeviceHeatzyProComponent implements OnInit {
           startTimestamp: this.historyBounds.min,
           endTimestamp: this.historyBounds.max
         }
-      })
+      }),
+      external: this._api.weatherRangePost({
+        body: {
+          startTimestamp: this.historyBounds.min,
+          endTimestamp: this.historyBounds.max,
+          deviceId: this.device.deviceId
+        }
+      }).pipe(catchError(() => of(undefined)))
     }).subscribe((data) => {
       this.temperatureData = data.temperature;
       this.humidityData = data.humidity;
+      this.externalData = data.external;
     });
   }
 
