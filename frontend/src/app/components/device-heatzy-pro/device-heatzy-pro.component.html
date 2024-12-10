@@ -17,6 +17,10 @@
       }
       <span class="device-readable-name">{{ device.readableName }}</span>
       <span class="device-type">{{ productNameToReadableName(device.productName) }}</span>
+
+      @if (deviceInfo?.isHeating) {
+        <div class="device-heating-indicator" @fade></div>
+      }
     </div>
 
     <div class="device-current-metrics">

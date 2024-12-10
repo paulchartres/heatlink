@@ -43,6 +43,16 @@
   margin-top: 0.2rem;
 }
 
+.device-heating-indicator {
+  height: 0.3rem;
+  width: 0.3rem;
+  background: orange;
+  border-radius: 50%;
+  margin-left: 0.75rem;
+  margin-top: 0.2rem;
+  animation: slowBlink 4s infinite;
+}
+
 .device-current-metrics {
   display: flex;
   flex-grow: 1;
@@ -320,4 +330,14 @@
 
 .device-current-humidity-placeholder {
   margin-top: 0.25rem;
+}
+
+
+@keyframes slowBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
