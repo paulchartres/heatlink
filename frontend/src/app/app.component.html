@@ -42,10 +42,11 @@
     </div>
 
     <div class="main-header">
-     <div class="main-date-time-wrapper">
-       <span class="main-time">{{ now.toLocaleString(DateTime.TIME_SIMPLE, { locale: locale.getCurrentLocale() }) }}</span>
-       <span class="main-date">{{ now.toLocaleString(DateTime.DATE_FULL, { locale: locale.getCurrentLocale() }) }}</span>
-     </div>
+
+      <div class="main-date-time-wrapper">
+        <span class="main-time">{{ now.toLocaleString(DateTime.TIME_SIMPLE, { locale: locale.getCurrentLocale() }) }}</span>
+        <span class="main-date">{{ now.toLocaleString(DateTime.DATE_FULL, { locale: locale.getCurrentLocale() }) }}</span>
+      </div>
 
       @if (currentWeather) {
         <div class="main-weather-wrapper">
