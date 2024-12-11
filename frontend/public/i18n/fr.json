@@ -66,5 +66,16 @@
   "away-for": "Pendant",
   "day": "jour",
   "english": "Anglais",
-  "french": "Français"
+  "french": "Français",
+  "save-as-preset": "Enregistrer comme modèle",
+  "load-preset": "Charger un modèle",
+  "duplicate-to-devices": "Dupliquer sur d'autres appareils",
+  "new-preset": "Nouveau modèle",
+  "name": "Nom",
+  "description": "Description",
+  "preset-saved-notification": "Votre modèle a bien été enregistré.",
+  "preset-loaded-notification": "Le modèle sélectionné a été chargé. Assurez-vous d'enregistrer avant de fermer.",
+  "choose-preset": "Charger un modèle",
+  "preset-already-exists-notification": "Ce modèle existe déjà. Merci de choisir un autre nom.",
+  "no-presets": "Vous n'avez actuellement aucun modèle enregistré."
 }

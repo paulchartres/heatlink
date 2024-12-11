@@ -294,4 +294,5 @@ export class HeatingScheduleComponent implements OnInit {
 
   protected readonly HeatingMode = HeatingMode;
   protected readonly isBetween = isBetween;
+  protected readonly WeekDay = WeekDay;
 }

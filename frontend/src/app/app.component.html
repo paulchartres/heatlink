@@ -68,7 +68,7 @@
       {{ t('welcome-title') }}
     </span>
 
-    <ng-scrollbar class="devices-scrollbox">
+    <ng-scrollbar [orientation]="'vertical'" class="devices-scrollbox">
       <div class="devices-wrapper">
 
           @for (device of (data.getDevices() | async); track device.deviceId) {

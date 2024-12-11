@@ -40,7 +40,7 @@
 
     @if (heatingModeCoordinates) {
       <div @fade class="device-schedule-mode-selector"
-           [ngClass]="{ mirror: adjacentSections! > 0 }"
+           [ngClass]="{ mirror: adjacentSections! > 0, mirrorX: selectedDay == WeekDay.Sunday }"
            [ngStyle]="{ top: heatingModeCoordinates.y + 'px', left: heatingModeCoordinates.x + 'px' }">
         <span class="device-schedule-mode-selector-title">{{getStartTime()}} {{ t('to') }} {{getEndTime()}}</span>
 
