@@ -13,11 +13,12 @@ import {CommonModule} from "@angular/common";
 export class ButtonComponent {
 
   @Input() loading: boolean = false;
+  @Input() disabled: boolean = false;
 
   @Output() press: EventEmitter<void> = new EventEmitter();
 
   onClick(): void {
-    if (this.loading) return;
+    if (this.loading || this.disabled) return;
     this.press.emit();
   }
 

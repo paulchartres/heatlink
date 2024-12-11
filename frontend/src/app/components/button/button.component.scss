@@ -9,13 +9,18 @@
   transition: 0.2s;
 }
 
-.button-wrapper:not(.loading):hover {
+.button-wrapper:not(.loading):not(.disabled):hover {
   color: orange;
   border: 1px solid orange;
 }
 
 .button-wrapper.loading {
   cursor: progress;
+}
+
+.button-wrapper.disabled {
+  cursor: not-allowed;
+  opacity: 0.2;
 }
 
 .button-label {

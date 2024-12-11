@@ -1,0 +1,25 @@
+<div class="new-preset-modal-wrapper" *transloco="let t">
+
+  <div class="new-preset-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="new-preset-modal-title">{{ t('new-preset') }}</span>
+
+    <app-text-input [placeholder]="t('name')" [(value)]="name"></app-text-input>
+
+    <app-text-area [placeholder]="t('description')" [(value)]="description"></app-text-area>
+
+    <div class="new-preset-modal-actions">
+
+      <div class="new-preset-modal-cancel">
+        <span class="new-preset-modal-cancel-label" (click)="onCancel()">{{ t('cancel') }}</span>
+      </div>
+
+      <app-button [disabled]="!name" [loading]="loading" (press)="onConfirm()">
+        {{ t('confirm') }}
+      </app-button>
+
+    </div>
+
+  </div>
+
+</div>

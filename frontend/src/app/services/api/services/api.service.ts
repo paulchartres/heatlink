@@ -46,6 +46,11 @@ import { devicesGet } from '../fn/operations/devices-get';
 import { DevicesGet$Params } from '../fn/operations/devices-get';
 import { DeviceStripped } from '../models/device-stripped';
 import { HumidityHistory } from '../models/humidity-history';
+import { Preset } from '../models/preset';
+import { presetPost } from '../fn/operations/preset-post';
+import { PresetPost$Params } from '../fn/operations/preset-post';
+import { presetsGet } from '../fn/operations/presets-get';
+import { PresetsGet$Params } from '../fn/operations/presets-get';
 import { rawDeviceDeviceIdGet } from '../fn/operations/raw-device-device-id-get';
 import { RawDeviceDeviceIdGet$Params } from '../fn/operations/raw-device-device-id-get';
 import { rawDevicesGet } from '../fn/operations/raw-devices-get';
@@ -688,6 +693,72 @@ export class ApiService extends BaseService {
   weatherRangePost(params: WeatherRangePost$Params, context?: HttpContext): Observable<Array<WeatherHistory>> {
     return this.weatherRangePost$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<WeatherHistory>>): Array<WeatherHistory> => r.body)
+    );
+  }
+
+  /** Path part for operation `presetPost()` */
+  static readonly PresetPostPath = '/preset';
+
+  /**
+   * Saves a new heating schedule preset.
+   *
+   * Saves a new heating schedule preset. The name acts as the identification key, so duplicates aren't allowed.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `presetPost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  presetPost$Response(params: PresetPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return presetPost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Saves a new heating schedule preset.
+   *
+   * Saves a new heating schedule preset. The name acts as the identification key, so duplicates aren't allowed.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `presetPost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  presetPost(params: PresetPost$Params, context?: HttpContext): Observable<void> {
+    return this.presetPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `presetsGet()` */
+  static readonly PresetsGetPath = '/presets';
+
+  /**
+   * Retrieves all previously saved presets.
+   *
+   * Retrieves all previously saved presets.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `presetsGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  presetsGet$Response(params?: PresetsGet$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Preset>>> {
+    return presetsGet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Retrieves all previously saved presets.
+   *
+   * Retrieves all previously saved presets.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `presetsGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  presetsGet(params?: PresetsGet$Params, context?: HttpContext): Observable<Array<Preset>> {
+    return this.presetsGet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<Preset>>): Array<Preset> => r.body)
     );
   }
 

@@ -12,15 +12,36 @@
   margin-top: 0.5rem;
 }
 
+.device-schedule-title-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
 .device-schedule-title {
   font-size: 1.2rem;
   opacity: 0.6;
   font-weight: 200;
 }
 
+.device-schedule-extras {
+  margin-left: 0.5rem;
+  font-size: 1.5rem;
+  opacity: 0.3;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.device-schedule-extras:hover {
+  color: orange;
+  opacity: 0.6;
+}
+
 .device-schedule-title-highlight {
-  opacity: 1 !important;
+  font-size: 1.2rem;
+  opacity: 0.6;
   font-weight: 300;
+  margin-left: 0.35rem;
 }
 
 .device-schedule-title-row {
@@ -289,4 +310,42 @@
   left: 0;
   height: 1px;
   background: orange;
+}
+
+.device-schedule-extras-wrapper {
+  position: absolute;
+  background-color: #232323;
+  top: 50%;
+  left: 100%;
+  width: 12rem;
+  z-index: 1;
+  margin-left: 0.25rem;
+  border-radius: 0.25rem;
+  box-shadow: 2px 2px 15px rgba(black, 0.5);
+  border: 1px solid #333333;
+}
+
+.device-schedule-extra-item {
+  width: 100%;
+  display: flex;
+  padding: 0.5rem;
+  column-gap: 0.5rem;
+  cursor: pointer;
+}
+
+.device-schedule-extra-item-label {
+  opacity: 0.6;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.device-schedule-extra-item-icon {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.device-schedule-extra-item:hover .device-schedule-extra-item-icon,
+.device-schedule-extra-item:hover .device-schedule-extra-item-label {
+  color: orange;
 }

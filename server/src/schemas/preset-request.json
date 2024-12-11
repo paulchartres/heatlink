@@ -1,0 +1,631 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "HeatingSchedule": {
+            "properties": {
+                "day": {
+                    "$ref": "#/components/schemas/WeekDay"
+                },
+                "schedule": {
+                    "properties": {
+                        "00:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "00:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "01:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "01:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "02:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "02:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "03:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "03:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "04:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "04:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "05:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "05:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "06:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "06:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "07:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "07:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "08:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "08:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "09:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "09:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "10:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "10:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "11:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "11:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "12:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "12:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "13:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "13:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "14:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "14:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "15:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "15:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "16:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "16:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "17:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "17:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "18:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "18:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "19:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "19:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "20:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "20:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "21:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "21:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "22:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "22:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "23:00": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        },
+                        "23:30": {
+                            "enum": [
+                                "COMFORT",
+                                "COMFORT_1",
+                                "COMFORT_2",
+                                "ECO",
+                                "FROST_PROTECTION",
+                                "OFF",
+                                "UNKNOWN"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "required": [
+                "day",
+                "schedule"
+            ],
+            "type": "object"
+        },
+        "WeekDay": {
+            "enum": [
+                "MONDAY",
+                "TUESDAY",
+                "WEDNESDAY",
+                "THURSDAY",
+                "FRIDAY",
+                "SATURDAY",
+                "SUNDAY",
+                "UNKNOWN"
+            ],
+            "type": "string"
+        }
+    },
+    "properties": {
+        "description": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "schedule": {
+            "items": {
+                "$ref": "#/components/schemas/HeatingSchedule"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "name",
+        "schedule"
+    ],
+    "type": "object"
+}
+

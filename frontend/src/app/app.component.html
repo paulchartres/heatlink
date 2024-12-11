@@ -31,6 +31,14 @@
     <app-prompt-modal @fade [config]="(modals.getDisableVacancyModalConfig() | async)!" [label]="t('stop-vacancy')"
                       [body]="t('stop-vacancy-body')" (cancel)="onCloseDisableVacancyModal()"></app-prompt-modal>
   }
+
+  @if (modals.getNewPresetModalConfig() | async) {
+    <app-new-preset-modal @fade [config]="(modals.getNewPresetModalConfig() | async)!" (cancel)="onCloseNewPresetModal()"></app-new-preset-modal>
+  }
+
+  @if (modals.getLoadPresetModalConfig() | async) {
+    <app-choose-preset-modal @fade [config]="(modals.getLoadPresetModalConfig() | async)!" (cancel)="onCloseLoadPresetModal()"></app-choose-preset-modal>
+  }
   <!-- End modals -->
 
   <div class="main-content-wrapper">

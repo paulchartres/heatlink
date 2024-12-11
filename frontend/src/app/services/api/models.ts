@@ -9,6 +9,8 @@ export { DeviceStripped } from './models/device-stripped';
 export { HeatingMode } from './models/heating-mode';
 export { HeatingSchedule } from './models/heating-schedule';
 export { HumidityHistory } from './models/humidity-history';
+export { Preset } from './models/preset';
+export { PresetRequest } from './models/preset-request';
 export { SpecialMode } from './models/special-mode';
 export { TemperatureHistory } from './models/temperature-history';
 export { Weather } from './models/weather';

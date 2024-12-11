@@ -24,8 +24,17 @@ import temperatureHistory from './schemas/temperature-history.json';
 import humidityHistory from './schemas/humidity-history.json';
 import weather from './schemas/weather.json';
 import weatherHistory from './schemas/weather-history.json';
+import presetRequest from './schemas/preset-request.json';
+import preset from './schemas/preset.json';
 
-import {getHumidityHistory, getTemperatureHistory, openDatabase} from "./services/database";
+import {
+    getHumidityHistory,
+    getPreset,
+    getPresets,
+    getTemperatureHistory,
+    openDatabase,
+    savePreset
+} from "./services/database";
 import {archiveTemperatureHistory} from "./tasks/temperature-history";
 import {archiveHumidityHistory} from "./tasks/humidity-history";
 import {HeatingMode} from "./enums/heating-mode";
@@ -63,7 +72,9 @@ const options = {
                 TemperatureHistory: temperatureHistory,
                 HumidityHistory: humidityHistory,
                 Weather: weather,
-                WeatherHistory: weatherHistory
+                WeatherHistory: weatherHistory,
+                PresetRequest: presetRequest,
+                Preset: preset
             }
         },
     },
@@ -808,6 +819,70 @@ app.post('/weather/range', function (req: Request, res: Response) {
         } else {
             res.send(weatherHistory);
         }
+    });
+});
+
+/**
+ * @swagger
+ * /preset:
+ *   post:
+ *     summary: Saves a new heating schedule preset.
+ *     description: Saves a new heating schedule preset. The name acts as the identification key, so duplicates aren't allowed.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PresetRequest'
+ *     responses:
+ *       200:
+ *         description: The preset has been saved
+ *       409:
+ *         description: Preset name already in use
+ */
+app.post('/preset', function (req: Request, res: Response) {
+    const name = req.body?.name;
+    const description = req.body?.description;
+    const schedule = req.body?.schedule;
+
+    if (!name || !schedule) {
+        res.sendStatus(400);
+    }
+
+    getPreset(name).then((preset) => {
+        if (preset) {
+            res.sendStatus(409);
+        } else {
+            savePreset(name, description, JSON.stringify(schedule)).then(() => {
+                res.send();
+            }).catch(() => {
+                res.sendStatus(404);
+            });
+        }
+    })
+
+
+});
+
+/**
+ * @swagger
+ * /presets:
+ *   get:
+ *     summary: Retrieves all previously saved presets.
+ *     description: Retrieves all previously saved presets.
+ *     responses:
+ *       200:
+ *         description: The presets stored for this instance.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Preset'
+ */
+app.get('/presets', function (req: Request, res: Response) {
+    getPresets().then((presets) => {
+        res.send(presets);
     });
 });
 

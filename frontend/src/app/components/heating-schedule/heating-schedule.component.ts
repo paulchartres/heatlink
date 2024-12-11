@@ -2,7 +2,7 @@ import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output
 import {HeatingMode} from "../../services/api/models/heating-mode";
 import {isBetween} from "../../helpers/math.helper";
 import {CommonModule} from "@angular/common";
-import {NgIcon} from "@ng-icons/core";
+import {NgIcon, provideIcons} from "@ng-icons/core";
 import {HeatingSchedule} from "../../services/api/models/heating-schedule";
 import {WeekDay} from "../../services/api/models/week-day";
 import {Point} from "../../models/point.model";
@@ -12,6 +12,14 @@ import {DateTime, Info} from "luxon";
 import {NotificationsService} from "../../services/notifications/notifications.service";
 import {ButtonComponent} from "../button/button.component";
 import {TranslocoDirective, TranslocoService} from "@jsverse/transloco";
+import {
+  matContentCopyOutline,
+  matFileUploadOutline,
+  matMoreHorizOutline,
+  matSaveOutline
+} from "@ng-icons/material-icons/outline";
+import {ClickOutsideDirective} from "../../directives/click-outside.directive";
+import {ModalsService} from "../../services/modals/modals.service";
 
 @Component({
   selector: 'app-heating-schedule',
@@ -20,7 +28,16 @@ import {TranslocoDirective, TranslocoService} from "@jsverse/transloco";
     CommonModule,
     NgIcon,
     ButtonComponent,
-    TranslocoDirective
+    TranslocoDirective,
+    ClickOutsideDirective
+  ],
+  providers: [
+    provideIcons({
+      matMoreHorizOutline,
+      matSaveOutline,
+      matFileUploadOutline,
+      matContentCopyOutline
+    })
   ],
   templateUrl: './heating-schedule.component.html',
   styleUrl: './heating-schedule.component.scss',
@@ -38,6 +55,7 @@ export class HeatingScheduleComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
   loading: boolean = false;
+  contextMenu: boolean = false;
 
   // For schedule selection
   selectedDay?: WeekDay;
@@ -105,6 +123,7 @@ export class HeatingScheduleComponent implements OnInit {
 
   constructor(private _api: ApiService,
               private _transloco: TranslocoService,
+              private _modals: ModalsService,
               private _notifications: NotificationsService) {}
 
   ngOnInit() {
@@ -242,6 +261,35 @@ export class HeatingScheduleComponent implements OnInit {
     const currentTimeInMinutes: number = this.now.hour * 60 + this.now.minute;
     const oneDayInMinutes: number = 24 * 60;
     return currentTimeInMinutes * 100 / oneDayInMinutes;
+  }
+
+  onOpenContextMenu(): void {
+    this.contextMenu = true;
+  }
+
+  onCloseContextMenu(): void {
+    this.contextMenu = false;
+  }
+
+  onSavePreset(): void {
+    this.contextMenu = false;
+    this._modals.onOpenNewPresetModal({
+      schedule: this.schedule,
+      deviceName: this.deviceName,
+      callback: () => {
+        this._notifications._notify({ body: this._transloco.translate('preset-saved-notification'), icon: 'matSaveOutline', deviceName: this.deviceName });
+      }
+    });
+  }
+
+  onLoadPreset(): void {
+    this.contextMenu = false;
+    this._modals.onOpenLoadPresetModal({
+      callback: (preset) => {
+        this.schedule = JSON.parse(preset.json);
+        this._notifications._notify({ body: this._transloco.translate('preset-loaded-notification'), icon: 'matFileUploadOutline', deviceName: this.deviceName });
+      }
+    });
   }
 
   protected readonly HeatingMode = HeatingMode;

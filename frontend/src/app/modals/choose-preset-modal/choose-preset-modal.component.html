@@ -1,0 +1,37 @@
+<div class="choose-preset-modal-wrapper" *transloco="let t">
+
+  <div class="choose-preset-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="choose-preset-modal-title">{{ t('load-preset') }}</span>
+
+
+      <div class="preset-list">
+
+        @if (presets.length > 0) {
+          <ng-scrollbar>
+            @for (preset of presets; track preset.name) {
+              <div class="preset-wrapper" (click)="onSelectPreset(preset)">
+                <span class="preset-title">{{preset.name}}</span>
+                <span class="preset-description">{{preset.description ? preset.description : 'No description.'}}</span>
+              </div>
+            }
+          </ng-scrollbar>
+        } @else {
+          <div class="no-data-wrapper">
+            <span class="no-data-label">{{ t('no-presets') }}</span>
+          </div>
+        }
+
+      </div>
+
+    <div class="choose-preset-modal-actions">
+
+      <div class="choose-preset-modal-cancel">
+        <span class="choose-preset-modal-cancel-label" (click)="onCancel()">{{ t('cancel') }}</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

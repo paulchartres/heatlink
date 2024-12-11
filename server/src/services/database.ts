@@ -3,6 +3,7 @@ import {Database, open} from 'sqlite'
 import {DateTime} from "luxon";
 import {TemperatureHistory} from "../models/temperature-history";
 import {HumidityHistory} from "../models/humidity-history";
+import {Preset} from "../models/preset";
 
 let database: Database;
 
@@ -29,8 +30,11 @@ export function initDatabase(): Promise<void> {
                     console.log(`[database]: Temperatures table created.`);
                     database.exec(`CREATE TABLE humidity (timestamp INTEGER, humidity REAL, deviceId TEXT)`).then(() => {
                         console.log(`[database]: Humidity table created.`);
-                        resolve();
-                    })
+                        database.exec(`CREATE TABLE presets (name TEXT, description TEXT, json TEXT)`).then(() => {
+                            console.log(`[database]: Presets table created.`);
+                            resolve();
+                        });
+                    });
                 });
             } else {
                 resolve();
@@ -78,5 +82,29 @@ export function getFirstTemperatureDataPoint(deviceId: string): Promise<Temperat
        database.get(`SELECT * FROM temperatures WHERE deviceId = ? ORDER BY timestamp asc`, deviceId).then((result) => {
            resolve(result);
        })
+    });
+}
+
+export function getPresets(): Promise<Preset[]> {
+    return new Promise((resolve, reject) => {
+        database.all(`SELECT * FROM presets`).then((result) => {
+            resolve(result);
+        });
+    });
+}
+
+export function getPreset(name: string): Promise<Preset> {
+    return new Promise((resolve, reject) => {
+        database.get(`SELECT * FROM presets WHERE name = ?`, name).then((result) => {
+            resolve(result);
+        });
+    });
+}
+
+export function savePreset(name: string, description: string, json: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        database.run(`INSERT INTO presets VALUES (?, ?, ?)`, name, description, json).then(() => {
+            resolve();
+        });
     });
 }

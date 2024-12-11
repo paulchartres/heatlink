@@ -1,0 +1,78 @@
+.new-preset-modal-wrapper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-preset-modal-background {
+  width: 500px;
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.new-preset-modal-title {
+  font-size: 1.2rem;
+  opacity: 0.7;
+  font-weight: 200;
+}
+
+.new-preset-modal-actions {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
+  margin-top: 1rem;
+  column-gap: 0.5rem;
+}
+
+.new-preset-modal-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border: 1px solid #3d3d3d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.new-preset-modal-button:hover {
+  color: orange;
+  border: 1px solid orange;
+}
+
+.new-preset-modal-button-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.new-preset-modal-cancel {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.new-preset-modal-cancel-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  transition: 0.2s;
+}
+
+.new-preset-modal-cancel-label:hover {
+  color: orange;
+}

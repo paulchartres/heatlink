@@ -66,5 +66,16 @@
   "away-for": "Away for",
   "day": "day",
   "english": "English",
-  "french": "French"
+  "french": "French",
+  "save-as-preset": "Save as preset",
+  "load-preset": "Load preset",
+  "duplicate-to-devices": "Duplicate to devices",
+  "new-preset": "New preset",
+  "name": "Name",
+  "description": "Description",
+  "preset-saved-notification": "Your preset has successfully been saved.",
+  "preset-loaded-notification": "The selected preset has been loaded. Make sure to save it before closing.",
+  "choose-preset": "Load preset",
+  "preset-already-exists-notification": "This preset already exists. Please choose a different name.",
+  "no-presets": "Your currently have no presets saved."
 }

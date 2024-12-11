@@ -2,10 +2,28 @@
 
   <div class="device-schedule-title-row">
 
-    <span class="device-schedule-title">
-      {{ t('heating-schedule-for') }}
+    <div class="device-schedule-title-wrapper">
+      <span class="device-schedule-title">{{ t('heating-schedule-for') }}</span>
       <span class="device-schedule-title-highlight">{{deviceName}}</span>
-    </span>
+      <ng-icon name="matMoreHorizOutline" class="device-schedule-extras" (click)="onOpenContextMenu()"></ng-icon>
+
+      @if (contextMenu) {
+        <div @fade class="device-schedule-extras-wrapper" appClickOutside (clickOutside)="onCloseContextMenu()">
+          <div class="device-schedule-extra-item" (click)="onSavePreset()">
+            <ng-icon class="device-schedule-extra-item-icon" name="matSaveOutline"></ng-icon>
+            <span class="device-schedule-extra-item-label">{{ t('save-as-preset') }}</span>
+          </div>
+          <div class="device-schedule-extra-item" (click)="onLoadPreset()">
+            <ng-icon class="device-schedule-extra-item-icon" name="matFileUploadOutline"></ng-icon>
+            <span class="device-schedule-extra-item-label">{{ t('load-preset') }}</span>
+          </div>
+          <div class="device-schedule-extra-item">
+            <ng-icon class="device-schedule-extra-item-icon" name="matContentCopyOutline"></ng-icon>
+            <span class="device-schedule-extra-item-label">{{ t('duplicate-to-devices') }}</span>
+          </div>
+        </div>
+      }
+    </div>
 
     <div class="device-schedule-control-bar">
       <div class="device-schedule-control-button" [ngClass]="{ enabled: !scheduleMode }" (click)="onSetScheduleMode(false)">

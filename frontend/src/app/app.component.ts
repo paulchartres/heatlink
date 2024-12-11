@@ -45,6 +45,8 @@ import {WeatherWsService} from "./services/ws/weather/weather-ws.service";
 import {HistoryWsService} from "./services/ws/history/history-ws.service";
 import {TranslocoDirective} from "@jsverse/transloco";
 import {LocaleService} from "./services/locale/locale.service";
+import {NewPresetModalComponent} from "./modals/new-preset-modal/new-preset-modal.component";
+import {ChoosePresetModalComponent} from "./modals/choose-preset-modal/choose-preset-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -61,7 +63,9 @@ import {LocaleService} from "./services/locale/locale.service";
     PromptModalComponent,
     NotificationComponent,
     NgScrollbar,
-    TranslocoDirective
+    TranslocoDirective,
+    NewPresetModalComponent,
+    ChoosePresetModalComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -165,6 +169,14 @@ export class AppComponent implements OnInit {
 
   onCloseDisableVacancyModal(): void {
     this.modals.onCloseDisableVacancyModal();
+  }
+
+  onCloseNewPresetModal(): void {
+    this.modals.onCloseNewPresetModal();
+  }
+
+  onCloseLoadPresetModal(): void {
+    this.modals.onCloseLoadPresetModal();
   }
 
   onCloseNotification(notification: Notification): void {

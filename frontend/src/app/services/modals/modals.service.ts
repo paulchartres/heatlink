@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {ModalConfig} from "../../models/modal-config";
+import {PresetModalConfig} from "../../models/preset-modal-config";
+import {Preset} from "../api/models/preset";
+import {LoadPresetModalConfig} from "../../models/load-preset-modal-config";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +17,8 @@ export class ModalsService {
   private _disableMotionDetectionModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
   private _disableBoostModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
   private _disableVacancyModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
+  private _newPresetModal$: BehaviorSubject<PresetModalConfig | undefined> = new BehaviorSubject<PresetModalConfig | undefined>(undefined);
+  private _loadPresetModal$: BehaviorSubject<LoadPresetModalConfig | undefined> = new BehaviorSubject<LoadPresetModalConfig | undefined>(undefined);
 
   constructor() { }
 
@@ -99,6 +104,30 @@ export class ModalsService {
 
   getDisableVacancyModalConfig(): Observable<ModalConfig | undefined> {
     return this._disableVacancyModal$.asObservable();
+  }
+
+  onOpenNewPresetModal(config: PresetModalConfig): void {
+    this._newPresetModal$.next(config);
+  }
+
+  onCloseNewPresetModal(): void {
+    this._newPresetModal$.next(undefined);
+  }
+
+  getNewPresetModalConfig(): Observable<PresetModalConfig | undefined> {
+    return this._newPresetModal$.asObservable();
+  }
+
+  onOpenLoadPresetModal(config: LoadPresetModalConfig): void {
+    this._loadPresetModal$.next(config);
+  }
+
+  onCloseLoadPresetModal(): void {
+    this._loadPresetModal$.next(undefined);
+  }
+
+  getLoadPresetModalConfig(): Observable<LoadPresetModalConfig | undefined> {
+    return this._loadPresetModal$.asObservable();
   }
 
 }
