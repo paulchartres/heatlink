@@ -129,7 +129,7 @@
       <span class="device-schedule-cancel-label" (click)="onCloseSchedulingUtility()">{{ t('close-scheduling-utility') }}</span>
     </div>
 
-    <app-button (press)="onSaveSchedule()" [loading]="loading">
+    <app-button (press)="onSaveSchedule()" [disabled]="!edited" [loading]="loading">
       {{ t('save-schedule') }}
     </app-button>
 

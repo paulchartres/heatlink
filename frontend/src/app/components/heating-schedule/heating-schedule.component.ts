@@ -1,4 +1,14 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {HeatingMode} from "../../services/api/models/heating-mode";
 import {isBetween} from "../../helpers/math.helper";
 import {CommonModule} from "@angular/common";
@@ -43,11 +53,11 @@ import {ModalsService} from "../../services/modals/modals.service";
   styleUrl: './heating-schedule.component.scss',
   animations: [fadeAnimation]
 })
-export class HeatingScheduleComponent implements OnInit {
+export class HeatingScheduleComponent implements OnInit, OnChanges {
 
   @ViewChild('scheduleWrapper') scheduleWrapper!: ElementRef<HTMLDivElement>;
 
-  @Input({ required: true }) schedule!: HeatingSchedule[];
+  @Input({ required: true }) deviceSchedule!: HeatingSchedule[];
   @Input({ required: true }) deviceId!: string;
   @Input({ required: true }) deviceName!: string;
   @Input({ required: true }) scheduleMode!: boolean;
@@ -56,6 +66,8 @@ export class HeatingScheduleComponent implements OnInit {
 
   loading: boolean = false;
   contextMenu: boolean = false;
+  edited: boolean = false;
+  schedule!: HeatingSchedule[];
 
   // For schedule selection
   selectedDay?: WeekDay;
@@ -128,7 +140,16 @@ export class HeatingScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.currentDay = Info.weekdays()[this.now.weekday - 1].toUpperCase() as WeekDay;
+    this.schedule = this.deviceSchedule;
     this._initTime();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.hasOwnProperty('deviceSchedule')) {
+      if (!this.edited) {
+        this.schedule = this.deviceSchedule;
+      }
+    }
   }
 
   private _initTime(): void {
@@ -183,6 +204,7 @@ export class HeatingScheduleComponent implements OnInit {
     this.startSectionIndex = undefined;
     this.adjacentSections = undefined;
     this.heatingModeCoordinates = undefined;
+    this.edited = true;
   }
 
   getColorForHeatingMode(mode: any): string {
@@ -253,6 +275,7 @@ export class HeatingScheduleComponent implements OnInit {
       body: this.schedule
     }).subscribe(() => {
       this.loading = false;
+      this.edited = false;
       this._notifications._notify({ body: this._transloco.translate('heating-schedule-updated-notification'), icon: 'matAlarmOutline', deviceName: this.deviceName });
     });
   }
@@ -287,6 +310,7 @@ export class HeatingScheduleComponent implements OnInit {
     this._modals.onOpenLoadPresetModal({
       callback: (preset) => {
         this.schedule = JSON.parse(preset.json);
+        this.edited = true;
         this._notifications._notify({ body: this._transloco.translate('preset-loaded-notification'), icon: 'matFileUploadOutline', deviceName: this.deviceName });
       }
     });

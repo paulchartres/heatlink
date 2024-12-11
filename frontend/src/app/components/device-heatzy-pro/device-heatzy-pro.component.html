@@ -172,7 +172,7 @@
 </div>
 
 @if (schedulingUtility) {
-  <app-heating-schedule @fade [schedule]="deviceInfo?.schedule!" [deviceName]="device.readableName" [scheduleMode]="deviceInfo!.isUsingTimer" [deviceId]="device.deviceId" (close)="onCloseSchedulingUtility()"></app-heating-schedule>
+  <app-heating-schedule @fade [deviceSchedule]="deviceInfo?.schedule!" [deviceName]="device.readableName" [scheduleMode]="deviceInfo!.isUsingTimer" [deviceId]="device.deviceId" (close)="onCloseSchedulingUtility()"></app-heating-schedule>
 }
 
 @if (history) {
