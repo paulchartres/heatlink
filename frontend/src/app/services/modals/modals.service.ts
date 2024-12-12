@@ -4,6 +4,7 @@ import {ModalConfig} from "../../models/modal-config";
 import {PresetModalConfig} from "../../models/preset-modal-config";
 import {Preset} from "../api/models/preset";
 import {LoadPresetModalConfig} from "../../models/load-preset-modal-config";
+import {CopyDayScheduleModalConfig} from "../../models/copy-day-schedule-modal-config";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class ModalsService {
   private _disableVacancyModal$: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
   private _newPresetModal$: BehaviorSubject<PresetModalConfig | undefined> = new BehaviorSubject<PresetModalConfig | undefined>(undefined);
   private _loadPresetModal$: BehaviorSubject<LoadPresetModalConfig | undefined> = new BehaviorSubject<LoadPresetModalConfig | undefined>(undefined);
+  private _copyDayScheduleModal$: BehaviorSubject<CopyDayScheduleModalConfig | undefined> = new BehaviorSubject<CopyDayScheduleModalConfig | undefined>(undefined);
 
   constructor() { }
 
@@ -128,6 +130,18 @@ export class ModalsService {
 
   getLoadPresetModalConfig(): Observable<LoadPresetModalConfig | undefined> {
     return this._loadPresetModal$.asObservable();
+  }
+
+  onOpenCopyDayScheduleModal(config: CopyDayScheduleModalConfig): void {
+    this._copyDayScheduleModal$.next(config);
+  }
+
+  onCloseCopyDayScheduleModal(): void {
+    this._copyDayScheduleModal$.next(undefined);
+  }
+
+  getCopyDayScheduleModalConfig(): Observable<CopyDayScheduleModalConfig | undefined> {
+    return this._copyDayScheduleModal$.asObservable();
   }
 
 }

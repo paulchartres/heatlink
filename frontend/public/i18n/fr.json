@@ -77,5 +77,7 @@
   "preset-loaded-notification": "Le modèle sélectionné a été chargé. Assurez-vous d'enregistrer avant de fermer.",
   "choose-preset": "Charger un modèle",
   "preset-already-exists-notification": "Ce modèle existe déjà. Merci de choisir un autre nom.",
-  "no-presets": "Vous n'avez actuellement aucun modèle enregistré."
+  "no-presets": "Vous n'avez actuellement aucun modèle enregistré.",
+  "copy-to-other-days": "Copier sur d'autres jours",
+  "duplicate-day-schedule": "Dupliquer un planning journalier"
 }

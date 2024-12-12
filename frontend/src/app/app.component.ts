@@ -47,6 +47,7 @@ import {TranslocoDirective} from "@jsverse/transloco";
 import {LocaleService} from "./services/locale/locale.service";
 import {NewPresetModalComponent} from "./modals/new-preset-modal/new-preset-modal.component";
 import {ChoosePresetModalComponent} from "./modals/choose-preset-modal/choose-preset-modal.component";
+import {CopyDayScheduleModalComponent} from "./modals/copy-day-schedule-modal/copy-day-schedule-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -65,7 +66,8 @@ import {ChoosePresetModalComponent} from "./modals/choose-preset-modal/choose-pr
     NgScrollbar,
     TranslocoDirective,
     NewPresetModalComponent,
-    ChoosePresetModalComponent
+    ChoosePresetModalComponent,
+    CopyDayScheduleModalComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -177,6 +179,10 @@ export class AppComponent implements OnInit {
 
   onCloseLoadPresetModal(): void {
     this.modals.onCloseLoadPresetModal();
+  }
+
+  onCloseCopyDayScheduleModal(): void {
+    this.modals.onCloseCopyDayScheduleModal();
   }
 
   onCloseNotification(notification: Notification): void {

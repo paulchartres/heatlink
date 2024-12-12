@@ -102,7 +102,15 @@
         <div class="device-schedule-day-wrapper">
 
           <div class="device-schedule-day-label-wrapper">
-            <span class="device-schedule-day-label" [ngClass]="{ highlighted: day.day == currentDay }">{{ t(day.day)[0] }}</span>
+            <span class="device-schedule-day-label" (click)="onOpenDayContextMenu(day.day)" [ngClass]="{ highlighted: day.day == currentDay }">{{ t(day.day)[0] }}</span>
+            @if (dayContextMenu == day.day) {
+              <div @fade class="device-schedule-day-context-menu-wrapper" [ngClass]="{ 'day-context-menu-mirror': day.day == WeekDay.Saturday || day.day == WeekDay.Sunday }" appClickOutside (clickOutside)="onCloseDayContextMenu()">
+                <div class="device-schedule-day-context-menu-item" (click)="onCopyDaySchedule(day)">
+                  <ng-icon class="device-schedule-day-context-menu-item-icon" name="matContentCopyOutline"></ng-icon>
+                  <span class="device-schedule-day-context-menu-item-label">{{ t('copy-to-other-days') }}</span>
+                </div>
+              </div>
+            }
           </div>
 
           @for (section of day.schedule | keyvalue; track section; let i = $index) {

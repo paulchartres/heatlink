@@ -1,0 +1,32 @@
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  column-gap: 0.5rem;
+}
+
+.checkbox-box-wrapper {
+  display: flex;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #424242;
+  border-radius: 0.25rem;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.checkbox-box-wrapper.readonly {
+  filter: saturate(0%);
+  cursor: not-allowed;
+}
+
+.checkbox-box-wrapper.checked {
+  background: orange;
+}
+
+.checkbox-text {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-weight: 200;
+}

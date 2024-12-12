@@ -1,0 +1,6 @@
+<div class="checkbox-wrapper">
+  <div class="checkbox-box-wrapper" [ngClass]="{ checked: value || readonly, readonly }" (click)="onToggle()"></div>
+  <span class="checkbox-text">
+    <ng-content></ng-content>
+  </span>
+</div>

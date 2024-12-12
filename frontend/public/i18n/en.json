@@ -77,5 +77,7 @@
   "preset-loaded-notification": "The selected preset has been loaded. Make sure to save it before closing.",
   "choose-preset": "Load preset",
   "preset-already-exists-notification": "This preset already exists. Please choose a different name.",
-  "no-presets": "Your currently have no presets saved."
+  "no-presets": "Your currently have no presets saved.",
+  "copy-to-other-days": "Copy to other days",
+  "duplicate-day-schedule": "Duplicate day schedule"
 }

@@ -39,6 +39,10 @@
   @if (modals.getLoadPresetModalConfig() | async) {
     <app-choose-preset-modal @fade [config]="(modals.getLoadPresetModalConfig() | async)!" (cancel)="onCloseLoadPresetModal()"></app-choose-preset-modal>
   }
+
+  @if (modals.getCopyDayScheduleModalConfig() | async) {
+    <app-copy-day-schedule-modal @fade [config]="(modals.getCopyDayScheduleModalConfig() | async)!" (cancel)="onCloseCopyDayScheduleModal()"></app-copy-day-schedule-modal>
+  }
   <!-- End modals -->
 
   <div class="main-content-wrapper">

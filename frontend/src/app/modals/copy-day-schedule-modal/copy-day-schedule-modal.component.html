@@ -1,0 +1,47 @@
+<div class="copy-day-schedule-modal-wrapper" *transloco="let t">
+
+  <div class="copy-day-schedule-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="copy-day-schedule-modal-title">{{ t('duplicate-day-schedule') }}</span>
+
+    <div class="copy-day-schedule-checkboxes-wrapper">
+
+      <div class="copy-day-schedule-checkbox-wrapper">
+        <app-checkbox [readonly]="config.schedule.day == WeekDay.Monday" [value]="selectedDays.includes(WeekDay.Monday)" (valueChange)="onToggleDay($event, WeekDay.Monday)">{{ t('MONDAY')[0] }}</app-checkbox>
+      </div>
+      <div class="copy-day-schedule-checkbox-wrapper">
+        <app-checkbox [readonly]="config.schedule.day == WeekDay.Tuesday" [value]="selectedDays.includes(WeekDay.Tuesday)" (valueChange)="onToggleDay($event, WeekDay.Tuesday)">{{ t('TUESDAY')[0] }}</app-checkbox>
+      </div>
+      <div class="copy-day-schedule-checkbox-wrapper">
+        <app-checkbox [readonly]="config.schedule.day == WeekDay.Wednesday" [value]="selectedDays.includes(WeekDay.Wednesday)" (valueChange)="onToggleDay($event, WeekDay.Wednesday)">{{ t('WEDNESDAY')[0] }}</app-checkbox>
+      </div>
+      <div class="copy-day-schedule-checkbox-wrapper">
+        <app-checkbox [readonly]="config.schedule.day == WeekDay.Thursday" [value]="selectedDays.includes(WeekDay.Thursday)" (valueChange)="onToggleDay($event, WeekDay.Thursday)">{{ t('THURSDAY')[0] }}</app-checkbox>
+      </div>
+      <div class="copy-day-schedule-checkbox-wrapper">
+        <app-checkbox [readonly]="config.schedule.day == WeekDay.Friday" [value]="selectedDays.includes(WeekDay.Friday)" (valueChange)="onToggleDay($event, WeekDay.Friday)">{{ t('FRIDAY')[0] }}</app-checkbox>
+      </div>
+      <div class="copy-day-schedule-checkbox-wrapper">
+        <app-checkbox [readonly]="config.schedule.day == WeekDay.Saturday" [value]="selectedDays.includes(WeekDay.Saturday)" (valueChange)="onToggleDay($event, WeekDay.Saturday)">{{ t('SATURDAY')[0] }}</app-checkbox>
+      </div>
+      <div class="copy-day-schedule-checkbox-wrapper">
+        <app-checkbox [readonly]="config.schedule.day == WeekDay.Sunday" [value]="selectedDays.includes(WeekDay.Sunday)" (valueChange)="onToggleDay($event, WeekDay.Sunday)">{{ t('SUNDAY')[0] }}</app-checkbox>
+      </div>
+
+    </div>
+
+    <div class="copy-day-schedule-modal-actions">
+
+      <div class="copy-day-schedule-modal-cancel">
+        <span class="copy-day-schedule-modal-cancel-label" (click)="onCancel()">{{ t('cancel') }}</span>
+      </div>
+
+      <app-button [disabled]="selectedDays.length == 0" (press)="onConfirm()">
+        {{ t('confirm') }}
+      </app-button>
+
+    </div>
+
+  </div>
+
+</div>

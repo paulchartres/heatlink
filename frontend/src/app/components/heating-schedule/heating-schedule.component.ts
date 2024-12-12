@@ -66,6 +66,7 @@ export class HeatingScheduleComponent implements OnInit, OnChanges {
 
   loading: boolean = false;
   contextMenu: boolean = false;
+  dayContextMenu?: WeekDay;
   edited: boolean = false;
   schedule!: HeatingSchedule[];
 
@@ -312,6 +313,29 @@ export class HeatingScheduleComponent implements OnInit, OnChanges {
         this.schedule = JSON.parse(preset.json);
         this.edited = true;
         this._notifications._notify({ body: this._transloco.translate('preset-loaded-notification'), icon: 'matFileUploadOutline', deviceName: this.deviceName });
+      }
+    });
+  }
+
+  onOpenDayContextMenu(day: WeekDay): void {
+    this.dayContextMenu = day;
+  }
+
+  onCloseDayContextMenu(): void {
+    this.dayContextMenu = undefined;
+  }
+
+  onCopyDaySchedule(schedule: HeatingSchedule) {
+    this.dayContextMenu = undefined;
+    this._modals.onOpenCopyDayScheduleModal({
+      schedule,
+      callback: (days: string[]) => {
+        this.edited = true;
+        for (const day of this.schedule) {
+          if (days.includes(day.day)) {
+            day.schedule = Object.assign({}, schedule.schedule);
+          }
+        }
       }
     });
   }
