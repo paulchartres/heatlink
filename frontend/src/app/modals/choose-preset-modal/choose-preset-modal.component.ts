@@ -6,6 +6,7 @@ import {Preset} from "../../services/api/models/preset";
 import {ButtonComponent} from "../../components/button/button.component";
 import {LoadPresetModalConfig} from "../../models/load-preset-modal-config";
 import {NgScrollbar} from "ngx-scrollbar";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-choose-preset-modal',
@@ -17,7 +18,9 @@ import {NgScrollbar} from "ngx-scrollbar";
     NgScrollbar
   ],
   templateUrl: './choose-preset-modal.component.html',
-  styleUrl: './choose-preset-modal.component.scss'
+  styleUrl: './choose-preset-modal.component.scss',
+  animations: [fadeAnimation],
+  host: { '[@fade]': '' }
 })
 export class ChoosePresetModalComponent implements OnInit {
 

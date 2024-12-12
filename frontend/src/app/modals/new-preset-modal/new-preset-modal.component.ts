@@ -8,6 +8,7 @@ import {PresetModalConfig} from "../../models/preset-modal-config";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NotificationsService} from "../../services/notifications/notifications.service";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-new-preset-modal',
@@ -20,7 +21,9 @@ import {NotificationsService} from "../../services/notifications/notifications.s
     ClickOutsideDirective
   ],
   templateUrl: './new-preset-modal.component.html',
-  styleUrl: './new-preset-modal.component.scss'
+  styleUrl: './new-preset-modal.component.scss',
+  animations: [fadeAnimation],
+  host: { '[@fade]': '' }
 })
 export class NewPresetModalComponent {
 

@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {ModalConfig} from "../../models/modal-config";
 import {TranslocoDirective} from "@jsverse/transloco";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-prompt-modal',
@@ -11,7 +12,9 @@ import {TranslocoDirective} from "@jsverse/transloco";
     TranslocoDirective
   ],
   templateUrl: './prompt-modal.component.html',
-  styleUrl: './prompt-modal.component.scss'
+  styleUrl: './prompt-modal.component.scss',
+  animations: [fadeAnimation],
+  host: { '[@fade]': '' }
 })
 export class PromptModalComponent {
 

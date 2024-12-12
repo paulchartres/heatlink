@@ -5,6 +5,7 @@ import {matMinusOutline, matPlusOutline} from "@ng-icons/material-icons/outline"
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {ModalConfig} from "../../models/modal-config";
 import {TranslocoDirective} from "@jsverse/transloco";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-temperature-modal',
@@ -22,7 +23,9 @@ import {TranslocoDirective} from "@jsverse/transloco";
     })
   ],
   templateUrl: './temperature-modal.component.html',
-  styleUrl: './temperature-modal.component.scss'
+  styleUrl: './temperature-modal.component.scss',
+  animations: [fadeAnimation],
+  host: { '[@fade]': '' }
 })
 export class TemperatureModalComponent implements OnInit {
 

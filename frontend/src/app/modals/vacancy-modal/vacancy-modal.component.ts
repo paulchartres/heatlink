@@ -9,6 +9,7 @@ import {ModalConfig} from "../../models/modal-config";
 import {TranslocoDirective} from "@jsverse/transloco";
 import {LocaleService} from "../../services/locale/locale.service";
 import {DateAdapter} from "@angular/material/core";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-vacancy-modal',
@@ -22,7 +23,9 @@ import {DateAdapter} from "@angular/material/core";
     TranslocoDirective
   ],
   templateUrl: './vacancy-modal.component.html',
-  styleUrl: './vacancy-modal.component.scss'
+  styleUrl: './vacancy-modal.component.scss',
+  animations: [fadeAnimation],
+  host: { '[@fade]': '' }
 })
 export class VacancyModalComponent implements OnInit {
 

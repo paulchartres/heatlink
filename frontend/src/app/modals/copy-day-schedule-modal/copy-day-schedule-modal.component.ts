@@ -5,6 +5,7 @@ import {CopyDayScheduleModalConfig} from "../../models/copy-day-schedule-modal-c
 import {WeekDay} from "../../services/api/models/week-day";
 import {ButtonComponent} from "../../components/button/button.component";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-copy-day-schedule-modal',
@@ -16,7 +17,9 @@ import {ClickOutsideDirective} from "../../directives/click-outside.directive";
     ClickOutsideDirective
   ],
   templateUrl: './copy-day-schedule-modal.component.html',
-  styleUrl: './copy-day-schedule-modal.component.scss'
+  styleUrl: './copy-day-schedule-modal.component.scss',
+  animations: [fadeAnimation],
+  host: { '[@fade]': '' }
 })
 export class CopyDayScheduleModalComponent {
 

@@ -6,6 +6,7 @@ import {DateTime, Duration} from "luxon";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {ModalConfig} from "../../models/modal-config";
 import {TranslocoDirective} from "@jsverse/transloco";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-boost-modal',
@@ -23,7 +24,9 @@ import {TranslocoDirective} from "@jsverse/transloco";
     })
   ],
   templateUrl: './boost-modal.component.html',
-  styleUrl: './boost-modal.component.scss'
+  styleUrl: './boost-modal.component.scss',
+  animations: [fadeAnimation],
+  host: { '[@fade]': '' }
 })
 export class BoostModalComponent {
 
