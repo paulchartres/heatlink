@@ -47,6 +47,10 @@
 
   <div class="main-content-wrapper">
 
+    @if (rickCounter >= 10) {
+      <img src="/img/extras/rickroll.gif" class="rickroll">
+    }
+
     <div class="notifications-wrapper">
       @for (notification of notifications; track notification) {
         <app-notification @fade [notification]="notification" (close)="onCloseNotification(notification)" class="notification"></app-notification>
@@ -117,7 +121,7 @@
 
     <div class="watermark">
       <span>{{ t('made-with') }}</span>
-      <ng-icon class="watermark-heart" name="matFavoriteOutline"></ng-icon>
+      <ng-icon (click)="onClickHeart()" class="watermark-heart" name="matFavoriteOutline"></ng-icon>
       <span>{{ t('by') }}</span>
       <a class="watermark-link" href="https://pauldln.fr" target="_blank">CykaDev</a>
     </div>

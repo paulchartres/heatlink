@@ -98,6 +98,7 @@ export class AppComponent implements OnInit {
   currentWeather?: Weather;
   notifications: Notification[] = [];
   languagePicker: boolean = false;
+  rickCounter: number = 0;
 
   constructor(private _api: ApiService,
               private _notifications: NotificationsService,
@@ -200,6 +201,13 @@ export class AppComponent implements OnInit {
   onSetLocale(locale: string): void {
     this.onCloseLanguagePicker();
     this.locale.setCurrentLocale(locale);
+  }
+
+  onClickHeart(): void {
+    this.rickCounter += 1;
+    if (this.rickCounter == 10) {
+      new Audio('/audio/never-gonna-give-you-up.mp3').play()
+    }
   }
 
   protected readonly HeatingMode = HeatingMode;

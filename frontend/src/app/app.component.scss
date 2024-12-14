@@ -105,6 +105,7 @@
   align-items: center;
   column-gap: 0.25rem;
   font-size: 0.8rem;
+  user-select: none;
 }
 
 .watermark-heart {
@@ -114,6 +115,11 @@
 .watermark-link {
   text-decoration: underline;
   color: white;
+  transition: 0.2s;
+}
+
+.watermark-link:hover {
+  color: orange;
 }
 
 .language-picker {
@@ -179,4 +185,11 @@
   opacity: 0.4;
   transition: 0.2s;
   font-size: 0.8rem;
+}
+
+.rickroll {
+  position: absolute;
+  width: 25%;
+  left: 50%;
+  top: 0;
 }
