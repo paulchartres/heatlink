@@ -79,5 +79,6 @@
   "preset-already-exists-notification": "Ce modèle existe déjà. Merci de choisir un autre nom.",
   "no-presets": "Vous n'avez actuellement aucun modèle enregistré.",
   "copy-to-other-days": "Copier sur d'autres jours",
-  "duplicate-day-schedule": "Dupliquer un planning journalier"
+  "duplicate-day-schedule": "Dupliquer un planning journalier",
+  "device-name-updated-notification": "Le nom de votre appareil a été mis à jour."
 }

@@ -15,7 +15,12 @@
       @if (deviceInfo?.isLocked) {
         <ng-icon class="device-locked-icon" @fade name="matLockOutline"></ng-icon>
       }
-      <span class="device-readable-name">{{ device.readableName }}</span>
+
+      @if (editingName) {
+        <app-text-input class="device-readable-name-edit" (confirm)="onSaveDeviceName()" [(value)]="device.readableName"></app-text-input>
+      } @else {
+        <span class="device-readable-name" (click)="onClickDeviceName()">{{ device.readableName }}</span>
+      }
       <span class="device-type">{{ productNameToReadableName(device.productName) }}</span>
 
       @if (deviceInfo?.isHeating) {

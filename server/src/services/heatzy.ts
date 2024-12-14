@@ -108,3 +108,24 @@ export function updateDevice(deviceId: string, attributes: Partial<DeviceInfoPar
 
     });
 }
+
+export function updateDeviceName(deviceId: string, name: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+
+        axios.put(`${appUrl}/app/bindings/${deviceId}`, { dev_alias: name }, {
+            headers: {
+                'X-Gizwits-Application-Id': appId,
+                'X-Gizwits-User-token': getToken().token
+            },
+        })
+            .then((res) => {
+                resolve();
+            })
+            .catch((err) => {
+                console.log(err);
+                console.error(`[heatzy]: Could not update device name for ${deviceId}.`);
+                reject();
+            });
+
+    });
+}

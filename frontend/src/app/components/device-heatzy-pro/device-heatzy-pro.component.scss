@@ -34,6 +34,12 @@
   font-size: 1.4rem;
   font-weight: 200;
   margin-right: 0.75rem;
+  user-select: none;
+}
+
+.device-readable-name-edit {
+  width: 8rem;
+  margin-right: 0.75rem;
 }
 
 .device-type {

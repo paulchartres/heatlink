@@ -79,5 +79,6 @@
   "preset-already-exists-notification": "This preset already exists. Please choose a different name.",
   "no-presets": "Your currently have no presets saved.",
   "copy-to-other-days": "Copy to other days",
-  "duplicate-day-schedule": "Duplicate day schedule"
+  "duplicate-day-schedule": "Duplicate day schedule",
+  "device-name-updated-notification": "Your device's name has been updated."
 }

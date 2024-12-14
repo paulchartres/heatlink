@@ -17,9 +17,15 @@ export class TextInputComponent {
   @Input() value?: string;
   @Output() valueChange: EventEmitter<string> = new EventEmitter();
 
+  @Output() confirm: EventEmitter<void> = new EventEmitter();
+
   onValueChange(value: string): void {
     this.value = value;
     this.valueChange.emit(this.value);
+  }
+
+  onConfirm(): void {
+    this.confirm.emit();
   }
 
 }

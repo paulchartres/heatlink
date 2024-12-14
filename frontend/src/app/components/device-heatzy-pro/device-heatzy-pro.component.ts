@@ -23,6 +23,7 @@ import {DevicesWsService} from "../../services/ws/devices/devices-ws.service";
 import {HistoryWsService} from "../../services/ws/history/history-ws.service";
 import {TranslocoDirective, TranslocoService} from "@jsverse/transloco";
 import {WeatherHistory} from "../../services/api/models/weather-history";
+import {TextInputComponent} from "../text-input/text-input.component";
 
 @Component({
   selector: 'app-device-heatzy-pro',
@@ -34,7 +35,8 @@ import {WeatherHistory} from "../../services/api/models/weather-history";
     HeatingScheduleComponent,
     HistoryGraphsComponent,
     SkeletonLoaderComponent,
-    TranslocoDirective
+    TranslocoDirective,
+    TextInputComponent
   ],
   templateUrl: './device-heatzy-pro.component.html',
   styleUrl: './device-heatzy-pro.component.scss',
@@ -51,6 +53,9 @@ export class DeviceHeatzyProComponent implements OnInit {
   extraModes: boolean = false;
   schedulingUtility: boolean = false;
   history: boolean = false;
+
+  previousClick?: number;
+  editingName: boolean = false;
 
   historyBounds: MinMax = {
     min: DateTime.now().minus({ day: 1 }).toSeconds(),
@@ -347,6 +352,26 @@ export class DeviceHeatzyProComponent implements OnInit {
 
   onCloseHistory(): void {
     this.history = false;
+  }
+
+  onClickDeviceName(): void {
+    const now = DateTime.now().toSeconds();
+    if (this.previousClick && (now - this.previousClick < 0.3)) {
+      this.editingName = true;
+    }
+    this.previousClick = now;
+  }
+
+  onSaveDeviceName(): void {
+    this.editingName = false;
+    this._api.deviceDeviceIdNamePost({
+      deviceId: this.device.deviceId,
+      body: {
+        name: this.device.readableName
+      }
+    }).subscribe(() => {
+      this._notifications._notify({ body: this._transloco.translate('device-name-updated-notification'), icon: 'matCheckOutline', deviceName: this.device.readableName });
+    })
   }
 
   protected readonly HeatingMode = HeatingMode;

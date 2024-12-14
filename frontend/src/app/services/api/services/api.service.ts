@@ -26,6 +26,8 @@ import { deviceDeviceIdModePost } from '../fn/operations/device-device-id-mode-p
 import { DeviceDeviceIdModePost$Params } from '../fn/operations/device-device-id-mode-post';
 import { deviceDeviceIdMotionDetectionPost } from '../fn/operations/device-device-id-motion-detection-post';
 import { DeviceDeviceIdMotionDetectionPost$Params } from '../fn/operations/device-device-id-motion-detection-post';
+import { deviceDeviceIdNamePost } from '../fn/operations/device-device-id-name-post';
+import { DeviceDeviceIdNamePost$Params } from '../fn/operations/device-device-id-name-post';
 import { deviceDeviceIdResetSpecialModePost } from '../fn/operations/device-device-id-reset-special-mode-post';
 import { DeviceDeviceIdResetSpecialModePost$Params } from '../fn/operations/device-device-id-reset-special-mode-post';
 import { deviceDeviceIdScheduleModePost } from '../fn/operations/device-device-id-schedule-mode-post';
@@ -725,6 +727,39 @@ export class ApiService extends BaseService {
    */
   presetPost(params: PresetPost$Params, context?: HttpContext): Observable<void> {
     return this.presetPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `deviceDeviceIdNamePost()` */
+  static readonly DeviceDeviceIdNamePostPath = '/device/{deviceId}/name';
+
+  /**
+   * Updates the name of a specific device.
+   *
+   * Updates the name of a specific device.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deviceDeviceIdNamePost()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdNamePost$Response(params: DeviceDeviceIdNamePost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deviceDeviceIdNamePost(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Updates the name of a specific device.
+   *
+   * Updates the name of a specific device.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deviceDeviceIdNamePost$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  deviceDeviceIdNamePost(params: DeviceDeviceIdNamePost$Params, context?: HttpContext): Observable<void> {
+    return this.deviceDeviceIdNamePost$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

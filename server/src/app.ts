@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express";
-import {getDeviceInfo, getDevices, login, updateDevice} from "./services/heatzy";
+import {getDeviceInfo, getDevices, login, updateDevice, updateDeviceName} from "./services/heatzy";
 import {DeviceStripped} from "./models/device.stripped";
 import {convertReadableScheduleToHeatzyFormat, convertScheduleToReadable} from "./converters/schedule";
 import {DeviceInfoStripped} from "./models/device-info.stripped";
@@ -861,7 +861,49 @@ app.post('/preset', function (req: Request, res: Response) {
         }
     })
 
+});
 
+/**
+ * @swagger
+ * /device/{deviceId}/name:
+ *   post:
+ *     summary: Updates the name of a specific device.
+ *     description: Updates the name of a specific device.
+ *     parameters:
+ *       - in: path
+ *         name: deviceId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The new name of the device
+ *                 example: The Office
+ *     responses:
+ *       200:
+ *         description: The device name has been updated
+ */
+app.post('/device/:deviceId/name', function (req: Request, res: Response) {
+    const name: string = req.body?.name;
+
+    if (!name) {
+        res.sendStatus(400);
+        return;
+    }
+
+    updateDeviceName(req.params.deviceId, name)
+    .then(() => {
+        res.send();
+    }).catch(() => {
+        res.sendStatus(404);
+    });
 });
 
 /**
