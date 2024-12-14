@@ -1,0 +1,29 @@
+<div class="copy-schedule-to-devices-modal-wrapper" *transloco="let t">
+
+  <div class="copy-schedule-to-devices-modal-background" appClickOutside (clickOutside)="onCancel()">
+
+    <span class="copy-schedule-to-devices-modal-title">{{ t('copy-schedule-to-devices') }}</span>
+
+    <div class="copy-schedule-to-devices-modal-devices-list">
+
+      @for (device of (data.getDevices() | async); track device.deviceId) {
+        <app-checkbox [value]="selectedDevices.includes(device.deviceId)" [readonly]="device.deviceId == config.deviceId" (valueChange)="onToggleDevice($event, device.deviceId)">{{device.readableName}}</app-checkbox>
+      }
+
+    </div>
+
+    <div class="copy-schedule-to-devices-modal-actions">
+
+      <div class="copy-schedule-to-devices-modal-cancel">
+        <span class="copy-schedule-to-devices-modal-cancel-label" (click)="onCancel()">{{ t('cancel') }}</span>
+      </div>
+
+      <app-button [disabled]="selectedDevices.length == 0" (press)="onConfirm()">
+        {{ t('confirm') }}
+      </app-button>
+
+    </div>
+
+  </div>
+
+</div>

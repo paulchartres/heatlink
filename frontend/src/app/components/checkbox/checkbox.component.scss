@@ -3,6 +3,11 @@
   align-items: center;
   width: 100%;
   column-gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox-wrapper.readonly {
+  cursor: not-allowed;
 }
 
 .checkbox-box-wrapper {
@@ -12,13 +17,11 @@
   border: 1px solid #424242;
   border-radius: 0.25rem;
   background: transparent;
-  cursor: pointer;
   transition: 0.2s;
 }
 
 .checkbox-box-wrapper.readonly {
   filter: saturate(0%);
-  cursor: not-allowed;
 }
 
 .checkbox-box-wrapper.checked {

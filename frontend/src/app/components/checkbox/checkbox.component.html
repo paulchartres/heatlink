@@ -1,5 +1,5 @@
-<div class="checkbox-wrapper">
-  <div class="checkbox-box-wrapper" [ngClass]="{ checked: value || readonly, readonly }" (click)="onToggle()"></div>
+<div class="checkbox-wrapper" (click)="onToggle()" [ngClass]="{ readonly }">
+  <div class="checkbox-box-wrapper" [ngClass]="{ checked: value || readonly, readonly }"></div>
   <span class="checkbox-text">
     <ng-content></ng-content>
   </span>

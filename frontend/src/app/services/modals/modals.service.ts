@@ -5,6 +5,7 @@ import {PresetModalConfig} from "../../models/preset-modal-config";
 import {Preset} from "../api/models/preset";
 import {LoadPresetModalConfig} from "../../models/load-preset-modal-config";
 import {CopyDayScheduleModalConfig} from "../../models/copy-day-schedule-modal-config";
+import {CopyToDevicesModalConfig} from "../../models/copy-to-devices-modal-config";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class ModalsService {
   private _newPresetModal$: BehaviorSubject<PresetModalConfig | undefined> = new BehaviorSubject<PresetModalConfig | undefined>(undefined);
   private _loadPresetModal$: BehaviorSubject<LoadPresetModalConfig | undefined> = new BehaviorSubject<LoadPresetModalConfig | undefined>(undefined);
   private _copyDayScheduleModal$: BehaviorSubject<CopyDayScheduleModalConfig | undefined> = new BehaviorSubject<CopyDayScheduleModalConfig | undefined>(undefined);
+  private _copyScheduleToDevicesModal$: BehaviorSubject<CopyToDevicesModalConfig | undefined> = new BehaviorSubject<CopyToDevicesModalConfig | undefined>(undefined);
 
   constructor() { }
 
@@ -142,6 +144,18 @@ export class ModalsService {
 
   getCopyDayScheduleModalConfig(): Observable<CopyDayScheduleModalConfig | undefined> {
     return this._copyDayScheduleModal$.asObservable();
+  }
+
+  onOpenCopyToDevicesModal(config: CopyToDevicesModalConfig): void {
+    this._copyScheduleToDevicesModal$.next(config);
+  }
+
+  onCloseCopyToDevicesModal(): void {
+    this._copyScheduleToDevicesModal$.next(undefined);
+  }
+
+  getCopyToDevicesModal(): Observable<CopyToDevicesModalConfig | undefined> {
+    return this._copyScheduleToDevicesModal$.asObservable();
   }
 
 }

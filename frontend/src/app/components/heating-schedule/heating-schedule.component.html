@@ -17,7 +17,7 @@
             <ng-icon class="device-schedule-extra-item-icon" name="matFileUploadOutline"></ng-icon>
             <span class="device-schedule-extra-item-label">{{ t('load-preset') }}</span>
           </div>
-          <div class="device-schedule-extra-item">
+          <div class="device-schedule-extra-item" (click)="onCopyScheduleToDevices()">
             <ng-icon class="device-schedule-extra-item-icon" name="matContentCopyOutline"></ng-icon>
             <span class="device-schedule-extra-item-label">{{ t('duplicate-to-devices') }}</span>
           </div>

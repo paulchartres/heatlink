@@ -48,6 +48,9 @@ import {LocaleService} from "./services/locale/locale.service";
 import {NewPresetModalComponent} from "./modals/new-preset-modal/new-preset-modal.component";
 import {ChoosePresetModalComponent} from "./modals/choose-preset-modal/choose-preset-modal.component";
 import {CopyDayScheduleModalComponent} from "./modals/copy-day-schedule-modal/copy-day-schedule-modal.component";
+import {
+  CopyScheduleToDevicesModalComponent
+} from "./modals/copy-schedule-to-devices-modal/copy-schedule-to-devices-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -67,7 +70,8 @@ import {CopyDayScheduleModalComponent} from "./modals/copy-day-schedule-modal/co
     TranslocoDirective,
     NewPresetModalComponent,
     ChoosePresetModalComponent,
-    CopyDayScheduleModalComponent
+    CopyDayScheduleModalComponent,
+    CopyScheduleToDevicesModalComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -184,6 +188,10 @@ export class AppComponent implements OnInit {
 
   onCloseCopyDayScheduleModal(): void {
     this.modals.onCloseCopyDayScheduleModal();
+  }
+
+  onCloseCopyToDevicesModal(): void {
+    this.modals.onCloseCopyToDevicesModal();
   }
 
   onCloseNotification(notification: Notification): void {

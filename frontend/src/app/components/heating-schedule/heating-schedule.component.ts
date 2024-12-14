@@ -30,6 +30,7 @@ import {
 } from "@ng-icons/material-icons/outline";
 import {ClickOutsideDirective} from "../../directives/click-outside.directive";
 import {ModalsService} from "../../services/modals/modals.service";
+import {forkJoin, Observable} from "rxjs";
 
 @Component({
   selector: 'app-heating-schedule',
@@ -338,6 +339,25 @@ export class HeatingScheduleComponent implements OnInit, OnChanges {
         }
       }
     });
+  }
+
+  onCopyScheduleToDevices(): void {
+    this.contextMenu = false;
+    this._modals.onOpenCopyToDevicesModal({
+      deviceId: this.deviceId,
+      callback: (deviceIds: string[]) => {
+        const requests: Observable<void>[] = [];
+        for (const deviceId of deviceIds) {
+          requests.push(this._api.deviceDeviceIdSchedulePost({
+            deviceId: deviceId,
+            body: this.schedule
+          }));
+        }
+        forkJoin(requests).subscribe(() => {
+          this._notifications._notify({ body: this._transloco.translate('schedule-copied-to-devices-notification'), icon: 'matSaveOutline', deviceName: this.deviceName });
+        });
+      }
+    })
   }
 
   protected readonly HeatingMode = HeatingMode;

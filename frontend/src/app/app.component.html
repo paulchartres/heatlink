@@ -43,6 +43,11 @@
   @if (modals.getCopyDayScheduleModalConfig() | async) {
     <app-copy-day-schedule-modal @fade [config]="(modals.getCopyDayScheduleModalConfig() | async)!" (cancel)="onCloseCopyDayScheduleModal()"></app-copy-day-schedule-modal>
   }
+
+  @if (modals.getCopyToDevicesModal() | async) {
+    <app-copy-schedule-to-devices-modal @fade [config]="(modals.getCopyToDevicesModal() | async)!" (cancel)="onCloseCopyToDevicesModal()"></app-copy-schedule-to-devices-modal>
+  }
+
   <!-- End modals -->
 
   <div class="main-content-wrapper">
