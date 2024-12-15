@@ -1,5 +1,85 @@
 @import "@fontsource/fira-mono/400.css";
 
+@media (max-width: 768px) {
+
+  .main-content-wrapper {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .main-title {
+    font-size: 1.3rem;
+  }
+
+  .main-date-time-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .notifications-wrapper {
+    width: calc(100% - 2rem);
+  }
+
+  .notification {
+    width: 100%;
+  }
+
+  .watermark {
+    margin-right: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .language-picker {
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .devices-scrollbox {
+    height: calc(100% - 12rem);
+  }
+
+}
+
+@media (min-width: 769px) {
+
+  .main-content-wrapper {
+    padding: 4rem;
+    width: 35%;
+    min-width: 500px;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .main-date-time-wrapper {
+    margin-bottom: 2rem;
+  }
+
+  .notifications-wrapper {
+    width: calc(100% - 8rem);
+    padding: 1rem;
+  }
+
+  .notification {
+    width: 80%;
+  }
+
+  .watermark {
+    margin-right: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .language-picker {
+    margin-left: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .devices-scrollbox {
+    height: 100%;
+  }
+
+}
+
 .fullpage-wrapper {
   width: 100vw;
   height: 100vh;
@@ -8,13 +88,10 @@
 }
 
 .main-content-wrapper {
-  width: 35%;
-  min-width: 500px;
   height: 100%;
   display: flex;
   flex-direction: column;
   margin: auto;
-  padding: 4rem;
   position: relative;
   box-sizing: border-box;
 }
@@ -22,7 +99,6 @@
 .notifications-wrapper {
   position: absolute;
   box-sizing: border-box;
-  width: calc(100% - 8rem);
   height: 100%;
   z-index: 5;
   pointer-events: none;
@@ -30,22 +106,12 @@
   flex-direction: column;
   justify-content: end;
   margin-top: -4rem;
-  padding: 1rem;
   align-items: center;
   row-gap: 0.5rem;
 }
 
-.notification {
-  width: 80%;
-}
-
 .main-title {
-  font-size: 2rem;
   margin-bottom: 2rem;
-}
-
-.devices-scrollbox {
-  height: 100%;
 }
 
 .devices-wrapper {
@@ -58,7 +124,6 @@
 .main-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .main-time {
@@ -74,14 +139,12 @@
 .main-date-time-wrapper {
   display: flex;
   flex-direction: column;
-  margin-bottom: 2rem;
   row-gap: 0.25rem;
 }
 
 .main-weather-wrapper {
   display: flex;
   column-gap: 0.5rem;
-  align-items: center;
 }
 
 .main-weather-image {
@@ -98,8 +161,6 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  margin-right: 4rem;
-  margin-bottom: 1rem;
   opacity: 0.5;
   display: flex;
   align-items: center;
@@ -126,8 +187,6 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  margin-left: 4rem;
-  margin-bottom: 1rem;
   cursor: pointer;
 }
 

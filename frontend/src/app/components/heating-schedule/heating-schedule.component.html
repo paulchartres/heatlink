@@ -40,7 +40,7 @@
 
     @if (heatingModeCoordinates) {
       <div @fade class="device-schedule-mode-selector"
-           [ngClass]="{ mirror: adjacentSections! > 0, mirrorX: selectedDay == WeekDay.Sunday }"
+           [ngClass]="{ mirror: adjacentSections! > 0, mirrorX: selectedDay == WeekDay.Sunday || (selectedDay == WeekDay.Saturday && mobileMode) || (selectedDay == WeekDay.Friday && mobileMode) }"
            [ngStyle]="{ top: heatingModeCoordinates.y + 'px', left: heatingModeCoordinates.x + 'px' }">
         <span class="device-schedule-mode-selector-title">{{getStartTime()}} {{ t('to') }} {{getEndTime()}}</span>
 
@@ -104,7 +104,7 @@
           <div class="device-schedule-day-label-wrapper">
             <span class="device-schedule-day-label" (click)="onOpenDayContextMenu(day.day)" [ngClass]="{ highlighted: day.day == currentDay }">{{ t(day.day)[0] }}</span>
             @if (dayContextMenu == day.day) {
-              <div @fade class="device-schedule-day-context-menu-wrapper" [ngClass]="{ 'day-context-menu-mirror': day.day == WeekDay.Saturday || day.day == WeekDay.Sunday }" appClickOutside (clickOutside)="onCloseDayContextMenu()">
+              <div @fade class="device-schedule-day-context-menu-wrapper" [ngClass]="{ 'day-context-menu-mirror': day.day == WeekDay.Saturday || day.day == WeekDay.Sunday || (day.day == WeekDay.Friday && mobileMode) || (day.day == WeekDay.Thursday && mobileMode) }" appClickOutside (clickOutside)="onCloseDayContextMenu()">
                 <div class="device-schedule-day-context-menu-item" (click)="onCopyDaySchedule(day)">
                   <ng-icon class="device-schedule-day-context-menu-item-icon" name="matContentCopyOutline"></ng-icon>
                   <span class="device-schedule-day-context-menu-item-label">{{ t('copy-to-other-days') }}</span>

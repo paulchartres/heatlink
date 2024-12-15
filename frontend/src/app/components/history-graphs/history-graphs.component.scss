@@ -1,3 +1,27 @@
+@media (max-width: 768px) {
+
+  .history-graphs-title {
+    font-size: 0.9rem;
+  }
+
+  .history-graph-filter-button {
+    padding: 0.25rem;
+  }
+
+}
+
+@media (min-width: 769px) {
+
+  .history-graphs-title {
+    font-size: 1.2rem;
+  }
+
+  .history-graph-filter-button {
+    padding: 0.5rem;
+  }
+
+}
+
 .history-graphs-wrapper {
   background-color: #181818;
   border: 1px solid #282828;
@@ -12,7 +36,6 @@
 }
 
 .history-graphs-title {
-  font-size: 1.2rem;
   opacity: 0.6;
   font-weight: 200;
 }
@@ -94,7 +117,6 @@
 }
 
 .history-graph-filter-button {
-  padding: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;

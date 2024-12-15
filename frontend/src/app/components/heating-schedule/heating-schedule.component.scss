@@ -1,8 +1,73 @@
+@media (max-width: 768px) {
+
+  .device-schedule {
+    height: 40rem;
+  }
+
+  .device-schedule-title {
+    font-size: 0.9rem;
+  }
+
+  .device-schedule-control-button {
+    padding: 0.25rem;
+  }
+
+  .schedule-control-button-icon {
+    font-size: 1rem;
+  }
+
+  .device-schedule-title-highlight {
+    font-size: 0.9rem;
+  }
+
+  .device-schedule-days-wrapper {
+    width: 100%;
+  }
+
+  .device-schedule-extras-wrapper {
+    margin-left: -8rem;
+    margin-top: 0.5rem;
+  }
+
+}
+
+@media (min-width: 769px) {
+
+  .device-schedule-title {
+    font-size: 1.2rem;
+  }
+
+  .device-schedule-control-button {
+    padding: 0.5rem;
+  }
+
+  .schedule-control-button-icon {
+    font-size: 1.1rem;
+  }
+
+  .device-schedule-title-highlight {
+    font-size: 1.2rem;
+  }
+
+  .device-schedule {
+    height: 30rem;
+  }
+
+  .device-schedule-days-wrapper {
+    width: 85%;
+    padding-right: 2rem;
+  }
+
+  .device-schedule-extras-wrapper {
+    margin-left: 0.25rem;
+  }
+
+}
+
 .device-schedule {
   background-color: #181818;
   border: 1px solid #282828;
   border-radius: 0.5rem;
-  height: 30rem;
   padding: 1rem;
   box-sizing: border-box;
   display: flex;
@@ -19,7 +84,6 @@
 }
 
 .device-schedule-title {
-  font-size: 1.2rem;
   opacity: 0.6;
   font-weight: 200;
 }
@@ -38,7 +102,6 @@
 }
 
 .device-schedule-title-highlight {
-  font-size: 1.2rem;
   opacity: 0.6;
   font-weight: 300;
   margin-left: 0.35rem;
@@ -55,7 +118,6 @@
 }
 
 .device-schedule-control-button {
-  padding: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,7 +140,6 @@
 }
 
 .schedule-control-button-icon {
-  font-size: 1.1rem;
   opacity: 0.5;
   transition: 0.2s;
 }
@@ -130,10 +191,8 @@
 
 .device-schedule-days-wrapper {
   display: flex;
-  width: 85%;
   height: 100%;
   justify-content: space-between;
-  padding-right: 2rem;
   box-sizing: border-box;
   position: relative;
 }
@@ -333,7 +392,6 @@
   left: 100%;
   width: 15rem;
   z-index: 6;
-  margin-left: 0.25rem;
   border-radius: 0.25rem;
   box-shadow: 2px 2px 15px rgba(black, 0.5);
   border: 1px solid #333333;

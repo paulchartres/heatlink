@@ -80,5 +80,7 @@
   "no-presets": "Vous n'avez actuellement aucun modèle enregistré.",
   "copy-to-other-days": "Copier sur d'autres jours",
   "duplicate-day-schedule": "Dupliquer un planning journalier",
-  "device-name-updated-notification": "Le nom de votre appareil a été mis à jour."
+  "device-name-updated-notification": "Le nom de votre appareil a été mis à jour.",
+  "copy-schedule-to-devices": "Copier sur d'autres appareils",
+  "schedule-copied-to-devices-notification": "Ce planning a été copié sur les appareils sélectionnés."
 }

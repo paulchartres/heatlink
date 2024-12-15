@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -21,7 +21,9 @@
     "@angular/material-luxon-adapter": "^17.3.10",
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
+    "@angular/pwa": "^0.5.3",
     "@angular/router": "^18.0.0",
+    "@angular/service-worker": "^18.0.0",
     "@fontsource-variable/inter": "^5.1.0",
     "@fontsource/fira-mono": "^5.1.0",
     "@jsverse/transloco": "^7.5.0",

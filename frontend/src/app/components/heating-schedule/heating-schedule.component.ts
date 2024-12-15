@@ -70,6 +70,7 @@ export class HeatingScheduleComponent implements OnInit, OnChanges {
   dayContextMenu?: WeekDay;
   edited: boolean = false;
   schedule!: HeatingSchedule[];
+  mobileMode: boolean = window.innerWidth <= 768;
 
   // For schedule selection
   selectedDay?: WeekDay;
@@ -226,13 +227,35 @@ export class HeatingScheduleComponent implements OnInit, OnChanges {
     if (!this.sectionHeight) {
       this.sectionHeight = (event.target as HTMLDivElement).getBoundingClientRect().height;
     }
-    this.startingPosition = (event.target as HTMLDivElement).getBoundingClientRect().y + this.sectionHeight / 2;
-    this.xOffset = (event.target as HTMLDivElement).getBoundingClientRect().x + (event.target as HTMLDivElement).getBoundingClientRect().width;
-    this.selectedDay = day;
-    this.startSectionIndex = sectionIndex;
-    this.adjacentSections = 0;
-    this.heatingModeCoordinates = undefined;
-    this.dragging = true;
+    if (this.mobileMode) {
+
+      if (this.startSectionIndex != undefined && this.adjacentSections != undefined) {
+        this.startingPosition = (event.target as HTMLDivElement).getBoundingClientRect().y + this.sectionHeight / 2;
+        this.xOffset = (event.target as HTMLDivElement).getBoundingClientRect().x + (event.target as HTMLDivElement).getBoundingClientRect().width;
+        this.selectedDay = day;
+        this.startSectionIndex = sectionIndex;
+        this.adjacentSections = undefined;
+        this.heatingModeCoordinates = undefined;
+        return;
+      }
+
+      if (!this.startSectionIndex) {
+        this.startingPosition = (event.target as HTMLDivElement).getBoundingClientRect().y + this.sectionHeight / 2;
+        this.xOffset = (event.target as HTMLDivElement).getBoundingClientRect().x + (event.target as HTMLDivElement).getBoundingClientRect().width;
+        this.selectedDay = day;
+        this.startSectionIndex = sectionIndex;
+      } else {
+        this.adjacentSections = sectionIndex - this.startSectionIndex;
+      }
+    } else {
+      this.startingPosition = (event.target as HTMLDivElement).getBoundingClientRect().y + this.sectionHeight / 2;
+      this.xOffset = (event.target as HTMLDivElement).getBoundingClientRect().x + (event.target as HTMLDivElement).getBoundingClientRect().width;
+      this.selectedDay = day;
+      this.startSectionIndex = sectionIndex;
+      this.adjacentSections = 0;
+      this.heatingModeCoordinates = undefined;
+      this.dragging = true;
+    }
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -257,12 +280,21 @@ export class HeatingScheduleComponent implements OnInit, OnChanges {
 
   @HostListener('document:mouseup', ['$event'])
   onMouseUp(event: MouseEvent): void {
-    if (this.selectedDay && this.startSectionIndex != undefined) {
-      this.dragging = false;
-      this.heatingModeCoordinates = {
-        x: this.xOffset!  - this.scheduleWrapper.nativeElement.getBoundingClientRect().x,
-        y: (this.startingPosition! + this.adjacentSections! * this.sectionHeight!) - this.scheduleWrapper.nativeElement.getBoundingClientRect().y + this.sectionHeight! / 2
-      };
+    if (this.mobileMode) {
+      if (this.startSectionIndex != undefined && this.adjacentSections != undefined) {
+        this.heatingModeCoordinates = {
+          x: this.xOffset!  - this.scheduleWrapper.nativeElement.getBoundingClientRect().x,
+          y: (this.startingPosition! + this.adjacentSections! * this.sectionHeight!) - this.scheduleWrapper.nativeElement.getBoundingClientRect().y + this.sectionHeight! / 2
+        };
+      }
+    } else {
+      if (this.selectedDay && this.startSectionIndex != undefined) {
+        this.dragging = false;
+        this.heatingModeCoordinates = {
+          x: this.xOffset!  - this.scheduleWrapper.nativeElement.getBoundingClientRect().x,
+          y: (this.startingPosition! + this.adjacentSections! * this.sectionHeight!) - this.scheduleWrapper.nativeElement.getBoundingClientRect().y + this.sectionHeight! / 2
+        };
+      }
     }
   }
 
@@ -358,6 +390,11 @@ export class HeatingScheduleComponent implements OnInit, OnChanges {
         });
       }
     })
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.mobileMode = window.innerWidth <= 768;
   }
 
   protected readonly HeatingMode = HeatingMode;

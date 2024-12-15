@@ -114,6 +114,7 @@ export function getWeatherInRange(startTimestamp: number, endTimestamp: number, 
                         resolve(weatherHistory);
                     })
                     .catch((error) => {
+                        console.log(error);
                         resolve(undefined);
                     });
 

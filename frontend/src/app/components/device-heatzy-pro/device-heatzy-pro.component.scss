@@ -1,19 +1,174 @@
 @import "@fontsource/fira-mono/400.css";
 
+@media (max-width: 768px) {
+
+  .device-wrapper {
+    height: 6rem;
+    padding: 0.25rem;
+  }
+
+  .device-picture {
+    transform: translateX(-25%);
+    margin-top: 0.58rem;
+    height: 75%;
+  }
+
+  .device-info-column {
+    margin-left: -0.5rem;
+  }
+
+  .device-readable-name {
+    font-size: 1rem;
+  }
+
+  .device-type {
+    font-size: 0.6rem;
+    margin-top: 0.2rem;
+  }
+
+  .device-current-temperature-value {
+    font-weight: 200;
+    font-size: 1.3rem;
+  }
+
+  .device-current-humidity-value {
+    font-weight: 200;
+    font-size: 1.3rem;
+  }
+
+  .device-info-column {
+    row-gap: 0.5rem;
+  }
+
+  .device-current-humidity-title {
+    font-size: 0.6rem;
+  }
+
+  .device-current-temperature-title {
+    font-size: 0.6rem;
+  }
+
+  .device-current-temperature-unit {
+    font-size: 0.9rem;
+  }
+
+  .device-current-humidity-unit {
+    font-size: 0.9rem;
+  }
+
+  .heating-mode-controls-icon {
+    font-size: 1rem;
+  }
+
+  .heating-mode-controls-button {
+    padding: 0.3rem;
+  }
+
+  .device-controls-column {
+    row-gap: 0.8rem;
+  }
+
+  .target-temperature-row {
+    font-size: 0.7rem;
+  }
+
+  .heating-mode-extra-item-label {
+    font-size: 0.65rem;
+  }
+
+  .special-mode-label {
+    font-size: 0.6rem;
+  }
+
+}
+
+@media (min-width: 769px) {
+
+  .device-wrapper {
+    height: 10rem;
+    padding: 1rem;
+  }
+
+  .device-picture {
+    transform: translateX(-30%);
+    height: 100%;
+  }
+
+  .device-readable-name {
+    font-size: 1.4rem;
+  }
+
+  .device-type {
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+  }
+
+  .device-current-temperature-value {
+    font-weight: 100;
+    font-size: 2.2rem;
+  }
+
+  .device-current-humidity-value {
+    font-weight: 100;
+    font-size: 2.2rem;
+  }
+
+  .device-info-column {
+    row-gap: 1.5rem;
+  }
+
+  .device-current-humidity-title {
+    font-size: 0.8rem;
+  }
+
+  .device-current-temperature-title {
+    font-size: 0.8rem;
+  }
+
+  .device-current-temperature-unit {
+    font-size: 1.2rem;
+  }
+
+  .device-current-humidity-unit {
+    font-size: 1.2rem;
+  }
+
+  .heating-mode-controls-icon {
+    font-size: 1.1rem;
+  }
+
+  .heating-mode-controls-button {
+    padding: 0.5rem;
+  }
+
+  .device-controls-column {
+    row-gap: 1.75rem;
+  }
+
+  .target-temperature-row {
+    font-size: 0.9rem;
+  }
+
+  .heating-mode-extra-item-label {
+    font-size: 0.8rem;
+  }
+
+  .special-mode-label {
+    font-size: 0.8rem;
+  }
+
+}
+
 .device-wrapper {
   background-color: #181818;
   border: 1px solid #282828;
   border-radius: 0.5rem;
-  height: 10rem;
-  padding: 1rem;
   box-sizing: border-box;
   display: flex;
   position: relative;
 }
 
 .device-picture {
-  height: 100%;
-  transform: translateX(-30%);
   clip-path: inset(0 0 0 17.5%);
 }
 
@@ -22,7 +177,6 @@
   flex-direction: column;
   padding: 0.5rem;
   box-sizing: border-box;
-  row-gap: 1.5rem;
 }
 
 .device-title-row {
@@ -31,7 +185,6 @@
 }
 
 .device-readable-name {
-  font-size: 1.4rem;
   font-weight: 200;
   margin-right: 0.75rem;
   user-select: none;
@@ -43,10 +196,8 @@
 }
 
 .device-type {
-  font-size: 0.8rem;
   opacity: 0.5;
   font-weight: 200;
-  margin-top: 0.2rem;
 }
 
 .device-heating-indicator {
@@ -76,19 +227,15 @@
 }
 
 .device-current-temperature-title {
-  font-size: 0.8rem;
   opacity: 0.5;
   font-weight: 200;
 }
 
 .device-current-temperature-value {
-  font-size: 2.2rem;
-  font-weight: 100;
   opacity: 0.9;
 }
 
 .device-current-temperature-unit {
-  font-size: 1.2rem;
   opacity: 0.6;
   font-weight: 100;
   margin-top: 0.5rem;
@@ -105,19 +252,15 @@
 }
 
 .device-current-humidity-title {
-  font-size: 0.8rem;
   opacity: 0.5;
   font-weight: 200;
 }
 
 .device-current-humidity-value {
-  font-size: 2.2rem;
-  font-weight: 100;
   opacity: 0.9;
 }
 
 .device-current-humidity-unit {
-  font-size: 1.2rem;
   opacity: 0.6;
   font-weight: 100;
   margin-top: 0.5rem;
@@ -130,7 +273,6 @@
   padding: 0.5rem;
   box-sizing: border-box;
   align-items: end;
-  row-gap: 1.75rem;
 }
 
 .heating-mode-controls-bar {
@@ -139,7 +281,6 @@
 }
 
 .heating-mode-controls-button {
-  padding: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -167,7 +308,6 @@
 }
 
 .heating-mode-controls-icon {
-  font-size: 1.1rem;
   opacity: 0.5;
   transition: 0.2s;
 }
@@ -195,7 +335,6 @@
 .target-temperature-row {
   display: flex;
   column-gap: 0.5rem;
-  font-size: 0.9rem;
 }
 
 .target-temperature-label {
@@ -214,7 +353,7 @@
   top: 100%;
   width: 100%;
   margin-top: 0.25rem;
-  z-index: 1;
+  z-index: 6;
   border-radius: 0.25rem;
   box-shadow: 2px 2px 15px rgba(black, 0.5);
   border: 1px solid #333333;
@@ -230,7 +369,6 @@
 
 .heating-mode-extra-item-label {
   opacity: 0.6;
-  font-size: 0.8rem;
   transition: 0.2s;
 }
 
@@ -326,7 +464,6 @@
 .special-mode-label {
   margin-left: 0.25rem;
   opacity: 0.5;
-  font-size: 0.8rem;
   color: orange;
 }
 
