@@ -13,6 +13,7 @@
               <div class="preset-wrapper" (click)="onSelectPreset(preset)">
                 <span class="preset-title">{{preset.name}}</span>
                 <span class="preset-description">{{preset.description ? preset.description : 'No description.'}}</span>
+                <ng-icon (click)="onDeletePreset(preset, $event)" class="preset-delete-button" name="matDeleteOutline"></ng-icon>
               </div>
             }
           </ng-scrollbar>

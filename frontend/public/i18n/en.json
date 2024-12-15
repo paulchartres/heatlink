@@ -82,5 +82,8 @@
   "duplicate-day-schedule": "Duplicate day schedule",
   "device-name-updated-notification": "Your device's name has been updated.",
   "copy-schedule-to-devices": "Copy schedule to devices",
-  "schedule-copied-to-devices-notification": "This schedule has been copied to selected devices."
+  "schedule-copied-to-devices-notification": "This schedule has been copied to selected devices.",
+  "delete-preset": "Delete preset",
+  "delete-preset-body": "Are you sure you wish to delete this preset?",
+  "preset-deleted-notification": "This preset has been deleted."
 }

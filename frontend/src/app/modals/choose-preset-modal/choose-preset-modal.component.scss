@@ -50,6 +50,7 @@
   transition: 0.2s;
   border: 1px solid transparent;
   row-gap: 0.5rem;
+  position: relative;
 }
 
 .preset-wrapper:not(:last-of-type) {
@@ -70,6 +71,21 @@
   font-size: 0.8rem;
   opacity: 0.6;
   font-weight: 200;
+}
+
+.preset-delete-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+.preset-delete-button:hover {
+  opacity: 0.8;
+  color: orange;
 }
 
 .choose-preset-modal-actions {

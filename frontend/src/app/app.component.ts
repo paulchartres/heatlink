@@ -170,6 +170,10 @@ export class AppComponent implements OnInit {
     this.modals.onCloseDisableMotionDetectionModal();
   }
 
+  onCloseDeletePresetModal(): void {
+    this.modals.onCloseDeletePresetModal();
+  }
+
   onCloseDisableBoostModal(): void {
     this.modals.onCloseDisableBoostModal();
   }

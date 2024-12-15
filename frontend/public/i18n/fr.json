@@ -82,5 +82,8 @@
   "duplicate-day-schedule": "Dupliquer un planning journalier",
   "device-name-updated-notification": "Le nom de votre appareil a été mis à jour.",
   "copy-schedule-to-devices": "Copier sur d'autres appareils",
-  "schedule-copied-to-devices-notification": "Ce planning a été copié sur les appareils sélectionnés."
+  "schedule-copied-to-devices-notification": "Ce planning a été copié sur les appareils sélectionnés.",
+  "delete-preset": "Supprimer un modèle",
+  "delete-preset-body": "Êtes-vous sûr(e) de vouloir supprimer ce modèle ?",
+  "preset-deleted-notification": "Ce modèle a été supprimé."
 }

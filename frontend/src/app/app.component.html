@@ -32,6 +32,11 @@
                       [body]="t('stop-vacancy-body')" (cancel)="onCloseDisableVacancyModal()"></app-prompt-modal>
   }
 
+  @if (modals.getDeletePresetModal() | async) {
+    <app-prompt-modal @fade [config]="(modals.getDeletePresetModal() | async)!" [label]="t('delete-preset')"
+                      [body]="t('delete-preset-body')" (cancel)="onCloseDeletePresetModal()"></app-prompt-modal>
+  }
+
   @if (modals.getNewPresetModalConfig() | async) {
     <app-new-preset-modal @fade [config]="(modals.getNewPresetModalConfig() | async)!" (cancel)="onCloseNewPresetModal()"></app-new-preset-modal>
   }

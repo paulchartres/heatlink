@@ -108,3 +108,11 @@ export function savePreset(name: string, description: string, json: string): Pro
         });
     });
 }
+
+export function deletePreset(name: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        database.run(`DELETE FROM presets WHERE name = ?`, name).then(() => {
+           resolve();
+        });
+    });
+}

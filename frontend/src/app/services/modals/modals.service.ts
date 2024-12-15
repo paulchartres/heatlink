@@ -23,6 +23,7 @@ export class ModalsService {
   private _loadPresetModal$: BehaviorSubject<LoadPresetModalConfig | undefined> = new BehaviorSubject<LoadPresetModalConfig | undefined>(undefined);
   private _copyDayScheduleModal$: BehaviorSubject<CopyDayScheduleModalConfig | undefined> = new BehaviorSubject<CopyDayScheduleModalConfig | undefined>(undefined);
   private _copyScheduleToDevicesModal$: BehaviorSubject<CopyToDevicesModalConfig | undefined> = new BehaviorSubject<CopyToDevicesModalConfig | undefined>(undefined);
+  private _deletePresetModal: BehaviorSubject<ModalConfig | undefined> = new BehaviorSubject<ModalConfig | undefined>(undefined);
 
   constructor() { }
 
@@ -156,6 +157,18 @@ export class ModalsService {
 
   getCopyToDevicesModal(): Observable<CopyToDevicesModalConfig | undefined> {
     return this._copyScheduleToDevicesModal$.asObservable();
+  }
+
+  onOpenDeletePresetModal(config: ModalConfig): void {
+    this._deletePresetModal.next(config);
+  }
+
+  onCloseDeletePresetModal(): void {
+    this._deletePresetModal.next(undefined);
+  }
+
+  getDeletePresetModal(): Observable<ModalConfig | undefined> {
+    return this._deletePresetModal.asObservable();
   }
 
 }

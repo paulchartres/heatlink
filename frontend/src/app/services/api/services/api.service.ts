@@ -49,6 +49,8 @@ import { DevicesGet$Params } from '../fn/operations/devices-get';
 import { DeviceStripped } from '../models/device-stripped';
 import { HumidityHistory } from '../models/humidity-history';
 import { Preset } from '../models/preset';
+import { presetDelete } from '../fn/operations/preset-delete';
+import { PresetDelete$Params } from '../fn/operations/preset-delete';
 import { presetPost } from '../fn/operations/preset-post';
 import { PresetPost$Params } from '../fn/operations/preset-post';
 import { presetsGet } from '../fn/operations/presets-get';
@@ -727,6 +729,39 @@ export class ApiService extends BaseService {
    */
   presetPost(params: PresetPost$Params, context?: HttpContext): Observable<void> {
     return this.presetPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `presetDelete()` */
+  static readonly PresetDeletePath = '/preset';
+
+  /**
+   * Deletes a heating schedule preset.
+   *
+   * Deletes a heating schedule preset. The name acts as the identification key.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `presetDelete()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  presetDelete$Response(params: PresetDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return presetDelete(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Deletes a heating schedule preset.
+   *
+   * Deletes a heating schedule preset. The name acts as the identification key.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `presetDelete$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  presetDelete(params: PresetDelete$Params, context?: HttpContext): Observable<void> {
+    return this.presetDelete$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
