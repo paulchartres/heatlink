@@ -85,5 +85,7 @@
   "schedule-copied-to-devices-notification": "Ce planning a été copié sur les appareils sélectionnés.",
   "delete-preset": "Supprimer un modèle",
   "delete-preset-body": "Êtes-vous sûr(e) de vouloir supprimer ce modèle ?",
-  "preset-deleted-notification": "Ce modèle a été supprimé."
+  "preset-deleted-notification": "Ce modèle a été supprimé.",
+  "knowledge-base-title": "Base de connaissances Heatlink",
+  "guide": "Guide"
 }

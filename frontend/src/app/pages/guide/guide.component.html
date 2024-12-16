@@ -1,0 +1,494 @@
+<div class="fullpage-wrapper" *transloco="let t">
+
+  <div class="main-content-wrapper">
+
+    <div class="main-header">
+
+      <div class="main-date-time-wrapper">
+        <span class="main-time">{{ (time.getTime() | async)!.toLocaleString(DateTime.TIME_SIMPLE, { locale: locale.getCurrentLocale() }) }}</span>
+        <span class="main-date">{{ (time.getTime() | async)!.toLocaleString(DateTime.DATE_FULL, { locale: locale.getCurrentLocale() }) }}</span>
+      </div>
+
+      @if ((weather.getWeather() | async)) {
+        <div class="main-weather-wrapper">
+          <img class="main-weather-image" [src]="wmo.getIconForWmo((weather.getWeather() | async)!.wmo)">
+          <span class="main-weather-temperature">{{(weather.getWeather() | async)!.temperature | number : '1.0-1'}}°C</span>
+        </div>
+      }
+    </div>
+
+    <div class="main-title-wrapper">
+      <ng-icon name="matArrowBackIosOutline" class="main-back-arrow" [routerLink]="''"></ng-icon>
+      <span class="main-title">
+      {{ t('knowledge-base-title') }}
+    </span>
+    </div>
+
+
+    <ng-scrollbar [orientation]="'vertical'" class="guide-scrollbox">
+
+      <div class="guide-items-wrapper">
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('global-interface')">
+            <span class="guide-item-title-label">Global interface overview</span>
+            <ng-icon [name]="selectedCategory == 'global-interface' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'global-interface') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Global interface overview</span>
+              <img src="/img/guide/global-overview.png" class="guide-item-image">
+              <span class="guide-item-body">
+                The Heatlink app is a dashboard that allows you to interact with your Heatzy smart heating modules. Its interface is fairly straightforward:<br><br>
+                - In the top bar, you can find the current time and date on the left, and the current weather on the right. These auto update periodically, so no need to refresh your page! <b>The weather widget only appears if you have set the LATITUDE and LONGITUDE environment variables in the app.</b><br>
+                - Under the main title, you can find the list of devices linked to your Heatzy account. For more information on managing devices, see the other sections.<br>
+                - In the bottom bar, on the left, you can find the language picker. It currently allows you to switch between French and English. All units are also affected.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('target-temperatures')">
+            <span class="guide-item-title-label">Managing target temperatures</span>
+            <ng-icon [name]="selectedCategory == 'target-temperatures' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'target-temperatures') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Managing target temperatures</span>
+              <img src="/img/guide/target-temperatures-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                On each individual device, you can set the target temperatures for Comfort and Eco modes. Clicking the highlighted value (in degrees Celsius, see on the image) will open a modal that will prompt you to choose the target temperature.<br>
+              </span>
+              <img src="/img/guide/target-temperatures-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                 Once you press "Confirm", it'll immediately be applied to your device.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('heating-status')">
+            <span class="guide-item-title-label">Device heating status</span>
+            <ng-icon [name]="selectedCategory == 'heating-status' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'heating-status') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Device heating status</span>
+              <img src="/img/guide/heating-status.png" class="guide-item-image">
+              <span class="guide-item-body">
+                When your device is currently heating, you'll notice a small orange blinking dot next to the device's name.<br>
+                This information is live: no need to refresh the page to see it appear or disappear. See the Data Synchronization section for more information.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('manual-heating-modes')">
+            <span class="guide-item-title-label">Changing the manual heating mode</span>
+            <ng-icon [name]="selectedCategory == 'manual-heating-modes' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'manual-heating-modes') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Changing the manual heating mode</span>
+              <img src="/img/guide/manual-heating-modes.png" class="guide-item-image">
+              <span class="guide-item-body">
+                For each individual device, you can change the current heating mode manually. <b>Note that if a special mode such as motion detection, vacancy or boost is enabled, you cannot change it manually.</b><br>
+                If the timer is on (in the heating schedule section), changing the mode manually will only do so until the next scheduled mode change.<br>
+                From left to right:<br><br>
+                - Off: the heater is turned off.<br>
+                - Comfort: the heater will turn on until it reaches the specified target comfort temperature.<br>
+                - Eco: the heater will turn on until it reaches the specified target eco temperature.<br>
+                - Frost protection: the heater will turn on only if the temperature drops below 7 degrees Celsius.<br><br>
+                The extra button on the right allows you to manage special modes, heating schedules and data histories (see other sections for more information).
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('comfort-1-2')">
+            <span class="guide-item-title-label">Using comfort-1 and comfort-2 modes</span>
+            <ng-icon [name]="selectedCategory == 'comfort-1-2' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'comfort-1-2') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Using comfort-1 and comfort-2 modes</span>
+              <img src="/img/guide/comfort-1-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can set your heating mode to comfort-1 or comfort-2. Those modes respectively set your comfort target temperature to your specified target minus one or two degrees celsius.<br>
+                To enable these modes, you can click the "comfort" manual mode while it is already selected. It will open a context menu, letting you choose between the two options.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('heating-schedule')">
+            <span class="guide-item-title-label">Updating the heating schedule</span>
+            <ng-icon [name]="selectedCategory == 'heating-schedule' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'heating-schedule') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Updating the heating schedule</span>
+              <img src="/img/guide/heating-schedule-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                To open the heating schedule utility, you can press the "+" button on the right hand side of a device card (next to the manual heating modes), and select the "Heating schedule" item. It will open another card under the selected device.
+              </span>
+              <img src="/img/guide/heating-schedule-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                On a computer:<br>
+                To select a time range for which to change the scheduled heating mode, simply click and drag over the time period you want to select. A small popup will appear next to your cursor, allowing you to choose a specific mode for the selected time frame. <b>Note that time frames can only be selected in increments of thirty minutes.</b>
+                <br><br>
+                On a mobile device:<br>
+                To select a time range for which to change the scheduled heating mode, simply click on the start of the requested time frame, and a second time on the end of the time frame. A small popup will appear, allowing you to choose a specific mode for the selected time frame. <b>Note that time frames can only be selected in increments of thirty minutes.</b>
+                <br>
+                Once you are satisfied with your schedule, you can press the "Save schedule" button on the bottom right hand corner to save your changes.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('timer-mode')">
+            <span class="guide-item-title-label">Changing the timer mode</span>
+            <ng-icon [name]="selectedCategory == 'timer-mode' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'timer-mode') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Changing the timer mode</span>
+              <img src="/img/guide/timer-mode.png" class="guide-item-image">
+              <span class="guide-item-body">
+                Even if you have set a schedule for your device, it might not be active. You can enable or disable the timer mode (or scheduling mode) at will using the scheduling utility. Simply press the corresponding icon (left is off, right is on) above the schedule. <b>No need to save, changing the timer mode is instantaneous.</b>
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('duplicate-day')">
+            <span class="guide-item-title-label">Duplicating a day's schedule</span>
+            <ng-icon [name]="selectedCategory == 'duplicate-day' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'duplicate-day') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Duplicating a day's schedule</span>
+              <img src="/img/guide/duplicate-days-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                Remaking the same schedule for all seven days of the week might get a little bit tedious. Thankfully, there is a built-in utility to duplicate a day's schedule to other days of the same schedule. Simply click on the day's label and select the "Copy to other days" option.<br>
+              </span>
+              <img src="/img/guide/duplicate-days-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                A modal will open, allowing you to select which days you wish to copy the schedule to. Pressing confirm will update the schedule accordingly. <b>Make sure to save your changes!</b>
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('using-presets')">
+            <span class="guide-item-title-label">Using schedule presets</span>
+            <ng-icon [name]="selectedCategory == 'using-presets' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'using-presets') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Using schedule presets</span>
+              <img src="/img/guide/using-presets-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                Let's say you have a different heating schedule in winter and in summer (which would make sense!). Surely, you wouldn't want to change the schedule manually every time the seasons change, right?<br>
+                Thankfully, there is a built-in utility that allows you to save and reuse scheduling presets.<br>
+                You access those tools by pressing the three dots on the right hand side of the title in the heating schedule utility.
+              </span>
+              <img src="/img/guide/using-presets-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                Pressing the "Save as preset" button will open a modal, allowing you to input a name (mandatory) and a description (optional) for your preset. Once you press confirm, it'll be saved in the database and reusable in the future.
+              </span>
+              <img src="/img/guide/using-presets-3.png" class="guide-item-image">
+              <span class="guide-item-body">
+                Pressing the "Load preset" button will open a modal, allowing you to choose from any previously saved schedule. Once you click one, it'll automatically appear on the schedule for the selected device. <b>Make sure to save your changes!</b><br>
+                You can also delete a preset in the "Load preset" modal, by clicking the delete icon on the top right hand side of each preset.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('duplicating-to-devices')">
+            <span class="guide-item-title-label">Duplicating a schedule to other devices</span>
+            <ng-icon [name]="selectedCategory == 'duplicating-to-devices' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'duplicating-to-devices') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Duplicating a schedule to other devices</span>
+              <img src="/img/guide/duplicating-to-devices-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                Once you've carefully created your schedule for one device, chances are you'll want to use the same schedule for other devices in your home. Thankfully (once again), there are built-in tools in Heatlink that allow you to do just that.<br>
+                In the three dots on the right hand side of the title in the heating schedule utility, you can select the "Duplicate to devices" item.
+              </span>
+              <img src="/img/guide/duplicating-to-devices-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                A modal will open, allowing you to select which devices you wish to duplicate the schedule to. Simply press confirm for the changes to be saved.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('motion-detection')">
+            <span class="guide-item-title-label">Using motion detection</span>
+            <ng-icon [name]="selectedCategory == 'motion-detection' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'motion-detection') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Using motion detection</span>
+              <img src="/img/guide/motion-detection-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can enable motion detection mode by clicking the "+" button on the right hand side of each device card, next to the manual heating modes. You can then select the "Motion detection" item, which will turn it on for the selected device.<br>
+                In motion detection mode, the device auto sets itself to comfort mode. After thirty minutes of inactivity, it'll switch to comfort-1 mode. After sixty minutes, it'll switch to comfort-2. After ninety minutes, it'll switch to eco mode.<br>
+                When motion detection mode is active, the "off" button is replaced by a "Motion" label in the heating modes bar.
+              </span>
+              <img src="/img/guide/motion-detection-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can turn off motion detection mode by clicking the "Motion" button that replaced the "off" button in the heating modes bar. A prompt will ask you if you are sure you wish to disable it: press "Confirm" to disable it.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('vacancy')">
+            <span class="guide-item-title-label">Using vacancy mode</span>
+            <ng-icon [name]="selectedCategory == 'vacancy' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'vacancy') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Using vacancy mode</span>
+              <img src="/img/guide/vacancy-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can enable vacancy mode by clicking the "+" button on the right hand side of each device card, next to the manual heating modes. You can then select the "Vacancy" item, which will open a modal to let you choose the amount of time for which you will be away.<br>
+                In vacancy mode, the heater is automatically set to frost protection mode for the amount of time you set.<br>
+                When vacancy mode is active, the "off" button is replaced by a "Vacancy" label in the heating modes bar.
+              </span>
+              <img src="/img/guide/vacancy-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                In the modal that opens when you select the "Vacancy" item, you can click the date that is displayed in the middle to choose the date at which you will be back. Heatlink automatically calculates the number of days between today and the target date, and sets the device to vacancy mode for that period of time as soon as you press "Confirm".
+              </span>
+              <img src="/img/guide/vacancy-3.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can turn off vacancy mode by clicking the "Vacancy" button that replaced the "off" button in the heating modes bar. A prompt will ask you if you are sure you wish to disable it: press "Confirm" to disable it.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('boost')">
+            <span class="guide-item-title-label">Using boost mode</span>
+            <ng-icon [name]="selectedCategory == 'boost' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'boost') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Using boost mode</span>
+              <img src="/img/guide/boost-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can enable boost mode by clicking the "+" button on the right hand side of each device card, next to the manual heating modes. You can then select the "Boost" item, which will open a modal to let you choose the amount of time for which the device will be in boost mode.<br>
+                In boost mode, the heater is automatically set to comfort mode for the amount of time you set. This mode takes priority over the timer.<br>
+                When boost mode is active, the "off" button is replaced by a "Boost" label in the heating modes bar.
+              </span>
+              <img src="/img/guide/boost-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                In the modal that opens when you select the "Boost" item, you can set the amount of time the device will be in boost mode for. This can be set in thirty minute increments, and can range from 30 minutes to 2 hours.
+              </span>
+              <img src="/img/guide/boost-3.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can turn off boost mode by clicking the "Boost" button that replaced the "off" button in the heating modes bar. A prompt will ask you if you are sure you wish to disable it: press "Confirm" to disable it.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('lock')">
+            <span class="guide-item-title-label">Using lock mode</span>
+            <ng-icon [name]="selectedCategory == 'lock' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'lock') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Using lock mode</span>
+              <img src="/img/guide/lock-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can enable lock mode by clicking the "+" button on the right hand side of each device card, next to the manual heating modes. You can then select the "Lock" item, which will instantly set the device to locked mode.<br>
+                Lock mode doesn't impact the way the device behaves in the application. It merely locks the physical interface of the device, to prevent children from touching it, for instance.<br>
+                When lock mode is active, a padlock appears on the left hand side of the device name.
+              </span>
+              <img src="/img/guide/lock-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                If you wish to disable lock mode, you can re-open the "+" menu, and click the same button you used to enable lock mode (which should now be labeled "Unlock"). Upon clicking it, the device will instantly be unlocked, and the padlock will disappear.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('history')">
+            <span class="guide-item-title-label">Viewing histories</span>
+            <ng-icon [name]="selectedCategory == 'history' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'history') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Viewing histories</span>
+              <img src="/img/guide/history-1.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can view the data history for each of your devices by pressing the "+" button on the right hand side of each device card, next to the manual heating modes. You can then select the "History" item, which will open an extra widget below the selected device.<br>
+              </span>
+              <img src="/img/guide/history-2.png" class="guide-item-image">
+              <span class="guide-item-body">
+                Two graphs will be available: temperature history, and humidity history.<br>
+                If you've set the LATITUDE and LONGITUDE environment variables, you will also be able to compare your Heatlink data with external temperature and humidity, thanks to the OpenMeteo API.<br>
+                Hovering over the graphs will give you the exact value of each data point.<br>
+                <b>Note that Heatlink does data archival on its own: the server needs to be running at all times to keep a consistent history of your devices' temperature and humidity values.</b>
+              </span>
+              <img src="/img/guide/history-3.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can set the time range for the history from a list of presets, available on the top left corner of the widget.<br>
+                <b>Note that the data is auto-refreshed: no need to click again or refresh the page, as it fetches recent history every minute from the server.</b>
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('language')">
+            <span class="guide-item-title-label">Changing the language</span>
+            <ng-icon [name]="selectedCategory == 'language' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'language') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Changing the language</span>
+              <img src="/img/guide/language.png" class="guide-item-image">
+              <span class="guide-item-body">
+                You can change the app's language by clicking the current language label on the bottom left hand corner of the screen. A context menu will open, allowing you to choose between either English or French. The app will instantly be translated into the target language without needing a refresh.
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('data-sync')">
+            <span class="guide-item-title-label">Data synchronization</span>
+            <ng-icon [name]="selectedCategory == 'data-sync' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'data-sync') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Data synchronization</span>
+              <span class="guide-item-body">
+                All the data in Heatlink is connected live to the server (that includes room temperature, humidity, heating status...). That means if you change the heating mode on your phone's Heatzy app, for instance, it'll automatically be updated on the Heatlink dashboard. As a rule of thumb, if you need to refresh the page to see data change, that's considered a bug: don't hesitate to let me know!
+              </span>
+            </div>
+          }
+
+        </div>
+
+        <div class="guide-item-wrapper">
+          <div class="guide-item-title-box" (click)="onSelectItem('pwa')">
+            <span class="guide-item-title-label">Installing Heatlink on your mobile devices</span>
+            <ng-icon [name]="selectedCategory == 'pwa' ? 'matExpandLessOutline' : 'matExpandMoreOutline'" class="guide-item-title-icon"></ng-icon>
+          </div>
+
+          @if (selectedCategory == 'pwa') {
+            <div class="guide-item-body-wrapper" @fade>
+              <span class="guide-item-body-title">Installing Heatlink on your mobile devices</span>
+              <span class="guide-item-body">
+                Heatlink is also available as a PWA (Progressive Web App). That means it can actually be installed on your phone and behave like an app (despite it being a web-app!). You can follow this guide to do it on your device: <a class="pwa-link" target="_blank" href="https://www.bitcot.com/how-to-install-a-pwa-to-your-device/">How to install a PWA on iOS, Android, Windows & Mac</a>
+              </span>
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </ng-scrollbar>
+
+    <div class="bottom-left-wrapper">
+      <div class="language-picker">
+        @switch (locale.getCurrentLocale()) {
+
+          @case ('en') {
+            <div class="language-picker-current-language" (click)="onOpenLanguagePicker()">
+              <img class="language-picker-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"/>
+              <span class="language-picker-label">{{ t('english') }}</span>
+            </div>
+          }
+          @case ('fr') {
+            <div class="language-picker-current-language" (click)="onOpenLanguagePicker()">
+              <img class="language-picker-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg"/>
+              <span class="language-picker-label">{{ t('french') }}</span>
+            </div>
+          }
+
+        }
+
+        @if (languagePicker) {
+          <div class="language-picker-menu" @fade appClickOutside (clickOutside)="onCloseLanguagePicker()">
+            <div class="language-picker-item" (click)="onSetLocale('fr')">
+              <img class="language-picker-item-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg"/>
+              <span class="language-picker-item-label">{{ t('french') }}</span>
+            </div>
+            <div class="language-picker-item" (click)="onSetLocale('en')">
+              <img class="language-picker-item-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"/>
+              <span class="language-picker-item-label">{{ t('english') }}</span>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <a class="help-link" [routerLink]="'guide'">{{ t('guide') }}</a>
+    </div>
+
+    <div class="watermark">
+      <span>{{ t('made-with') }}</span>
+      <ng-icon class="watermark-heart" name="matFavoriteOutline"></ng-icon>
+      <span>{{ t('by') }}</span>
+      <a class="watermark-link" href="https://pauldln.fr" target="_blank">CykaDev</a>
+    </div>
+
+  </div>
+
+</div>

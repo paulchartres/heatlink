@@ -1,0 +1,145 @@
+<div class="fullpage-wrapper" *transloco="let t">
+
+  <!-- Modals -->
+  @if (modals.getComfortTemperatureModalConfig() | async) {
+    <app-temperature-modal @fade [config]="(modals.getComfortTemperatureModalConfig() | async)!" [min]="15" [max]="30" [temperature]="18" [label]="t('comfort-temperature')" (cancel)="onCloseComfortTemperatureModal()"></app-temperature-modal>
+  }
+
+  @if (modals.getEcoTemperatureModalConfig() | async) {
+    <app-temperature-modal @fade [config]="(modals.getEcoTemperatureModalConfig() | async)!" [min]="10" [max]="17.5" [temperature]="15" [label]="t('eco-temperature')" (cancel)="onCloseEcoTemperatureModal()"></app-temperature-modal>
+  }
+
+  @if (modals.getVacancyModalConfig() | async) {
+    <app-vacancy-modal @fade [config]="(modals.getVacancyModalConfig() | async)!" (cancel)="onCloseVacancyModal()"></app-vacancy-modal>
+  }
+
+  @if (modals.getBoostModalConfig() | async) {
+    <app-boost-modal @fade [config]="(modals.getBoostModalConfig() | async)!" (cancel)="onCloseBoostModal()"></app-boost-modal>
+  }
+
+  @if (modals.getDisableMotionDetectionModalConfig() | async) {
+    <app-prompt-modal @fade [config]="(modals.getDisableMotionDetectionModalConfig() | async)!" [label]="t('stop-motion-detection')"
+                      [body]="t('stop-motion-detection-body')" (cancel)="onCloseDisableMotionDetectionModal()"></app-prompt-modal>
+  }
+
+  @if (modals.getDisableBoostModalConfig() | async) {
+    <app-prompt-modal @fade [config]="(modals.getDisableBoostModalConfig() | async)!" [label]="t('stop-boost')"
+                      [body]="t('stop-boost-body')" (cancel)="onCloseDisableBoostModal()"></app-prompt-modal>
+  }
+
+  @if (modals.getDisableVacancyModalConfig() | async) {
+    <app-prompt-modal @fade [config]="(modals.getDisableVacancyModalConfig() | async)!" [label]="t('stop-vacancy')"
+                      [body]="t('stop-vacancy-body')" (cancel)="onCloseDisableVacancyModal()"></app-prompt-modal>
+  }
+
+  @if (modals.getDeletePresetModal() | async) {
+    <app-prompt-modal @fade [config]="(modals.getDeletePresetModal() | async)!" [label]="t('delete-preset')"
+                      [body]="t('delete-preset-body')" (cancel)="onCloseDeletePresetModal()"></app-prompt-modal>
+  }
+
+  @if (modals.getNewPresetModalConfig() | async) {
+    <app-new-preset-modal @fade [config]="(modals.getNewPresetModalConfig() | async)!" (cancel)="onCloseNewPresetModal()"></app-new-preset-modal>
+  }
+
+  @if (modals.getLoadPresetModalConfig() | async) {
+    <app-choose-preset-modal @fade [config]="(modals.getLoadPresetModalConfig() | async)!" (cancel)="onCloseLoadPresetModal()"></app-choose-preset-modal>
+  }
+
+  @if (modals.getCopyDayScheduleModalConfig() | async) {
+    <app-copy-day-schedule-modal @fade [config]="(modals.getCopyDayScheduleModalConfig() | async)!" (cancel)="onCloseCopyDayScheduleModal()"></app-copy-day-schedule-modal>
+  }
+
+  @if (modals.getCopyToDevicesModal() | async) {
+    <app-copy-schedule-to-devices-modal @fade [config]="(modals.getCopyToDevicesModal() | async)!" (cancel)="onCloseCopyToDevicesModal()"></app-copy-schedule-to-devices-modal>
+  }
+
+  <!-- End modals -->
+
+  <div class="main-content-wrapper">
+
+    @if (rickCounter >= 10) {
+      <img src="/img/extras/rickroll.gif" class="rickroll">
+    }
+
+    <div class="notifications-wrapper">
+      @for (notification of notifications; track notification) {
+        <app-notification @fade [notification]="notification" (close)="onCloseNotification(notification)" class="notification"></app-notification>
+      }
+    </div>
+
+    <div class="main-header">
+
+      <div class="main-date-time-wrapper">
+        <span class="main-time">{{ (time.getTime() | async)!.toLocaleString(DateTime.TIME_SIMPLE, { locale: locale.getCurrentLocale() }) }}</span>
+        <span class="main-date">{{ (time.getTime() | async)!.toLocaleString(DateTime.DATE_FULL, { locale: locale.getCurrentLocale() }) }}</span>
+      </div>
+
+      @if (weather.getWeather() | async) {
+        <div class="main-weather-wrapper">
+          <img class="main-weather-image" [src]="wmo.getIconForWmo((weather.getWeather() | async)!.wmo)">
+          <span class="main-weather-temperature">{{(weather.getWeather() | async)!.temperature | number : '1.0-1'}}°C</span>
+        </div>
+      }
+    </div>
+
+    <span class="main-title">
+      {{ t('welcome-title') }}
+    </span>
+
+    <ng-scrollbar [orientation]="'vertical'" class="devices-scrollbox">
+      <div class="devices-wrapper">
+
+        @for (device of (data.getDevices() | async); track device.deviceId) {
+          <app-device-heatzy-pro [device]="device"></app-device-heatzy-pro>
+        }
+
+      </div>
+    </ng-scrollbar>
+
+    <div class="bottom-left-wrapper">
+      <div class="language-picker">
+        @switch (locale.getCurrentLocale()) {
+
+          @case ('en') {
+            <div class="language-picker-current-language" (click)="onOpenLanguagePicker()">
+              <img class="language-picker-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"/>
+              <span class="language-picker-label">{{ t('english') }}</span>
+            </div>
+          }
+          @case ('fr') {
+            <div class="language-picker-current-language" (click)="onOpenLanguagePicker()">
+              <img class="language-picker-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg"/>
+              <span class="language-picker-label">{{ t('french') }}</span>
+            </div>
+          }
+
+        }
+
+        @if (languagePicker) {
+          <div class="language-picker-menu" @fade appClickOutside (clickOutside)="onCloseLanguagePicker()">
+            <div class="language-picker-item" (click)="onSetLocale('fr')">
+              <img class="language-picker-item-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg"/>
+              <span class="language-picker-item-label">{{ t('french') }}</span>
+            </div>
+            <div class="language-picker-item" (click)="onSetLocale('en')">
+              <img class="language-picker-item-flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"/>
+              <span class="language-picker-item-label">{{ t('english') }}</span>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <a class="help-link" [routerLink]="'guide'">{{ t('guide') }}</a>
+    </div>
+
+    <div class="watermark">
+      <span>{{ t('made-with') }}</span>
+      <ng-icon (click)="onClickHeart()" class="watermark-heart" name="matFavoriteOutline"></ng-icon>
+      <span>{{ t('by') }}</span>
+      <a class="watermark-link" href="https://pauldln.fr" target="_blank">CykaDev</a>
+    </div>
+
+  </div>
+
+</div>

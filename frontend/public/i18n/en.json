@@ -85,5 +85,7 @@
   "schedule-copied-to-devices-notification": "This schedule has been copied to selected devices.",
   "delete-preset": "Delete preset",
   "delete-preset-body": "Are you sure you wish to delete this preset?",
-  "preset-deleted-notification": "This preset has been deleted."
+  "preset-deleted-notification": "This preset has been deleted.",
+  "knowledge-base-title": "Heatlink knowledge base",
+  "guide": "Guide"
 }
