@@ -25,16 +25,21 @@
 
   .watermark {
     margin-right: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .bottom-left-wrapper {
     margin-left: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .devices-scrollbox {
     height: calc(100% - 12rem);
+  }
+
+  .bottom-bar-links {
+    flex-direction: column;
+    row-gap: 0.25rem;
   }
 
 }
@@ -76,6 +81,10 @@
 
   .devices-scrollbox {
     height: 100%;
+  }
+
+  .bottom-bar-links {
+    column-gap: 2rem;
   }
 
 }
@@ -269,4 +278,8 @@
 
 .help-link:hover {
   color: orange;
+}
+
+.bottom-bar-links {
+  display: flex;
 }

@@ -87,5 +87,6 @@
   "delete-preset-body": "Are you sure you wish to delete this preset?",
   "preset-deleted-notification": "This preset has been deleted.",
   "knowledge-base-title": "Heatlink knowledge base",
-  "guide": "Guide"
+  "guide": "Guide",
+  "report-a-bug": "Report a bug"
 }

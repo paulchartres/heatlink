@@ -479,7 +479,11 @@
 
       </div>
 
-      <a class="help-link" [routerLink]="'guide'">{{ t('guide') }}</a>
+      <div class="bottom-bar-links">
+        <a class="help-link" [routerLink]="'guide'">{{ t('guide') }}</a>
+        <a class="help-link" href="https://github.com/paulchartres/heatlink/issues/new" target="_blank">{{ t('report-a-bug') }}</a>
+      </div>
+
     </div>
 
     <div class="watermark">

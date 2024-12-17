@@ -32,6 +32,7 @@ import { DateTime } from 'luxon';
 import {TimeService} from "../../services/time/time.service";
 import {WeatherService} from "../../services/weather/weather.service";
 import {RouterLink} from "@angular/router";
+import {fadeAnimation} from "../../animations/fade-in-out.animation";
 
 @Component({
   selector: 'app-main',
@@ -56,7 +57,8 @@ import {RouterLink} from "@angular/router";
     RouterLink
   ],
   templateUrl: './main.component.html',
-  styleUrl: './main.component.scss'
+  styleUrl: './main.component.scss',
+  animations: [fadeAnimation]
 })
 export class MainComponent implements OnInit {
 

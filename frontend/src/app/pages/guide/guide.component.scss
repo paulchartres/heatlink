@@ -15,16 +15,21 @@
 
   .watermark {
     margin-right: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .bottom-left-wrapper {
     margin-left: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .guide-scrollbox {
     height: calc(100% - 10rem);
+  }
+
+  .bottom-bar-links {
+    flex-direction: column;
+    row-gap: 0.25rem;
   }
 
 }
@@ -57,6 +62,10 @@
 
   .guide-scrollbox {
     height: 100%;
+  }
+
+  .bottom-bar-links {
+    column-gap: 2rem;
   }
 
 }
@@ -332,4 +341,8 @@
 
 .main-back-arrow:hover {
   color: orange;
+}
+
+.bottom-bar-links {
+  display: flex;
 }

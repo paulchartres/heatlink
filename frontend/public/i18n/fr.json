@@ -87,5 +87,6 @@
   "delete-preset-body": "Êtes-vous sûr(e) de vouloir supprimer ce modèle ?",
   "preset-deleted-notification": "Ce modèle a été supprimé.",
   "knowledge-base-title": "Base de connaissances Heatlink",
-  "guide": "Guide"
+  "guide": "Guide",
+  "report-a-bug": "Signaler un bug"
 }
