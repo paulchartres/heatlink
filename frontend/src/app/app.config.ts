@@ -10,6 +10,7 @@ import { provideTransloco } from '@jsverse/transloco';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {LuxonDateAdapter, MAT_LUXON_DATE_FORMATS} from "@angular/material-luxon-adapter";
 import { provideServiceWorker } from '@angular/service-worker';
+import {environment} from "../environments/environment";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     importProvidersFrom(
-      ApiModule.forRoot({ rootUrl: 'http://192.168.1.163:3000' }),
+      ApiModule.forRoot({ rootUrl: environment.apiRoot }),
     ),
     provideAnimations(),
     provideHttpClient(),
