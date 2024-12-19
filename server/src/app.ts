@@ -1,9 +1,9 @@
-import express, { Express, Request, Response } from "express";
+import express, { Request, Response } from "express";
+import path from "path";
 import {getDeviceInfo, getDevices, login, updateDevice, updateDeviceName} from "./services/heatzy";
 import {DeviceStripped} from "./models/device.stripped";
-import {convertReadableScheduleToHeatzyFormat, convertScheduleToReadable} from "./converters/schedule";
-import {DeviceInfoStripped} from "./models/device-info.stripped";
-import {heatingModeEnumToNumber, modeStringToEnum, specialModeNumberToEnum} from "./converters/enums";
+import {convertReadableScheduleToHeatzyFormat} from "./converters/schedule";
+import {heatingModeEnumToNumber} from "./converters/enums";
 import swaggerJsdoc from 'swagger-jsdoc';
 import expressWs from "express-ws";
 import * as swaggerUi from 'swagger-ui-express';
@@ -79,19 +79,20 @@ const options = {
             }
         },
     },
-    apis: ['./src/app.ts'],
+    apis: ['./src/app.ts', '/app/server/app.js'],
 };
 
 const openapiSpecification = swaggerJsdoc(options);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+// Middlewares
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get("/openapi.json", (req, res) => {
     res.setHeader("Content-Type", "application/json");
     res.send(openapiSpecification);
 });
-
-// Middlewares
-app.use(cors());
-app.use(express.json());
 
 /**
  * @swagger
@@ -1022,6 +1023,11 @@ export function broadcastHistoryUpdate(): void {
         client.send('true');
     }
 }
+
+// Frontend
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // CRON jobs
 cron.schedule('0 * * * *', autoRefreshToken);
