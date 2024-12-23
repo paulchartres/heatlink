@@ -4,6 +4,7 @@ import {DateTime} from "luxon";
 import {TemperatureHistory} from "../models/temperature-history";
 import {HumidityHistory} from "../models/humidity-history";
 import {Preset} from "../models/preset";
+import fs from 'fs';
 
 // Variable that keeps a reference to the database connection.
 let database: Database;
@@ -16,6 +17,11 @@ let database: Database;
 export function openDatabase(): Promise<void> {
     console.log(`[database]: Connecting to database...`);
     return new Promise((resolve, reject) => {
+
+        if (!fs.existsSync('./data')) {
+            fs.mkdirSync('./data');
+        }
+
         open({
             filename: './data/database.db',
             driver: sqlite3.Database
