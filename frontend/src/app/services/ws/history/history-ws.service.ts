@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject} from "rxjs";
 import {webSocket} from "rxjs/webSocket";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class HistoryWsService {
    * _historyUpdateBus is notified.
    */
   public connect(): void {
-    const ws = webSocket('ws://localhost:3000/ws/history');
+    const url: string = environment.apiRoot.replace('http', 'ws') + '/ws/history';
+    const ws = webSocket(url);
     ws.subscribe(() => {
       this._historyUpdateBus.next();
     });

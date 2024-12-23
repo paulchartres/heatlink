@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable, Subject} from "rxjs";
 import {Weather} from "../../api/models/weather";
 import {webSocket} from "rxjs/webSocket";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class WeatherWsService {
    * _weatherEventBus is notified.
    */
   public connect(): void {
-    const ws = webSocket('ws://localhost:3000/ws/weather');
+    const url: string = environment.apiRoot.replace('http', 'ws') + '/ws/weather';
+    const ws = webSocket(url);
     ws.subscribe((message) => {
       this._weatherEventBus$.next(message as Weather);
     });

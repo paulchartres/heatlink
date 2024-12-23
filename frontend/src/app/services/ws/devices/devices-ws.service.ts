@@ -3,6 +3,7 @@ import {Observable, Subject} from "rxjs";
 import {webSocket} from "rxjs/webSocket";
 import {DeviceWebSocketEvent} from "../../../events/device-websocket-event";
 import {filter} from "rxjs/operators";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class DevicesWsService {
    * sent to the _deviceEventBus$.
    */
   public connect(): void {
-    const ws = webSocket('ws://localhost:3000/ws/devices');
+    const url: string = environment.apiRoot.replace('http', 'ws') + '/ws/devices';
+    const ws = webSocket(url);
     ws.subscribe((message) => {
       this._deviceEventBus$.next(message as DeviceWebSocketEvent);
     });
