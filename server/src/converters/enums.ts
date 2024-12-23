@@ -2,6 +2,10 @@ import {WeekDay} from "../enums/week-day";
 import {HeatingMode} from "../enums/heating-mode";
 import {SpecialMode} from "../enums/special-mode";
 
+/**+
+ * This function converts a numeric value that represents a weekday to its enum counterpart.
+ * @param value The numeric value of a weekday.
+ */
 export function weekDayNumberToEnum(value: number): WeekDay {
     switch (value) {
         case 1:
@@ -23,6 +27,10 @@ export function weekDayNumberToEnum(value: number): WeekDay {
     }
 }
 
+/**
+ * This function converts the enum value of a weekday to its numeric counterpart.
+ * @param weekDay The enum value of a weekday.
+ */
 export function weekDayEnumToNumber(weekDay: WeekDay): number {
     switch (weekDay) {
         case WeekDay.MONDAY:
@@ -44,6 +52,10 @@ export function weekDayEnumToNumber(weekDay: WeekDay): number {
     }
 }
 
+/**
+ * This function converts a heating mode string (received raw from the Heatzy API) to its enum counterpart.
+ * @param value The raw Heatzy string of the heating mode.
+ */
 export function modeStringToEnum(value: string): HeatingMode {
     switch (value) {
         case 'stop':
@@ -63,6 +75,11 @@ export function modeStringToEnum(value: string): HeatingMode {
     }
 }
 
+/**
+ * This function converts the numeric value of a special heating mode to its enum counterpart.
+ * For more info: https://docs.google.com/document/d/1f7QQnBIPwcflL5Txm6tGCaatYxsnBbQnWBEoCn7DcqY/edit?tab=t.0#heading=h.p9mcog8ufcc3
+ * @param value The numeric value of the special heating mode.
+ */
 export function specialModeNumberToEnum(value: number): SpecialMode {
     switch (value) {
         case 0:
@@ -78,6 +95,11 @@ export function specialModeNumberToEnum(value: number): SpecialMode {
     }
 }
 
+/**
+ * This function converts the enum value of a special heating mode to its numeric counterpart.
+ * For more info: https://docs.google.com/document/d/1f7QQnBIPwcflL5Txm6tGCaatYxsnBbQnWBEoCn7DcqY/edit?tab=t.0#heading=h.p9mcog8ufcc3
+ * @param mode The enum value of the special heating mode.
+ */
 export function heatingModeEnumToNumber(mode: HeatingMode): number {
     switch (mode) {
         case HeatingMode.COMFORT:

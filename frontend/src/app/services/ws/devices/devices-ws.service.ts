@@ -9,10 +9,19 @@ import {filter} from "rxjs/operators";
 })
 export class DevicesWsService {
 
+  /**
+   * Subject used to distribute device events throughout the app. All events received from the WebSocket are sent in
+   * this event bus.
+   * @private
+   */
   private _deviceEventBus$: Subject<DeviceWebSocketEvent> = new Subject();
 
   constructor() { }
 
+  /**
+   * Connects to the WebSocket server and subscribes to the 'devices' topic. All events received from the WebSocket are
+   * sent to the _deviceEventBus$.
+   */
   public connect(): void {
     const ws = webSocket('ws://localhost:3000/ws/devices');
     ws.subscribe((message) => {
@@ -20,6 +29,10 @@ export class DevicesWsService {
     });
   }
 
+  /**
+   * Returns an Observable that emits all events related to the device with the given deviceId.
+   * @param deviceId The id of the device to listen to.
+   */
   public getDeviceEventBus(deviceId: string): Observable<DeviceWebSocketEvent> {
     return this._deviceEventBus$.pipe(
       filter((event) => event.deviceId == deviceId)

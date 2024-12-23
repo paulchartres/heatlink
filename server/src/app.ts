@@ -1,17 +1,25 @@
-import express, { Request, Response } from "express";
+/**
+ * Application imports
+ */
+import express from "express";
 import path from "path";
-import {getDeviceInfo, getDevices, login, updateDevice, updateDeviceName} from "./services/heatzy";
-import {DeviceStripped} from "./models/device.stripped";
-import {convertReadableScheduleToHeatzyFormat} from "./converters/schedule";
-import {heatingModeEnumToNumber} from "./converters/enums";
+import {login} from "./services/heatzy";
 import swaggerJsdoc from 'swagger-jsdoc';
 import expressWs from "express-ws";
 import * as swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
-import cron from 'node-cron';
 import figlet from 'figlet';
+import { openDatabase } from "./services/database";
+import {connectToWebsockets} from "./websocket-clients/heatzy-websocket";
+import {setupDevicesWebsocket} from "./websockets/devices.websocket";
+import {setupWeatherWebsocket} from "./websockets/weather.websocket";
+import {setupHistoryWebsocket} from "./websockets/history.websocket";
 
-// Schemas for OpenAPI spec
+/**
+ * Schemas for OpenAPI spec
+ * These are generated using the following command:
+ * npx typescript-json-schema tsconfig.json ModelName --required --out model-name.json
+ */
 import deviceSchema from './schemas/device-schema.json';
 import deviceStripped from './schemas/device-stripped-schema.json';
 import deviceInfo from './schemas/device-info-schema.json';
@@ -27,32 +35,52 @@ import weatherHistory from './schemas/weather-history.json';
 import presetRequest from './schemas/preset-request.json';
 import preset from './schemas/preset.json';
 
-import {
-    deletePreset,
-    getHumidityHistory,
-    getPreset,
-    getPresets,
-    getTemperatureHistory,
-    openDatabase,
-    savePreset
-} from "./services/database";
-import {archiveTemperatureHistory} from "./tasks/temperature-history";
-import {archiveHumidityHistory} from "./tasks/humidity-history";
-import {HeatingMode} from "./enums/heating-mode";
-import {getCurrentWeather, getWeatherInRange} from "./services/open-meteo";
-import {autoRefreshToken} from "./services/authentication";
-import {connectToWebsockets} from "./websockets/heatzy-websocket";
-import { WebSocket } from "ws";
-import {convertHeatzyDeviceInfoToReadable} from "./converters/device-info";
-import {DeviceInfo} from "./models/device-info";
-import {DeviceWebsocketEvent} from "./events/device-websocket-event";
-import {Weather} from "./models/weather";
-import {autoUpdateWeather} from "./tasks/weather-auto-update";
+/**
+ * Route imports
+ * Those are all used below, each route is split into a separate file for clarity.
+ * It's also easier to manage incremental API versions like that.
+ */
+import getRawDevices from './routes/raw-devices.route';
+import getRawDevice from './routes/raw-device.route';
+import getDevices from './routes/devices.route';
+import getDevice from './routes/device.route';
+import getTemperatureHistory from './routes/temperature-history.route';
+import getHumidityHistory from './routes/humidity-history.route';
+import getWeather from './routes/weather.route';
+import getWeatherRange from './routes/weather-range.route';
+import getPresets from './routes/presets.route';
+import setDeviceMode from './routes/device-mode.route';
+import setDeviceComfortTemperature from './routes/device-comfort-temperature.route';
+import setDeviceEcoTemperature from './routes/device-eco-temperature.route';
+import setDeviceVacancy from './routes/device-vacancy.route';
+import setDeviceBoost from './routes/device-boost.route';
+import setDeviceLock from './routes/device-lock.route';
+import setDeviceUnlock from './routes/device-unlock.route';
+import setDeviceMotionDetection from './routes/device-motion-detection.route';
+import setDeviceResetSpecialMode from './routes/device-reset-special-mode.route';
+import setDeviceSchedule from './routes/device-schedule.route';
+import setDeviceScheduleMode from './routes/device-schedule-mode.route';
+import setDeviceName from './routes/device-name.route';
+import createPreset from './routes/preset.route';
+import deletePreset from './routes/preset-delete.route';
+import {initCronTasks} from "./tasks/init";
 
+/**
+ * Application definition
+ * We create the global app here.
+ * While technically you could change the app's port using the PORT environment variable, it's generally not
+ * needed since you can just change the Docker port mapping in production.
+ */
 const app: expressWs.Application = expressWs(express()).app;
 const port = process.env.PORT || 3000;
 
-// Auto generation of the swagger docs
+/**
+ * OpenAPI Specification
+ * We create an OpenAPI spec from the configuration from the options defined below.
+ * The comments in the code allow us to auto generate it.
+ * We then serve the openapi.json file on the /openapi.json path, so that we can autogenerate our Angular services.
+ * The actual Swagger UI is served at the /docs path.
+ */
 const options = {
     definition: {
         openapi: '3.0.0',
@@ -79,968 +107,79 @@ const options = {
             }
         },
     },
-    apis: ['./src/app.ts', '/app/server/app.js'],
+    apis: ['./src/routes/*.ts', '/app/server/app.js'],
 };
-
 const openapiSpecification = swaggerJsdoc(options);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
-// Middlewares
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.get("/openapi.json", (req, res) => {
     res.setHeader("Content-Type", "application/json");
     res.send(openapiSpecification);
 });
 
 /**
- * @swagger
- * /raw/devices:
- *   get:
- *     summary: Retrieves the raw Heazty list of devices associated to your account.
- *     description: Retrieves the full, unaltered list of devices linked to your account. Another endpoint is available with more concise and readable data.
- *     responses:
- *       200:
- *         description: A list of raw devices
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Device'
+ * Middlewares
+ * The classic middlewares: CORS to allow requests from another domain, JSON to work with JSON payloads.
+ * The last one allows us to serve the built Angular frontend files. This is useful in production, not in dev.
  */
-app.get('/raw/devices', function (req: Request, res: Response) {
-    getDevices().then((devices) => {
-        res.send(devices);
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 /**
- * @swagger
- * /devices:
- *   get:
- *     summary: Retrieves the stripped and readable list of devices associated to your account.
- *     description: Retrieves the stripped and readable list of devices linked to your account. Another endpoint is available to retrieve unaltered Heatzy data.
- *     responses:
- *       200:
- *         description: A list of stripped devices
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/DeviceStripped'
+ * App routes
+ * All paths are defined within the *.route.ts files, which is why they all appear as a base path here.
  */
-app.get('/devices', function (req: Request, res: Response) {
-    getDevices().then((devices) => {
-        res.send(
-            devices.map((device): DeviceStripped => {
-                return {
-                    deviceId: device.did,
-                    readableName: device.dev_alias,
-                    macAddress: device.mac,
-                    isOnline: device.is_online,
-                    productName: device.product_name
-                }
-            })
-        );
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
+app.use('', getRawDevices);
+app.use('', getRawDevice);
+app.use('', getDevices);
+app.use('', getDevice);
+app.use('', getTemperatureHistory);
+app.use('', getHumidityHistory);
+app.use('', setDeviceMode);
+app.use('', setDeviceComfortTemperature);
+app.use('', setDeviceEcoTemperature);
+app.use('', setDeviceVacancy);
+app.use('', setDeviceBoost);
+app.use('', setDeviceLock);
+app.use('', setDeviceUnlock);
+app.use('', setDeviceMotionDetection);
+app.use('', setDeviceResetSpecialMode);
+app.use('', setDeviceSchedule);
+app.use('', setDeviceScheduleMode);
+app.use('', getWeather);
+app.use('', getWeatherRange);
+app.use('', getPresets);
+app.use('', setDeviceName);
+app.use('', createPreset);
+app.use('', deletePreset);
 
 /**
- * @swagger
- * /raw/device/{deviceId}:
- *   get:
- *     summary: Retrieves the stripped and readable information relative to a specific device.
- *     description: Retrieves the raw Heatzy information relative to a specific device, using the device's did (device ID). Another endpoint is available to retrieve stripped and readable data. The heating schedule is expressed in readable hours in this payload.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device to retrieve
- *     responses:
- *       200:
- *         description: Readable device information
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/DeviceInfo'
+ * Websockets
+ * To make things clearer, websockets are separated into individual files in the websockets folder.
  */
-app.get('/raw/device/:deviceId', function (req: Request, res: Response) {
-    getDeviceInfo(req.params.deviceId).then((deviceInfo) => {
-        res.send(deviceInfo);
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
+setupDevicesWebsocket(app);
+setupWeatherWebsocket(app);
+setupHistoryWebsocket(app);
 
 /**
- * @swagger
- * /device/{deviceId}:
- *   get:
- *     summary: Retrieves the stripped and readable information relative to a specific device.
- *     description: Retrieves the stripped and readable information relative to a specific device, using the device's did (device ID). Another endpoint is available to retrieve raw data. The heating schedule is expressed in readable hours in this payload.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device to retrieve
- *     responses:
- *       200:
- *         description: Readable device information
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/DeviceInfoStripped'
+ * Frontend static files
+ * If none of the paths declared above match, this wildcard interprets the request as a frontend one.
+ * It serves files from the public folder, where the built Angular app should be (in production, at least).
  */
-app.get('/device/:deviceId', function (req: Request, res: Response) {
-    getDeviceInfo(req.params.deviceId).then((deviceInfo) => {
-        res.send(convertHeatzyDeviceInfoToReadable(deviceInfo));
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/history/temperature:
- *   post:
- *     summary: Retrieves the temperature history of a device in a requested interval.
- *     description: Retrieves the temperature history of a device in a requested interval. The start and end values should be specified as timestamps (seconds).
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device whose temperature history should be retrieved
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               startTimestamp:
- *                 type: integer
- *                 description: The start of the interval as a timestamp in seconds
- *                 example: 1672444800
- *               endTimestamp:
- *                 type: integer
- *                 description: The end of the interval as a timestamp in seconds
- *                 example: 1672531200
- *     responses:
- *       200:
- *         description: Temperature history for the requested device
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/TemperatureHistory'
- */
-app.post('/device/:deviceId/history/temperature', function (req: Request, res: Response) {
-    const startTimestamp: number = req.body?.startTimestamp;
-    const endTimestamp: number = req.body?.endTimestamp;
-
-    if (!startTimestamp || !endTimestamp) {
-        res.sendStatus(400);
-        return;
-    }
-
-    getTemperatureHistory(startTimestamp, endTimestamp, req.params.deviceId).then((history) => {
-        res.send(history);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/history/humidity:
- *   post:
- *     summary: Retrieves the humidity history of a device in a requested interval.
- *     description: Retrieves the humidity history of a device in a requested interval. The start and end values should be specified as timestamps (seconds).
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device whose humidity history should be retrieved
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               startTimestamp:
- *                 type: integer
- *                 description: The start of the interval as a timestamp in seconds
- *                 example: 1672444800
- *               endTimestamp:
- *                 type: integer
- *                 description: The end of the interval as a timestamp in seconds
- *                 example: 1672531200
- *     responses:
- *       200:
- *         description: Humidity history for the requested device
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/HumidityHistory'
- */
-app.post('/device/:deviceId/history/humidity', function (req: Request, res: Response) {
-    const startTimestamp: number = req.body?.startTimestamp;
-    const endTimestamp: number = req.body?.endTimestamp;
-
-    if (!startTimestamp || !endTimestamp) {
-        res.sendStatus(400);
-        return;
-    }
-
-    getHumidityHistory(startTimestamp, endTimestamp, req.params.deviceId).then((history) => {
-        res.send(history);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/mode:
- *   post:
- *     summary: Changes the current heating mode of a specific device.
- *     description: Changes the current heating mode of a specific device.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device whose mode should be changed
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               mode:
- *                 $ref: '#/components/schemas/HeatingMode'
- *     responses:
- *       200:
- *         description: The heating mode has been updated
- */
-app.post('/device/:deviceId/mode', function (req: Request, res: Response) {
-    const mode: HeatingMode = req.body?.mode as HeatingMode;
-
-    if (!mode) {
-        res.sendStatus(400);
-        return;
-    }
-
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            mode: heatingModeEnumToNumber(mode)
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/target/comfort:
- *   post:
- *     summary: Changes the target comfort temperature of a specific device.
- *     description: Changes the target comfort temperature of a specific device.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device whose target comfort temperature should be changed
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               temperature:
- *                 type: number
- *                 format: float
- *                 description: The target temperature of the comfort mode
- *                 example: 18
- *     responses:
- *       200:
- *         description: The comfort target temperature has been updated
- */
-app.post('/device/:deviceId/target/comfort', function (req: Request, res: Response) {
-    const targetTemperature: number = parseFloat(req.body?.temperature);
-
-    if (!targetTemperature) {
-        res.sendStatus(400);
-        return;
-    }
-
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            cft_temp: targetTemperature * 10
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/target/eco:
- *   post:
- *     summary: Changes the target eco temperature of a specific device.
- *     description: Changes the target eco temperature of a specific device.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device whose target eco temperature should be changed
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               temperature:
- *                 type: number
- *                 format: float
- *                 description: The target temperature of the eco mode
- *                 example: 15
- *     responses:
- *       200:
- *         description: The eco target temperature has been updated
- */
-app.post('/device/:deviceId/target/eco', function (req: Request, res: Response) {
-    const targetTemperature: number = parseFloat(req.body?.temperature);
-
-    if (!targetTemperature) {
-        res.sendStatus(400);
-        return;
-    }
-
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            eco_temp: targetTemperature * 10
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/vacancy:
- *   post:
- *     summary: Enables vacancy mode for a specific device.
- *     description: Enables vacancy mode for a specific device, for a certain amount of time (in days).
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device that should be set to vacancy mode.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               duration:
- *                 type: integer
- *                 description: The duration (in days) of the vacancy
- *                 example: 7
- *     responses:
- *       200:
- *         description: Vacancy mode has been enabled
- */
-app.post('/device/:deviceId/vacancy', function (req: Request, res: Response) {
-    const duration: number = parseFloat(req.body?.duration);
-
-    if (!duration) {
-        res.sendStatus(400);
-        return;
-    }
-
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            derog_mode: 1,
-            derog_time: duration
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/boost:
- *   post:
- *     summary: Enables boost mode for a specific device.
- *     description: Enables boost mode for a specific device, for a certain amount of time (in minutes).
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device that should be set to boost mode.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               duration:
- *                 type: integer
- *                 description: The duration (in minutes) of the boost
- *                 example: 60
- *     responses:
- *       200:
- *         description: Boost mode has been enabled
- */
-app.post('/device/:deviceId/boost', function (req: Request, res: Response) {
-    const duration: number = parseFloat(req.body?.duration);
-
-    if (!duration) {
-        res.sendStatus(400);
-        return;
-    }
-
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            derog_mode: 2,
-            derog_time: duration
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/lock:
- *   post:
- *     summary: Locks the physical interface of a specific device.
- *     description: Locks the physical interface of a specific device. This doesn't affect the device in the dashboard.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: The device has been locked
- */
-app.post('/device/:deviceId/lock', function (req: Request, res: Response) {
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            lock_switch: 1
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/unlock:
- *   post:
- *     summary: Unlocks the physical interface of a specific device.
- *     description: Unlocks the physical interface of a specific device. This doesn't affect the device in the dashboard.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: The device has been unlocked
- */
-app.post('/device/:deviceId/unlock', function (req: Request, res: Response) {
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            lock_switch: 0
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/motion-detection:
- *   post:
- *     summary: Enables motion detection mode for a specific device.
- *     description: Enables motion detection mode for a specific device.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Motion detection mode for the selected device has been enabled
- */
-app.post('/device/:deviceId/motion-detection', function (req: Request, res: Response) {
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            derog_mode: 3
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/reset-special-mode:
- *   post:
- *     summary: Disables any kind of special mode for a specific device.
- *     description: Disables any kind of special mode for a specific device. Includes motion detection, boost or vacancy.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Special modes have been reset
- */
-app.post('/device/:deviceId/reset-special-mode', function (req: Request, res: Response) {
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            derog_mode: 0
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/schedule:
- *   post:
- *     summary: Updates the heating schedule of a specific device.
- *     description: Updates the heating schedule of a specific device.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the device whose schedule should be updated
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: array
- *             items:
- *               $ref: '#/components/schemas/HeatingSchedule'
- *     responses:
- *       200:
- *         description: The heating schedule has been updated
- */
-app.post('/device/:deviceId/schedule', function (req: Request, res: Response) {
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            ...convertReadableScheduleToHeatzyFormat(req.body)
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /device/{deviceId}/schedule-mode:
- *   post:
- *     summary: Sets the schedule mode of a specific device.
- *     description: Sets the schedule mode of a specific device.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               enable:
- *                 type: boolean
- *                 description: Whether the scheduling mode should be enabled
- *                 example: true
- *     responses:
- *       200:
- *         description: The device's schedule mode has been updated
- */
-app.post('/device/:deviceId/schedule-mode', function (req: Request, res: Response) {
-    const enable: boolean = req.body?.enable;
-
-    if (enable == null) {
-        res.sendStatus(400);
-        return;
-    }
-
-    updateDevice(req.params.deviceId, {
-        attrs: {
-            timer_switch: enable ? 1 : 0
-        }
-    }).then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /weather:
- *   get:
- *     summary: Retrieves the current external temperature at the location set in the environment variables.
- *     description: Retrieves the current external temperature at the location set in the environment variables. If no variables are set, returns an error code in order not to display the values in the webapp.
- *     responses:
- *       200:
- *         description: The current weather
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Weather'
- */
-app.get('/weather', function (req: Request, res: Response) {
-    getCurrentWeather().then((weather) => {
-        if (!weather) {
-            res.sendStatus(404);
-        } else {
-            res.send(weather);
-        }
-    });
-});
-
-/**
- * @swagger
- * /weather/range:
- *   post:
- *     summary: Retrieves weather data in a specific range.
- *     description: Retrieves weather data in a specific range at the location provided in the environment variables. If no variables are set, returns an error code in order not to display the values in the webapp.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               startTimestamp:
- *                 type: integer
- *                 description: The start of the interval as a timestamp in seconds
- *                 example: 1672444800
- *               endTimestamp:
- *                 type: integer
- *                 description: The end of the interval as a timestamp in seconds
- *                 example: 1672531200
- *               deviceId:
- *                 type: string
- *                 description: The device whose history is being viewed. Used to prevent extra past data from being loaded.
- *                 example: DEVICE_ID
- *     responses:
- *       200:
- *         description: The weather data in the provided range
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/WeatherHistory'
- */
-app.post('/weather/range', function (req: Request, res: Response) {
-    const startTimestamp: number = req.body?.startTimestamp;
-    const endTimestamp: number = req.body?.endTimestamp;
-    const deviceId: string = req.body?.deviceId;
-
-    if (!startTimestamp || !endTimestamp || !deviceId) {
-        res.sendStatus(400);
-        return;
-    }
-
-    getWeatherInRange(startTimestamp, endTimestamp, deviceId).then((weatherHistory) => {
-        if (!weatherHistory) {
-            res.sendStatus(404);
-        } else {
-            res.send(weatherHistory);
-        }
-    });
-});
-
-/**
- * @swagger
- * /preset:
- *   post:
- *     summary: Saves a new heating schedule preset.
- *     description: Saves a new heating schedule preset. The name acts as the identification key, so duplicates aren't allowed.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/PresetRequest'
- *     responses:
- *       200:
- *         description: The preset has been saved
- *       409:
- *         description: Preset name already in use
- */
-app.post('/preset', function (req: Request, res: Response) {
-    const name = req.body?.name;
-    const description = req.body?.description;
-    const schedule = req.body?.schedule;
-
-    if (!name || !schedule) {
-        res.sendStatus(400);
-    }
-
-    getPreset(name).then((preset) => {
-        if (preset) {
-            res.sendStatus(409);
-        } else {
-            savePreset(name, description, JSON.stringify(schedule)).then(() => {
-                res.send();
-            }).catch(() => {
-                res.sendStatus(404);
-            });
-        }
-    })
-
-});
-
-/**
- * @swagger
- * /device/{deviceId}/name:
- *   post:
- *     summary: Updates the name of a specific device.
- *     description: Updates the name of a specific device.
- *     parameters:
- *       - in: path
- *         name: deviceId
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 description: The new name of the device
- *                 example: The Office
- *     responses:
- *       200:
- *         description: The device name has been updated
- */
-app.post('/device/:deviceId/name', function (req: Request, res: Response) {
-    const name: string = req.body?.name;
-
-    if (!name) {
-        res.sendStatus(400);
-        return;
-    }
-
-    updateDeviceName(req.params.deviceId, name)
-    .then(() => {
-        res.send();
-    }).catch(() => {
-        res.sendStatus(404);
-    });
-});
-
-/**
- * @swagger
- * /presets:
- *   get:
- *     summary: Retrieves all previously saved presets.
- *     description: Retrieves all previously saved presets.
- *     responses:
- *       200:
- *         description: The presets stored for this instance.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Preset'
- */
-app.get('/presets', function (req: Request, res: Response) {
-    getPresets().then((presets) => {
-        res.send(presets);
-    });
-});
-
-/**
- * @swagger
- * /preset:
- *   delete:
- *     summary: Deletes a heating schedule preset.
- *     description: Deletes a heating schedule preset. The name acts as the identification key.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 description: The preset name
- *                 example: Weekends
- *     responses:
- *       200:
- *         description: The preset has been deleted
- *       404:
- *         description: Preset does not exist
- */
-app.delete('/preset', function (req: Request, res: Response) {
-    const name = req.body?.name;
-
-    if (!name) {
-        res.sendStatus(400);
-    }
-
-    getPreset(name).then((preset) => {
-        if (!preset) {
-            res.sendStatus(404);
-        } else {
-            deletePreset(name).then(() => {
-                res.send();
-            }).catch(() => {
-                res.sendStatus(404);
-            });
-        }
-    })
-
-});
-
-// Websockets
-// TODO move this whole block to the proper websocket service
-const devicesWsConnections: WebSocket[] = [];
-app.ws('/ws/devices', (ws, req) => {
-    devicesWsConnections.push(ws);
-    ws.on('close', () => {
-        devicesWsConnections.splice(devicesWsConnections.indexOf(ws), 1);
-    });
-});
-export function broadcastDeviceInfo(deviceInfo: DeviceInfo, deviceId: string): void {
-    const event: DeviceWebsocketEvent = {
-        deviceId,
-        data: convertHeatzyDeviceInfoToReadable(deviceInfo)
-    }
-    for (const client of devicesWsConnections) {
-        client.send(JSON.stringify(event));
-    }
-}
-
-// TODO move this whole block to the proper websocket service
-const weatherWsConnections: WebSocket[] = [];
-app.ws('/ws/weather', (ws, req) => {
-    weatherWsConnections.push(ws);
-    ws.on('close', () => {
-        weatherWsConnections.splice(weatherWsConnections.indexOf(ws), 1);
-    });
-});
-export function broadcastWeather(weather: Weather): void {
-    for (const client of weatherWsConnections) {
-        client.send(JSON.stringify(weather));
-    }
-}
-export function isWeatherWsInUse(): boolean {
-    return weatherWsConnections.length > 0;
-}
-
-// TODO move this whole block to the proper websocket service
-const historyWsConnections: WebSocket[] = [];
-app.ws('/ws/history', (ws, req) => {
-    historyWsConnections.push(ws);
-    ws.on('close', () => {
-        historyWsConnections.splice(historyWsConnections.indexOf(ws), 1);
-    });
-});
-export function broadcastHistoryUpdate(): void {
-    for (const client of historyWsConnections) {
-        client.send('true');
-    }
-}
-
-// Frontend
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// CRON jobs
-cron.schedule('0 * * * *', autoRefreshToken);
-cron.schedule(process.env.ARCHIVAL_CRON ? process.env.ARCHIVAL_CRON : '* * * * *', archiveTemperatureHistory);
-cron.schedule(process.env.ARCHIVAL_CRON ? process.env.ARCHIVAL_CRON : '* * * * *', archiveHumidityHistory);
+/**
+ * CRON jobs
+ * For more information on what each CRON job does, check the cron/init.ts file.
+ */
+initCronTasks();
 
-if (process.env.LATITUDE && process.env.LONGITUDE) {
-    cron.schedule('*/5 * * * *', autoUpdateWeather);
-}
-
-
+// We start the app with a nice little Heatlink ASCII art, because style matters.
 figlet('Heatlink', { horizontalLayout: 'full', font: 'Big' }, (err, data) => {
     console.log(data);
+    // We then open the database. This will ensure the schema is properly created, and establish a connection.
     openDatabase().then(() => {
         // When we start the app, we always start with a sign-in to populate the authentication service.
         login()
@@ -1048,6 +187,11 @@ figlet('Heatlink', { horizontalLayout: 'full', font: 'Big' }, (err, data) => {
                 return Promise.reject(err);
             })
             .then(() => {
+                /**
+                 * Once we're connected, we'll automatically subscribe to the Gizwits websocket in order to get updates
+                 * for each device the Heatzy account owns. All that data will be piped into our own devices websocket,
+                 * so that we can have full control over its format.
+                 */
                 connectToWebsockets();
                 app.listen(port, () => {
                     console.log(`[server]: Server is running at http://localhost:${port}`);

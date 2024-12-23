@@ -3,6 +3,10 @@ import {DeviceInfoStripped} from "../models/device-info.stripped";
 import {convertScheduleToReadable} from "./schedule";
 import {modeStringToEnum, specialModeNumberToEnum} from "./enums";
 
+/**
+ * This function converts the raw Heatzy device info signature to the custom Heatlink one.
+ * @param deviceInfo The raw device info that should be converted.
+ */
 export function convertHeatzyDeviceInfoToReadable(deviceInfo: DeviceInfo): DeviceInfoStripped {
     return {
         schedule: convertScheduleToReadable(deviceInfo),

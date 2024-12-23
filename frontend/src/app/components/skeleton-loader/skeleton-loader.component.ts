@@ -14,7 +14,14 @@ import {CommonModule} from "@angular/common";
 })
 export class SkeletonLoaderComponent {
 
+  /**
+   * The height of the skeleton loader in pixels.
+   */
   @Input({ required: true }) height!: number;
+
+  /**
+   * The width of the skeleton loader in pixels.
+   */
   @Input({ required: true }) width!: number;
 
 }

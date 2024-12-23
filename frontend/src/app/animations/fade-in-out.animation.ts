@@ -1,5 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 
+/**
+ * A simple fade in/out animation used for @if conditions (context menus, widgets...)
+ */
 export const fadeAnimation = trigger('fade', [
   transition(':enter', [
     style({ opacity: 0 }),

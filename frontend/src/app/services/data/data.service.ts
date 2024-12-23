@@ -8,13 +8,20 @@ import {ApiService} from "../api/services/api.service";
 })
 export class DataService {
 
+  /**
+   * A BehaviorSubject that holds the devices. It is updated when the devices are fetched.
+   * @private
+   */
   private _devices$: BehaviorSubject<DeviceStripped[]> = new BehaviorSubject<DeviceStripped[]>([]);
-  private _refreshData$: Subject<void> = new Subject<void>();
 
   constructor(private _api: ApiService) { }
 
   // Fetchers
 
+  /**
+   * Fetches the devices from the API and updates the _devices$ BehaviorSubject so that all listening components
+   * can display the data live.
+   */
   fetchDevices(): void {
     this._api.devicesGet().subscribe((devices) => {
       this._devices$.next(devices);
@@ -23,18 +30,11 @@ export class DataService {
 
   // Getters
 
+  /**
+   * Returns an Observable that emits the devices as soon as they are fetched.
+   */
   getDevices(): Observable<DeviceStripped[]> {
     return this._devices$.asObservable();
-  }
-
-  getRefreshEvent(): Observable<void> {
-    return this._refreshData$.asObservable();
-  }
-
-  // Setters
-
-  refresh(): void {
-    this._refreshData$.next();
   }
 
 }

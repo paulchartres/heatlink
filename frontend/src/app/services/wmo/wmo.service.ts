@@ -6,6 +6,10 @@ import {DateTime} from "luxon";
 })
 export class WmoService {
 
+  /**
+   * Definitions for the WMO codes.
+   * This was retrieved from a very handy GitHub Gist: https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0c
+   */
   definitions = {
     "0":{
       "day":{
@@ -291,6 +295,10 @@ export class WmoService {
 
   constructor() { }
 
+  /**
+   * Returns the icon for a given WMO code.
+   * @param wmo The WMO code.
+   */
   public getIconForWmo(wmo: number): string {
     const dayNightKey: string = DateTime.now().hour > 8 && DateTime.now().hour < 20 ? 'day' : 'night';
     // @ts-ignore
