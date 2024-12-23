@@ -17,7 +17,7 @@ export function openDatabase(): Promise<void> {
     console.log(`[database]: Connecting to database...`);
     return new Promise((resolve, reject) => {
         open({
-            filename: '/tmp/database.db',
+            filename: './data/database.db',
             driver: sqlite3.Database
         }).then((db) => {
             console.log(`[database]: Database connection established.`);

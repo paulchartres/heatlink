@@ -85,6 +85,12 @@ export function getWeatherInRange(startTimestamp: number, endTimestamp: number, 
              * Prevents us from retrieving external weather data when we don't even have household data.
              */
             getFirstTemperatureDataPoint(deviceId).then((dataPoint) => {
+                if (!dataPoint) {
+                    console.warn('[open-meteo]: No data point found for this device. Aborting weather retrieval.');
+                    resolve(undefined);
+                    return;
+                }
+
                startTimestamp = Math.max(startTimestamp, dataPoint.timestamp);
 
                 const params = {
