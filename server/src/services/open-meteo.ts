@@ -93,9 +93,6 @@ export function getWeatherInRange(startTimestamp: number, endTimestamp: number, 
 
                startTimestamp = Math.max(startTimestamp, dataPoint.timestamp);
 
-                console.log(DateTime.fromSeconds(startTimestamp).toFormat('yyyy-MM-dd'));
-                console.log(DateTime.fromSeconds(endTimestamp).toFormat('yyyy-MM-dd'));
-
                 const params = {
                     latitude: [latitude],
                     longitude: [longitude],
