@@ -8,7 +8,7 @@ services:
       - USERNAME=your.email@example.com
       - PASSWORD=supersecretpassword
       - LATITUDE=37.2343 # Optional, but required if you want to use the weather and external temperature/humidity feature
-      - LONGITUDE=115.8066 # Optional, but required if you want to use the weather and external temperature/humidity feature
+      - LONGITUDE=-115.8066 # Optional, but required if you want to use the weather and external temperature/humidity feature
       - ARCHIVAL_CRON=0 * * * * # Optional, defaults to every minute
     volumes:
         - ./data:/app/data # Map the container's data directory to your host (for the SQLite database)
