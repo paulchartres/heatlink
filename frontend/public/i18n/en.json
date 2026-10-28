@@ -25,6 +25,7 @@
   "history": "History",
   "lock": "Lock",
   "unlock": "Unlock",
+  "heating-mode": "This device is currently heating.",
   "vacancy-mode-enabled-notification": "Vacancy mode has been enabled for {{ duration }} day{{ suffix }}.",
   "boost-mode-enabled-notification": "Boost mode has been enabled for {{ duration }}.",
   "motion-detection-enabled-notification": "Motion detection mode has been enabled.",

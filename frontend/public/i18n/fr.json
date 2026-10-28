@@ -25,6 +25,7 @@
   "history": "Historique",
   "lock": "Verrouiller",
   "unlock": "Déverrouiller",
+  "heating-mode": "Cet appareil est en cours de chauffage.",
   "vacancy-mode-enabled-notification": "Le mode vacances a été activé pour {{ duration }} jour{{ suffix }}.",
   "boost-mode-enabled-notification": "Le mode boost a été activé pour {{ duration }}.",
   "motion-detection-enabled-notification": "Le mode détection de mouvement a été activé.",
